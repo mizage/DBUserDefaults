@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7105257C13A461AF00203EAB /* DBUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 7105257A13A461AF00203EAB /* DBUtils.h */; };
+		7105257D13A461AF00203EAB /* DBUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7105257B13A461AF00203EAB /* DBUtils.m */; };
+		7105258813A46E1500203EAB /* DBNSString+Extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 7105258613A46E1500203EAB /* DBNSString+Extensions.h */; };
+		7105258913A46E1500203EAB /* DBNSString+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7105258713A46E1500203EAB /* DBNSString+Extensions.m */; };
+		7105258B13A46E6B00203EAB /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7105258A13A46E6B00203EAB /* libssl.dylib */; };
 		711B50E513A329F300976509 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 711B50E413A329F300976509 /* Cocoa.framework */; };
 		711B50EF13A329F300976509 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 711B50ED13A329F300976509 /* InfoPlist.strings */; };
 		711B50F913A32A2400976509 /* DBUserDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 711B50F713A32A2400976509 /* DBUserDefaults.h */; };
@@ -14,6 +19,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7105257A13A461AF00203EAB /* DBUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBUtils.h; sourceTree = "<group>"; };
+		7105257B13A461AF00203EAB /* DBUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBUtils.m; sourceTree = "<group>"; };
+		7105258613A46E1500203EAB /* DBNSString+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DBNSString+Extensions.h"; sourceTree = "<group>"; };
+		7105258713A46E1500203EAB /* DBNSString+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DBNSString+Extensions.m"; sourceTree = "<group>"; };
+		7105258A13A46E6B00203EAB /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.dylib; path = usr/lib/libssl.dylib; sourceTree = SDKROOT; };
 		711B50E113A329F300976509 /* DBUserDefaults.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DBUserDefaults.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		711B50E413A329F300976509 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		711B50E713A329F300976509 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -31,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7105258B13A46E6B00203EAB /* libssl.dylib in Frameworks */,
 				711B50E513A329F300976509 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -38,6 +49,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7105258513A46DF900203EAB /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				7105258613A46E1500203EAB /* DBNSString+Extensions.h */,
+				7105258713A46E1500203EAB /* DBNSString+Extensions.m */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
 		711B50D513A329F300976509 = {
 			isa = PBXGroup;
 			children = (
@@ -58,6 +78,7 @@
 		711B50E313A329F300976509 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7105258A13A46E6B00203EAB /* libssl.dylib */,
 				711B50E413A329F300976509 /* Cocoa.framework */,
 				711B50E613A329F300976509 /* Other Frameworks */,
 			);
@@ -96,10 +117,21 @@
 		711B50F613A32A0500976509 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				7105258513A46DF900203EAB /* Extensions */,
+				711B50FF13A32D0500976509 /* DBManagement */,
 				711B50F713A32A2400976509 /* DBUserDefaults.h */,
 				711B50F813A32A2400976509 /* DBUserDefaults.m */,
 			);
 			name = Classes;
+			sourceTree = "<group>";
+		};
+		711B50FF13A32D0500976509 /* DBManagement */ = {
+			isa = PBXGroup;
+			children = (
+				7105257A13A461AF00203EAB /* DBUtils.h */,
+				7105257B13A461AF00203EAB /* DBUtils.m */,
+			);
+			name = DBManagement;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -110,6 +142,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				711B50F913A32A2400976509 /* DBUserDefaults.h in Headers */,
+				7105257C13A461AF00203EAB /* DBUtils.h in Headers */,
+				7105258813A46E1500203EAB /* DBNSString+Extensions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,6 +207,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				711B50FA13A32A2400976509 /* DBUserDefaults.m in Sources */,
+				7105257D13A461AF00203EAB /* DBUtils.m in Sources */,
+				7105258913A46E1500203EAB /* DBNSString+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,6 +240,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-lcrypto";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -218,6 +255,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_LDFLAGS = "-lcrypto";
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -277,6 +315,7 @@
 				711B50F513A329F300976509 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
