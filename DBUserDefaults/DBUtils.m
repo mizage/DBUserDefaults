@@ -9,21 +9,13 @@
 #import "DBUtils.h"
 #import "DBNSString+Extensions.h"
 
-static NSString* dropboxHostFile;
-static NSString* dropboxPath;
-
 @interface DBUtils ()
 + (NSString*)getHostFileContents;
 @end
 
 @implementation DBUtils
 
-- (void)initialize
-{
-  dropboxHostFile = [@"~/.dropbox/host.db" stringByExpandingTildeInPath];
-}
-
-// This method checks to see if the Dropbox path exists
+// This method checks to see if Dropbox is installed and available
 + (BOOL)isDropboxAvailable
 {
   return [self dropboxPath] != nil ? YES : NO;
@@ -47,13 +39,11 @@ static NSString* dropboxPath;
   {      
     // The location of the Dropbox folder is Base64 encoded on the second line
     //  of the host.db file
-    NSString* base64DropboxPath = [hostFileLines objectAtIndex:1];
+    NSString* base64DropboxPath = [hostFileLines objectAtIndex:1];    
+    NSString* dropboxPath = [base64DropboxPath decodeBase64String];
     
-    @synchronized(dropboxPath)
-    {    
-      if(!dropboxPath)
-        dropboxPath = [base64DropboxPath decodeBase64String];
-    }
+    if(![[NSFileManager defaultManager] fileExistsAtPath:dropboxPath])
+      return nil;
     
     return dropboxPath;    
   }
@@ -65,6 +55,7 @@ static NSString* dropboxPath;
 //  located at ~/.dropbox/host.db
 + (NSString*)getHostFileContents
 {
+  NSString* dropboxHostFile = [@"~/.dropbox/host.db" stringByExpandingTildeInPath];
   return [NSString stringWithContentsOfFile:dropboxHostFile 
                                    encoding:NSUTF8StringEncoding error:nil];
 }
