@@ -31,12 +31,14 @@
 {
   [self synchronizeToPath:[self dropboxPreferencesFilePath]];
   [self setBool:YES forKey:kDropboxSyncEnabledKey];
+  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kDropboxSyncEnabledKey];
 }
 
 - (void)disableDropboxSync
 {
   [self synchronizeToPath:[self localPreferencesFilePath]];
   [self setBool:NO forKey:kDropboxSyncEnabledKey];
+  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kDropboxSyncEnabledKey];
 }
 
 - (BOOL)dropboxPreferencesExist
@@ -47,6 +49,7 @@
 - (NSString*)preferencesFilePath
 {
   if([self boolForKey:kDropboxSyncEnabledKey])
+  if([[NSUserDefaults standardUserDefaults] boolForKey:kDropboxSyncEnabledKey])
     return [self dropboxPreferencesFilePath];
   else
     return [self localPreferencesFilePath];
