@@ -11,4 +11,11 @@
 
 @implementation DBUserDefaults
 
+- (void)enableDropboxSync
+{
+}
+- (void)disableDropboxSync
+{
+}
+
 @end

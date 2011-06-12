@@ -9,8 +9,12 @@
 #import <Foundation/Foundation.h>
 
 
-@interface DBUserDefaults : NSObject {
+@interface DBUserDefaults : NSObject
+{
     
 }
+
+- (void)enableDropboxSync;
+- (void)disableDropboxSync;
 
 @end
