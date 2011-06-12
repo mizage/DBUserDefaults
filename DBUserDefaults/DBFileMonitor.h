@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreServices/CoreServices.h>
 
-
-@interface DBFileMonitor : NSObject {
-    
-}
-
+// This class only uses class methods, so no instance variables are needed.
+@interface DBFileMonitor : NSObject{}
++ (void)enableFileMonitoring;
++ (void)disableFileMonitoring;
 @end

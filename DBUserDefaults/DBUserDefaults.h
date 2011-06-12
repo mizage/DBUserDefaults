@@ -8,11 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString* const DBUserDefaultsDidChangeNotification;
 
 @interface DBUserDefaults : NSObject
 {
-  NSLock* deadbolt;
-  NSMutableDictionary* defaults;
+  NSLock* deadbolt_; //Used to lock access to the defaults dictionary
+  NSMutableDictionary* defaults_; //Stores the user data
 }
 
 - (void)enableDropboxSync;

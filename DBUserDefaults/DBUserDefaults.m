@@ -6,13 +6,20 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#define kDropboxSyncEnabledKey @"DBDropboxSyncEnabled"
+NSString* const DBUserDefaultsDidChangeNotification = 
+@"DBUserDefaultsDidChangeNotification";
 
 #import "DBUserDefaults.h"
 #import "DBUtils.h"
+#import "FileUtils.h"
+#import "DBFileMonitor.h"
 
 @interface DBUserDefaults (NSUserDefaultsPartialReplacementPrivate)
 - (BOOL)synchronizeToPath:(NSString*)directory;
+@end
+
+@interface DBUserDefaults ()
+- (void)preferencesFileDidChange:(NSNotification*)notification;
 @end
 
 #pragma mark - DBUserDefaults Methods
@@ -27,17 +34,37 @@
 - (void)enableDropboxSync
 {
   [self synchronizeToPath:[FileUtils dropboxPreferencesFilePath]];
+  [[NSUserDefaults standardUserDefaults] setBool:YES 
+                                          forKey:kDBDropboxSyncEnabledKey];
+  [DBFileMonitor enableFileMonitoring];
+  [[NSNotificationCenter defaultCenter] 
+   addObserver:self 
+   selector:@selector(disableDropboxSync)
+   name:DBDropboxFileDidChangeNotification
+   object:nil];
 }
 
 // This method disables Dropbox sync
 - (void)disableDropboxSync
 {
-  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kDropboxSyncEnabledKey];
+  [self synchronizeToPath:[FileUtils localPreferencesFilePath]];
+  [[NSUserDefaults standardUserDefaults] setBool:NO 
+                                          forKey:kDBDropboxSyncEnabledKey];
+  [DBFileMonitor disableFileMonitoring];
+  [[NSNotificationCenter defaultCenter] 
+   removeObserver:self 
+   name:DBDropboxFileDidChangeNotification 
+   object:nil];
 }
 
-}
-
+- (void)preferencesFileDidChange:(NSNotification*)notification
 {
+  //TODO: add conflict resolution
+  [deadbolt_ lock];
+  [defaults_ release];
+  defaults_ = [[NSMutableDictionary alloc] 
+               initWithContentsOfFile:[FileUtils dropboxPreferencesFilePath]];
+  [deadbolt_ unlock];
 }
 
 @end
@@ -71,38 +98,38 @@ static DBUserDefaults* sharedInstance;
 {
   if((self = [super init]))
   {
-    deadbolt = [[NSLock alloc] init];
-    defaults = [[NSMutableDictionary alloc] init];
+    deadbolt_ = [[NSLock alloc] init];
+    defaults_ = [[NSMutableDictionary alloc] init];
   }
   return self;
 }
 - (void)dealloc
 {
-  [deadbolt release];
-  [defaults release];
+  [deadbolt_ release];
+  [defaults_ release];
 }
 
 - (id)objectForKey:(NSString*)defaultName
 {
   id retval;
   
-  [deadbolt lock];
-  retval = [defaults objectForKey:defaultName];
-  [deadbolt unlock];
+  [deadbolt_ lock];
+  retval = [defaults_ objectForKey:defaultName];
+  [deadbolt_ unlock];
   
   return retval;
 }
 - (void)setObject:(id)value forKey:(NSString*)defaultName
 {
-  [deadbolt lock];
-  [defaults setObject:value forKey:defaultName];
-  [deadbolt unlock];
+  [deadbolt_ lock];
+  [defaults_ setObject:value forKey:defaultName];
+  [deadbolt_ unlock];
 }
 - (void)removeObjectForKey:(NSString*)defaultName
 {
-  [deadbolt lock];
-  [defaults removeObjectForKey:defaultName];
-  [deadbolt unlock];
+  [deadbolt_ lock];
+  [defaults_ removeObjectForKey:defaultName];
+  [deadbolt_ unlock];
 }
 
 - (NSString*)stringForKey:(NSString*)defaultName
@@ -177,19 +204,20 @@ static DBUserDefaults* sharedInstance;
 
 - (void)registerDefaults:(NSDictionary*)registrationDictionary
 {
-  NSMutableDictionary* merged = [NSMutableDictionary dictionaryWithDictionary:registrationDictionary];
+  NSMutableDictionary* merged = 
+  [NSMutableDictionary dictionaryWithDictionary:registrationDictionary];
   
-  [merged addEntriesFromDictionary:defaults];
+  [merged addEntriesFromDictionary:defaults_];
   
-  [deadbolt lock];
-  [defaults release];
-  defaults = [[NSMutableDictionary alloc] initWithDictionary:merged];
-  [deadbolt unlock];
+  [deadbolt_ lock];
+  [defaults_ release];
+  defaults_ = [[NSMutableDictionary alloc] initWithDictionary:merged];
+  [deadbolt_ unlock];
 }
 
 - (NSDictionary*)dictionaryRepresentation
 {
-  return [NSDictionary dictionaryWithDictionary:defaults];
+  return [NSDictionary dictionaryWithDictionary:defaults_];
 }
 
 - (BOOL)synchronize
@@ -208,7 +236,7 @@ static DBUserDefaults* sharedInstance;
 
 - (BOOL)synchronizeToPath:(NSString*)directory
 {  
-  return [defaults writeToFile:directory atomically:YES];  
+  return [defaults_ writeToFile:directory atomically:YES];  
 }
 
 @end
