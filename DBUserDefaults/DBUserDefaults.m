@@ -27,47 +27,59 @@
 
 @implementation DBUserDefaults
 
+// This method enables Dropbox sync and overwrites the settings on dropbox with
+//  the local settings. TODO: change this behavior to prompt the user about
+//  overwriting.
+// We store the state of the Dropbox sync in NSUserDefaults to allow us to
+//  not sync if we don't want to.
 - (void)enableDropboxSync
 {
   [self synchronizeToPath:[self dropboxPreferencesFilePath]];
-  [self setBool:YES forKey:kDropboxSyncEnabledKey];
   [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kDropboxSyncEnabledKey];
 }
 
+// This method disables Dropbox sync
 - (void)disableDropboxSync
 {
   [self synchronizeToPath:[self localPreferencesFilePath]];
-  [self setBool:NO forKey:kDropboxSyncEnabledKey];
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kDropboxSyncEnabledKey];
 }
 
+// This method checks to see if the preferences file exists in Dropbox
 - (BOOL)dropboxPreferencesExist
 {
   return [[NSFileManager defaultManager] 
           fileExistsAtPath:[self dropboxPreferencesFilePath]];
 }
+
+// This method is a convenience method to return the file path of the
+//  preferences file based on the current syncing state
 - (NSString*)preferencesFilePath
 {
-  if([self boolForKey:kDropboxSyncEnabledKey])
   if([[NSUserDefaults standardUserDefaults] boolForKey:kDropboxSyncEnabledKey])
     return [self dropboxPreferencesFilePath];
   else
     return [self localPreferencesFilePath];
 }
+
+// This method returns the path to the preferences file on Dropbox
 - (NSString*)dropboxPreferencesFilePath
 {
   if(![DBUtils isDropboxAvailable])
     return nil;
   
-  return [NSString stringWithFormat:@"%@/Preferences/%@.plist",
+  return [NSString stringWithFormat:@"%@/Preferences/%@DB.plist",
           [DBUtils dropboxPath],[[NSBundle mainBundle] bundleIdentifier]];
 }
+
+// This method returns the path to the preferences file on the local system
 - (NSString*)localPreferencesFilePath
 {
   return [NSString stringWithFormat:@"%@/%@.plist",
           [self localPath],[[NSBundle mainBundle] bundleIdentifier]];
 }
 
+// This method returns a tilde expanded local path to the Preferences directory
 - (NSString*)localPath
 {
   return [@"~/Preferences" stringByExpandingTildeInPath];
@@ -78,6 +90,8 @@
 
 #pragma mark - NSUserDefaults (Partial) Replacement
 
+
+// See the NSUserDefaults documentation for details about what these methods do
 
 static DBUserDefaults* sharedInstance;
 
