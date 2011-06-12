@@ -55,7 +55,9 @@
 //  located at ~/.dropbox/host.db
 + (NSString*)getHostFileContents
 {
-  NSString* dropboxHostFile = [@"~/.dropbox/host.db" stringByExpandingTildeInPath];
+  NSString* dropboxHostFile = 
+  [@"~/.dropbox/host.db" stringByExpandingTildeInPath];
+  
   return [NSString stringWithContentsOfFile:dropboxHostFile 
                                    encoding:NSUTF8StringEncoding error:nil];
 }

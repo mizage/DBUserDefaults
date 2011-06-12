@@ -6,68 +6,65 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#define kDropboxSyncEnabledKey @"DBDropboxSyncEnabled"
+NSString* const DBUserDefaultsDidChangeNotification = 
+@"DBUserDefaultsDidChangeNotification";
 
 #import "DBUserDefaults.h"
 #import "DBUtils.h"
-
-@interface DBUserDefaults ()
-- (BOOL)dropboxPreferencesExist;
-- (NSString*)preferencesFilePath;
-- (NSString*)dropboxPreferencesFilePath;
-- (NSString*)localPreferencesFilePath;
-- (NSString*)localPath;
-@end
+#import "FileUtils.h"
+#import "DBFileMonitor.h"
 
 @interface DBUserDefaults (NSUserDefaultsPartialReplacementPrivate)
 - (BOOL)synchronizeToPath:(NSString*)directory;
+@end
+
+@interface DBUserDefaults ()
+- (void)preferencesFileDidChange:(NSNotification*)notification;
 @end
 
 #pragma mark - DBUserDefaults Methods
 
 @implementation DBUserDefaults
 
+// This method enables Dropbox sync and overwrites the settings on dropbox with
+//  the local settings. TODO: change this behavior to prompt the user about
+//  overwriting.
+// We store the state of the Dropbox sync in NSUserDefaults to allow us to
+//  not sync if we don't want to.
 - (void)enableDropboxSync
 {
-  [self synchronizeToPath:[self dropboxPreferencesFilePath]];
-  [self setBool:YES forKey:kDropboxSyncEnabledKey];
+  [self synchronizeToPath:[FileUtils dropboxPreferencesFilePath]];
+  [[NSUserDefaults standardUserDefaults] setBool:YES 
+                                          forKey:kDBDropboxSyncEnabledKey];
+  [DBFileMonitor enableFileMonitoring];
+  [[NSNotificationCenter defaultCenter] 
+   addObserver:self 
+   selector:@selector(disableDropboxSync)
+   name:DBDropboxFileDidChangeNotification
+   object:nil];
 }
 
+// This method disables Dropbox sync
 - (void)disableDropboxSync
 {
-  [self synchronizeToPath:[self localPreferencesFilePath]];
-  [self setBool:NO forKey:kDropboxSyncEnabledKey];
+  [self synchronizeToPath:[FileUtils localPreferencesFilePath]];
+  [[NSUserDefaults standardUserDefaults] setBool:NO 
+                                          forKey:kDBDropboxSyncEnabledKey];
+  [DBFileMonitor disableFileMonitoring];
+  [[NSNotificationCenter defaultCenter] 
+   removeObserver:self 
+   name:DBDropboxFileDidChangeNotification 
+   object:nil];
 }
 
-- (BOOL)dropboxPreferencesExist
+- (void)preferencesFileDidChange:(NSNotification*)notification
 {
-  return [[NSFileManager defaultManager] 
-          fileExistsAtPath:[self dropboxPreferencesFilePath]];
-}
-- (NSString*)preferencesFilePath
-{
-  if([self boolForKey:kDropboxSyncEnabledKey])
-    return [self dropboxPreferencesFilePath];
-  else
-    return [self localPreferencesFilePath];
-}
-- (NSString*)dropboxPreferencesFilePath
-{
-  if(![DBUtils isDropboxAvailable])
-    return nil;
-  
-  return [NSString stringWithFormat:@"%@/Preferences/%@.plist",
-          [DBUtils dropboxPath],[[NSBundle mainBundle] bundleIdentifier]];
-}
-- (NSString*)localPreferencesFilePath
-{
-  return [NSString stringWithFormat:@"%@/%@.plist",
-          [self localPath],[[NSBundle mainBundle] bundleIdentifier]];
-}
-
-- (NSString*)localPath
-{
-  return [@"~/Preferences" stringByExpandingTildeInPath];
+  //TODO: add conflict resolution
+  [deadbolt_ lock];
+  [defaults_ release];
+  defaults_ = [[NSMutableDictionary alloc] 
+               initWithContentsOfFile:[FileUtils dropboxPreferencesFilePath]];
+  [deadbolt_ unlock];
 }
 
 @end
@@ -75,6 +72,8 @@
 
 #pragma mark - NSUserDefaults (Partial) Replacement
 
+
+// See the NSUserDefaults documentation for details about what these methods do
 
 static DBUserDefaults* sharedInstance;
 
@@ -99,38 +98,38 @@ static DBUserDefaults* sharedInstance;
 {
   if((self = [super init]))
   {
-    deadbolt = [[NSLock alloc] init];
-    defaults = [[NSMutableDictionary alloc] init];
+    deadbolt_ = [[NSLock alloc] init];
+    defaults_ = [[NSMutableDictionary alloc] init];
   }
   return self;
 }
 - (void)dealloc
 {
-  [deadbolt release];
-  [defaults release];
+  [deadbolt_ release];
+  [defaults_ release];
 }
 
 - (id)objectForKey:(NSString*)defaultName
 {
   id retval;
   
-  [deadbolt lock];
-  retval = [defaults objectForKey:defaultName];
-  [deadbolt unlock];
+  [deadbolt_ lock];
+  retval = [defaults_ objectForKey:defaultName];
+  [deadbolt_ unlock];
   
   return retval;
 }
 - (void)setObject:(id)value forKey:(NSString*)defaultName
 {
-  [deadbolt lock];
-  [defaults setObject:value forKey:defaultName];
-  [deadbolt unlock];
+  [deadbolt_ lock];
+  [defaults_ setObject:value forKey:defaultName];
+  [deadbolt_ unlock];
 }
 - (void)removeObjectForKey:(NSString*)defaultName
 {
-  [deadbolt lock];
-  [defaults removeObjectForKey:defaultName];
-  [deadbolt unlock];
+  [deadbolt_ lock];
+  [defaults_ removeObjectForKey:defaultName];
+  [deadbolt_ unlock];
 }
 
 - (NSString*)stringForKey:(NSString*)defaultName
@@ -205,24 +204,25 @@ static DBUserDefaults* sharedInstance;
 
 - (void)registerDefaults:(NSDictionary*)registrationDictionary
 {
-  NSMutableDictionary* merged = [NSMutableDictionary dictionaryWithDictionary:registrationDictionary];
+  NSMutableDictionary* merged = 
+  [NSMutableDictionary dictionaryWithDictionary:registrationDictionary];
   
-  [merged addEntriesFromDictionary:defaults];
+  [merged addEntriesFromDictionary:defaults_];
   
-  [deadbolt lock];
-  [defaults release];
-  defaults = [[NSMutableDictionary alloc] initWithDictionary:merged];
-  [deadbolt unlock];
+  [deadbolt_ lock];
+  [defaults_ release];
+  defaults_ = [[NSMutableDictionary alloc] initWithDictionary:merged];
+  [deadbolt_ unlock];
 }
 
 - (NSDictionary*)dictionaryRepresentation
 {
-  return [NSDictionary dictionaryWithDictionary:defaults];
+  return [NSDictionary dictionaryWithDictionary:defaults_];
 }
 
 - (BOOL)synchronize
 {
-  NSString* preferencesFilePath = [self preferencesFilePath];
+  NSString* preferencesFilePath = [FileUtils preferencesFilePath];
   return [self synchronizeToPath:preferencesFilePath];
 }
 
@@ -236,7 +236,7 @@ static DBUserDefaults* sharedInstance;
 
 - (BOOL)synchronizeToPath:(NSString*)directory
 {  
-  return [defaults writeToFile:directory atomically:YES];  
+  return [defaults_ writeToFile:directory atomically:YES];  
 }
 
 @end
