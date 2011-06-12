@@ -9,8 +9,10 @@
 #import <Foundation/Foundation.h>
 
 
-@interface DBNSString_Extensions : NSString {
-    
-}
+@interface NSString (Base64)
+
+- (NSString*)decodeBase64String;
+- (NSData*)decodeBase64;
+- (NSData*)decodeBase64WithNewlines:(BOOL)encodedWithNewlines;
 
 @end
