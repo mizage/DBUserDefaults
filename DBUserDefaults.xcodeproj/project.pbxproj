@@ -21,6 +21,7 @@
 		71AFEBE313A5788B004D42D3 /* FileUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 71AFEBE113A5788B004D42D3 /* FileUtils.m */; };
 		71AFEBE613A579D8004D42D3 /* DBFileMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 71AFEBE413A579D8004D42D3 /* DBFileMonitor.h */; };
 		71AFEBE713A579D8004D42D3 /* DBFileMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 71AFEBE513A579D8004D42D3 /* DBFileMonitor.m */; };
+		71E6615713A5C3F900EA1163 /* DropboxFolderIcon_leopard.icns in Resources */ = {isa = PBXBuildFile; fileRef = 71E6615613A5C3F900EA1163 /* DropboxFolderIcon_leopard.icns */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		71AFEBE113A5788B004D42D3 /* FileUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileUtils.m; sourceTree = "<group>"; };
 		71AFEBE413A579D8004D42D3 /* DBFileMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBFileMonitor.h; sourceTree = "<group>"; };
 		71AFEBE513A579D8004D42D3 /* DBFileMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBFileMonitor.m; sourceTree = "<group>"; };
+		71E6615613A5C3F900EA1163 /* DropboxFolderIcon_leopard.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = DropboxFolderIcon_leopard.icns; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 			isa = PBXGroup;
 			children = (
 				711B50EA13A329F300976509 /* DBUserDefaults */,
+				71E6615513A5C3F900EA1163 /* Resources */,
 				711B50E313A329F300976509 /* Frameworks */,
 				711B50E213A329F300976509 /* Products */,
 			);
@@ -150,6 +153,15 @@
 			name = DBManagement;
 			sourceTree = "<group>";
 		};
+		71E6615513A5C3F900EA1163 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				71E6615613A5C3F900EA1163 /* DropboxFolderIcon_leopard.icns */,
+			);
+			name = Resources;
+			path = DBUserDefaults/Resources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -214,6 +226,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				711B50EF13A329F300976509 /* InfoPlist.strings in Resources */,
+				71E6615713A5C3F900EA1163 /* DropboxFolderIcon_leopard.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
