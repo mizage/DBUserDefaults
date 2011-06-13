@@ -70,7 +70,7 @@ NSString* const DBUserDefaultsDidChangeNotification =
   [DBFileMonitor enableFileMonitoring];
   [[NSNotificationCenter defaultCenter] 
    addObserver:self 
-   selector:@selector(disableDropboxSync)
+   selector:@selector(preferencesFileDidChange:)
    name:DBDropboxFileDidChangeNotification
    object:nil];
 }
@@ -156,7 +156,9 @@ static DBUserDefaults* sharedInstance;
   [defaults_ setObject:value forKey:defaultName];
   [deadbolt_ unlock];
   
-  [[NSNotificationCenter defaultCenter] postNotificationName:DBUserDefaultsDidChangeNotification object:nil];
+  [[NSNotificationCenter defaultCenter]
+   postNotificationName:DBUserDefaultsDidChangeNotification 
+   object:nil];
 }
 - (void)removeObjectForKey:(NSString*)defaultName
 {
@@ -164,7 +166,9 @@ static DBUserDefaults* sharedInstance;
   [defaults_ removeObjectForKey:defaultName];
   [deadbolt_ unlock];
   
-  [[NSNotificationCenter defaultCenter] postNotificationName:DBUserDefaultsDidChangeNotification object:nil];
+  [[NSNotificationCenter defaultCenter]
+   postNotificationName:DBUserDefaultsDidChangeNotification 
+   object:nil];
 }
 
 - (NSString*)stringForKey:(NSString*)defaultName
@@ -249,7 +253,8 @@ static DBUserDefaults* sharedInstance;
   defaults_ = [[NSMutableDictionary alloc] initWithDictionary:merged];
   [deadbolt_ unlock];
   
-  [[NSNotificationCenter defaultCenter] postNotificationName:DBUserDefaultsDidChangeNotification object:nil];
+  [[NSNotificationCenter defaultCenter] 
+   postNotificationName:DBUserDefaultsDidChangeNotification object:nil];
 }
 
 - (NSDictionary*)dictionaryRepresentation
@@ -258,9 +263,16 @@ static DBUserDefaults* sharedInstance;
 }
 
 - (BOOL)synchronize
-{
-  NSString* preferencesFilePath = [FileUtils preferencesFilePath];
-  return [self synchronizeToPath:preferencesFilePath];
+{  
+  if(![[NSFileManager defaultManager] 
+       fileExistsAtPath:[FileUtils preferencesDirectoryPath]])
+    [[NSFileManager defaultManager] 
+     createDirectoryAtPath:[FileUtils preferencesDirectoryPath] 
+     withIntermediateDirectories:YES 
+     attributes:nil 
+     error:nil];
+  
+  return [self synchronizeToPath:[FileUtils preferencesFilePath]];
 }
 
 @end

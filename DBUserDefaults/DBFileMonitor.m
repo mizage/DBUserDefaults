@@ -41,6 +41,7 @@
 #import "FileUtils.h"
 
 static FSEventStreamRef DBPreferencesFileMonitor;  
+static NSDate* previousModificationDate;
 
 // DBFileMonitor is a class that provides class methods used to enable file
 //  monitoring on the dropbox preferences file.
@@ -58,8 +59,21 @@ void preferencesFileChanged(
                             const FSEventStreamEventFlags eventFlags[],
                             const FSEventStreamEventId eventIds[])
 {
-  [[NSNotificationCenter defaultCenter] 
-   postNotificationName:DBDropboxFileDidChangeNotification object:nil];
+  
+  NSDictionary* attributes = [[NSFileManager defaultManager] 
+                              attributesOfItemAtPath:
+                              [FileUtils preferencesFilePath] 
+                              error:nil];
+  
+  NSDate* modificationDate = [attributes objectForKey:NSFileModificationDate];
+  
+  if(![modificationDate isEqualToDate:previousModificationDate])
+  {
+    [[NSNotificationCenter defaultCenter] 
+     postNotificationName:DBDropboxFileDidChangeNotification object:nil];
+    [previousModificationDate release];
+    previousModificationDate = [modificationDate retain];
+  }  
 }
 
 
@@ -70,23 +84,36 @@ void preferencesFileChanged(
      DBPreferencesFileMonitor)
     return;
   
+  NSDictionary* attributes = [[NSFileManager defaultManager] 
+                              attributesOfItemAtPath:
+                              [FileUtils preferencesFilePath] 
+                              error:nil];
+  
+  previousModificationDate = [[attributes objectForKey:NSFileModificationDate] 
+                              retain];
+  
   FSEventStreamContext context = {0};
   context.info = self;
   
+  NSString* preferencesFilePath = [FileUtils preferencesDirectoryPath];
+  
   NSArray* pathsToWatch = [NSArray arrayWithObject:
-                           [FileUtils preferencesFilePath]];
+                           preferencesFilePath];
+  
   DBPreferencesFileMonitor = FSEventStreamCreate(NULL,
-                                     preferencesFileChanged,
-                                     &context,
-                                     (CFArrayRef)pathsToWatch, 
-                                     kFSEventStreamEventIdSinceNow,
-                                     1,
-                                     kFSEventStreamCreateFlagUseCFTypes | 
-                                     kFSEventStreamCreateFlagIgnoreSelf);
+                                                 preferencesFileChanged,
+                                                 &context,
+                                                 (CFArrayRef)pathsToWatch, 
+                                                 kFSEventStreamEventIdSinceNow,
+                                                 1,
+                                                 kFSEventStreamCreateFlagUseCFTypes | 
+                                                 kFSEventStreamCreateFlagIgnoreSelf);
   FSEventStreamScheduleWithRunLoop(DBPreferencesFileMonitor, 
                                    CFRunLoopGetCurrent(), 
                                    kCFRunLoopDefaultMode);
   FSEventStreamStart(DBPreferencesFileMonitor);
+  
+  NSLog(@"blah");
 }
 + (void)disableFileMonitoring
 {

@@ -43,6 +43,11 @@
 NSString* const DBDropboxFileDidChangeNotification = 
                   @"DBDropboxFileDidChangeNotification";
 
+@interface FileUtils ()
++ (NSString*)localPreferencesDirectoryPath;
++ (NSString*)dropboxPreferencesDirectoryPath;
+@end
+
 @implementation FileUtils
 
 // This method checks to see if the preferences file exists in Dropbox
@@ -50,6 +55,15 @@ NSString* const DBDropboxFileDidChangeNotification =
 {
   return [[NSFileManager defaultManager] 
           fileExistsAtPath:[FileUtils dropboxPreferencesFilePath]];
+}
+
++ (NSString*)preferencesDirectoryPath
+{
+  if([[NSUserDefaults standardUserDefaults] 
+      boolForKey:kDBDropboxSyncEnabledKey])
+    return [FileUtils dropboxPreferencesDirectoryPath];
+  else
+    return [FileUtils localPreferencesDirectoryPath];
 }
 
 // This method is a convenience method to return the file path of the
@@ -69,21 +83,31 @@ NSString* const DBDropboxFileDidChangeNotification =
   if(![DBUtils isDropboxAvailable])
     return nil;
   
-  return [NSString stringWithFormat:@"%@/Preferences/%@DB.plist",
-          [DBUtils dropboxPath],[[NSBundle mainBundle] bundleIdentifier]];
+  return [NSString stringWithFormat:@"%@/%@DB.plist",
+          [self dropboxPreferencesDirectoryPath],[[NSBundle mainBundle] bundleIdentifier]];
 }
 
 // This method returns the path to the preferences file on the local system
 + (NSString*)localPreferencesFilePath
 {
   return [NSString stringWithFormat:@"%@/%@.plist",
-          [FileUtils localPath],[[NSBundle mainBundle] bundleIdentifier]];
+          [FileUtils localPreferencesDirectoryPath],
+          [[NSBundle mainBundle] bundleIdentifier]];
 }
 
 // This method returns a tilde expanded local path to the Preferences directory
-+ (NSString*)localPath
++ (NSString*)localPreferencesDirectoryPath
 {
   return [@"~/Preferences" stringByExpandingTildeInPath];
+}
+
+// This method returns the path to the Preferences directory on Dropbox
++ (NSString*)dropboxPreferencesDirectoryPath
+{
+  if(![DBUtils isDropboxAvailable])
+    return nil;
+  
+  return [NSString stringWithFormat:@"%@/Preferences", [DBUtils dropboxPath]];
 }
 
 @end

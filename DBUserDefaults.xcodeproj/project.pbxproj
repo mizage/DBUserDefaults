@@ -14,7 +14,7 @@
 		7105258B13A46E6B00203EAB /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7105258A13A46E6B00203EAB /* libssl.dylib */; };
 		711B50E513A329F300976509 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 711B50E413A329F300976509 /* Cocoa.framework */; };
 		711B50EF13A329F300976509 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 711B50ED13A329F300976509 /* InfoPlist.strings */; };
-		711B50F913A32A2400976509 /* DBUserDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 711B50F713A32A2400976509 /* DBUserDefaults.h */; };
+		711B50F913A32A2400976509 /* DBUserDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 711B50F713A32A2400976509 /* DBUserDefaults.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		711B50FA13A32A2400976509 /* DBUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 711B50F813A32A2400976509 /* DBUserDefaults.m */; };
 		71AFEBDE13A573C5004D42D3 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71AFEBDD13A573C5004D42D3 /* CoreServices.framework */; };
 		71AFEBE213A5788B004D42D3 /* FileUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 71AFEBE013A5788B004D42D3 /* FileUtils.h */; };
@@ -89,8 +89,8 @@
 		711B50E313A329F300976509 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				71AFEBDD13A573C5004D42D3 /* CoreServices.framework */,
 				7105258A13A46E6B00203EAB /* libssl.dylib */,
+				71AFEBDD13A573C5004D42D3 /* CoreServices.framework */,
 				711B50E413A329F300976509 /* Cocoa.framework */,
 				711B50E613A329F300976509 /* Other Frameworks */,
 			);

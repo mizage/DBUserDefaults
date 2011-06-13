@@ -48,8 +48,7 @@ extern NSString* const DBDropboxFileDidChangeNotification;
 // This method checks to see if the preferences file exists in Dropbox
 + (BOOL)dropboxPreferencesExist;
 + (NSString*)preferencesFilePath;
++ (NSString*)preferencesDirectoryPath;
 + (NSString*)dropboxPreferencesFilePath;
 + (NSString*)localPreferencesFilePath;
-+ (NSString*)localPath;
-
 @end

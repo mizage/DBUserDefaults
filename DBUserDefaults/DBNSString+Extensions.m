@@ -49,7 +49,7 @@
 
 - (NSString*)decodeBase64String
 {
-  return [[[NSString alloc] initWithData:[self decodeBase64]
+  return [[[NSString alloc] initWithData:[self decodeBase64WithNewlines:NO]
                                 encoding:NSUTF8StringEncoding] autorelease];
 }
 
