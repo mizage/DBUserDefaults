@@ -21,7 +21,14 @@
 		71AFEBE313A5788B004D42D3 /* FileUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 71AFEBE113A5788B004D42D3 /* FileUtils.m */; };
 		71AFEBE613A579D8004D42D3 /* DBFileMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 71AFEBE413A579D8004D42D3 /* DBFileMonitor.h */; };
 		71AFEBE713A579D8004D42D3 /* DBFileMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 71AFEBE513A579D8004D42D3 /* DBFileMonitor.m */; };
-		71E6615713A5C3F900EA1163 /* DropboxFolderIcon_leopard.icns in Resources */ = {isa = PBXBuildFile; fileRef = 71E6615613A5C3F900EA1163 /* DropboxFolderIcon_leopard.icns */; };
+		71E6615B13A5C59C00EA1163 /* DBSyncPrompt.h in Headers */ = {isa = PBXBuildFile; fileRef = 71E6615913A5C59C00EA1163 /* DBSyncPrompt.h */; };
+		71E6615C13A5C59C00EA1163 /* DBSyncPrompt.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E6615A13A5C59C00EA1163 /* DBSyncPrompt.m */; };
+		71E6616413A5D48500EA1163 /* DBSyncPrompt.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71E6616313A5D48500EA1163 /* DBSyncPrompt.xib */; };
+		71E6616813A5DFBC00EA1163 /* box.icns in Resources */ = {isa = PBXBuildFile; fileRef = 71E6616513A5DFBC00EA1163 /* box.icns */; };
+		71E6616D13A5E23900EA1163 /* accept.png in Resources */ = {isa = PBXBuildFile; fileRef = 71E6616B13A5E23900EA1163 /* accept.png */; };
+		71E6616E13A5E23900EA1163 /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 71E6616C13A5E23900EA1163 /* cancel.png */; };
+		71E6617013A5E4FB00EA1163 /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 71E6616F13A5E4FB00EA1163 /* arrow.png */; };
+		71E6617813A5EB0E00EA1163 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71E6617713A5EB0E00EA1163 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,7 +52,14 @@
 		71AFEBE113A5788B004D42D3 /* FileUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileUtils.m; sourceTree = "<group>"; };
 		71AFEBE413A579D8004D42D3 /* DBFileMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBFileMonitor.h; sourceTree = "<group>"; };
 		71AFEBE513A579D8004D42D3 /* DBFileMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBFileMonitor.m; sourceTree = "<group>"; };
-		71E6615613A5C3F900EA1163 /* DropboxFolderIcon_leopard.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = DropboxFolderIcon_leopard.icns; sourceTree = "<group>"; };
+		71E6615913A5C59C00EA1163 /* DBSyncPrompt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBSyncPrompt.h; sourceTree = "<group>"; };
+		71E6615A13A5C59C00EA1163 /* DBSyncPrompt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBSyncPrompt.m; sourceTree = "<group>"; };
+		71E6616313A5D48500EA1163 /* DBSyncPrompt.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DBSyncPrompt.xib; sourceTree = "<group>"; };
+		71E6616513A5DFBC00EA1163 /* box.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = box.icns; sourceTree = "<group>"; };
+		71E6616B13A5E23900EA1163 /* accept.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = accept.png; sourceTree = "<group>"; };
+		71E6616C13A5E23900EA1163 /* cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel.png; sourceTree = "<group>"; };
+		71E6616F13A5E4FB00EA1163 /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
+		71E6617713A5EB0E00EA1163 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71E6617813A5EB0E00EA1163 /* QuartzCore.framework in Frameworks */,
 				71AFEBDE13A573C5004D42D3 /* CoreServices.framework in Frameworks */,
 				7105258B13A46E6B00203EAB /* libssl.dylib in Frameworks */,
 				711B50E513A329F300976509 /* Cocoa.framework in Frameworks */,
@@ -74,6 +89,7 @@
 		711B50D513A329F300976509 = {
 			isa = PBXGroup;
 			children = (
+				71E6617713A5EB0E00EA1163 /* QuartzCore.framework */,
 				711B50EA13A329F300976509 /* DBUserDefaults */,
 				71E6615513A5C3F900EA1163 /* Resources */,
 				711B50E313A329F300976509 /* Frameworks */,
@@ -132,6 +148,7 @@
 		711B50F613A32A0500976509 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				71E6615813A5C54F00EA1163 /* DBSyncPrompt */,
 				7105258513A46DF900203EAB /* Extensions */,
 				711B50FF13A32D0500976509 /* DBManagement */,
 				711B50F713A32A2400976509 /* DBUserDefaults.h */,
@@ -156,10 +173,23 @@
 		71E6615513A5C3F900EA1163 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				71E6615613A5C3F900EA1163 /* DropboxFolderIcon_leopard.icns */,
+				71E6616F13A5E4FB00EA1163 /* arrow.png */,
+				71E6616513A5DFBC00EA1163 /* box.icns */,
+				71E6616B13A5E23900EA1163 /* accept.png */,
+				71E6616C13A5E23900EA1163 /* cancel.png */,
 			);
 			name = Resources;
 			path = DBUserDefaults/Resources;
+			sourceTree = "<group>";
+		};
+		71E6615813A5C54F00EA1163 /* DBSyncPrompt */ = {
+			isa = PBXGroup;
+			children = (
+				71E6615913A5C59C00EA1163 /* DBSyncPrompt.h */,
+				71E6615A13A5C59C00EA1163 /* DBSyncPrompt.m */,
+				71E6616313A5D48500EA1163 /* DBSyncPrompt.xib */,
+			);
+			name = DBSyncPrompt;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -174,6 +204,7 @@
 				7105258813A46E1500203EAB /* DBNSString+Extensions.h in Headers */,
 				71AFEBE213A5788B004D42D3 /* FileUtils.h in Headers */,
 				71AFEBE613A579D8004D42D3 /* DBFileMonitor.h in Headers */,
+				71E6615B13A5C59C00EA1163 /* DBSyncPrompt.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,7 +257,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				711B50EF13A329F300976509 /* InfoPlist.strings in Resources */,
-				71E6615713A5C3F900EA1163 /* DropboxFolderIcon_leopard.icns in Resources */,
+				71E6616413A5D48500EA1163 /* DBSyncPrompt.xib in Resources */,
+				71E6616813A5DFBC00EA1163 /* box.icns in Resources */,
+				71E6616D13A5E23900EA1163 /* accept.png in Resources */,
+				71E6616E13A5E23900EA1163 /* cancel.png in Resources */,
+				71E6617013A5E4FB00EA1163 /* arrow.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,6 +277,7 @@
 				7105258913A46E1500203EAB /* DBNSString+Extensions.m in Sources */,
 				71AFEBE313A5788B004D42D3 /* FileUtils.m in Sources */,
 				71AFEBE713A579D8004D42D3 /* DBFileMonitor.m in Sources */,
+				71E6615C13A5C59C00EA1163 /* DBSyncPrompt.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

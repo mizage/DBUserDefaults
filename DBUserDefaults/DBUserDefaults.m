@@ -45,6 +45,7 @@ NSString* const DBUserDefaultsDidChangeNotification =
 #import "DBUtils.h"
 #import "FileUtils.h"
 #import "DBFileMonitor.h"
+#import "DBSyncPrompt.h"
 
 @interface DBUserDefaults (NSUserDefaultsPartialReplacementPrivate)
 - (BOOL)synchronizeToPath:(NSString*)directory;
@@ -65,6 +66,10 @@ NSString* const DBUserDefaultsDidChangeNotification =
 //  not sync if we don't want to.
 - (void)enableDropboxSync
 {
+  DBSyncPrompt* prompt = [[DBSyncPrompt alloc] init];
+  
+  [prompt displayPrompt];
+  
   [self synchronizeToPath:[FileUtils dropboxPreferencesFilePath]];
   [[NSUserDefaults standardUserDefaults] setBool:YES 
                                           forKey:kDBDropboxSyncEnabledKey];
