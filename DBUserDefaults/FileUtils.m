@@ -58,6 +58,8 @@ NSString* const DBDropboxFileDidChangeNotification =
           fileExistsAtPath:[FileUtils dropboxPreferencesFilePath]];
 }
 
+// This method is a convenience method to return the directory of the
+//  preferences file based on the current syncing state
 + (NSString*)preferencesDirectoryPath
 {
   if([[NSUserDefaults standardUserDefaults] 

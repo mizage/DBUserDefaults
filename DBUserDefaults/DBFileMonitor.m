@@ -66,8 +66,10 @@ void preferencesFileChanged(
                               [FileUtils preferencesFilePath] 
                               error:nil];
   
+  // Get the modification date of our preferences file
   NSDate* modificationDate = [attributes objectForKey:NSFileModificationDate];
   
+  // If the modification dates do not match, we need to sync
   if(![modificationDate isEqualToDate:previousModificationDate])
   {
     [[NSNotificationCenter defaultCenter] 
