@@ -40,12 +40,17 @@
 
 #import <Foundation/Foundation.h>
 
+#import "DBSyncPromptDelegate.h"
+
+@class DBSyncPrompt;
+
 extern NSString* const DBUserDefaultsDidChangeNotification;
 
-@interface DBUserDefaults : NSObject
+@interface DBUserDefaults : NSObject <DBSyncPromptDelegate>
 {
   NSLock* deadbolt_; //Used to lock access to the defaults dictionary
   NSMutableDictionary* defaults_; //Stores the user data
+  DBSyncPrompt* prompt; //prompt the user about how they would like to sync
 }
 
 - (void)enableDropboxSync;

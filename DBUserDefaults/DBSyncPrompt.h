@@ -39,6 +39,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "DBSyncPromptDelegate.h"
+
 
 @interface DBSyncPrompt : NSWindowController
 {    
@@ -47,7 +49,13 @@
   IBOutlet NSButton* dropboxButton;
   IBOutlet NSImageView* arrow;
   IBOutlet NSTextField *detailText;
+  
+  DBSyncPromptOption currentSelection;
+  
+  id<DBSyncPromptDelegate> delegate;
 }
+
+@property(readwrite,assign,nonatomic) id<DBSyncPromptDelegate> delegate;
 
 - (void)displayPrompt;
 

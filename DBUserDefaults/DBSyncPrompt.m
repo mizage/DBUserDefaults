@@ -59,6 +59,8 @@ NSNumber* DegreesToNumber(CGFloat degrees)
 
 @implementation DBSyncPrompt
 
+@synthesize delegate;
+
 - (id)init
 {
   NSWindow* window = [[[NSWindow alloc] 
@@ -66,6 +68,8 @@ NSNumber* DegreesToNumber(CGFloat degrees)
                        styleMask:NSBorderlessWindowMask
                        backing:NSBackingStoreBuffered
                        defer:NO] autorelease];
+  [window setHasShadow:YES];
+  
   if((self = [super initWithWindow:window]))
   {
     [window center];
@@ -112,7 +116,7 @@ NSNumber* DegreesToNumber(CGFloat degrees)
 
 - (void)displayPrompt
 {
-  [[self window] makeKeyAndOrderFront:nil];
+  [[NSApplication sharedApplication] runModalForWindow:[self window]];
 }
 
 - (IBAction)dropboxClicked:(NSButton*)sender
@@ -124,6 +128,8 @@ NSNumber* DegreesToNumber(CGFloat degrees)
                        objectForKey:@"CFBundleDisplayName"];
   [detailText setStringValue:[NSString stringWithFormat:dropboxLabel,
                               appName != nil ? appName : @""]];
+  
+  currentSelection = DBSyncPromptOptionDropbox;
 }
 
 - (IBAction)localClicked:(NSButton*)sender
@@ -135,14 +141,22 @@ NSNumber* DegreesToNumber(CGFloat degrees)
                        objectForKey:@"CFBundleDisplayName"];
   [detailText setStringValue:[NSString stringWithFormat:localLabel,
                               appName != nil ? appName : @""]];
+  
+  currentSelection = DBSyncPromptOptionLocal;  
 }
 
 - (IBAction)acceptclicked:(id)sender
 {
+  [[self window] orderOut:nil];
+  [delegate syncPromptDidSelectOption:currentSelection];  
+  [[NSApplication sharedApplication] stopModal];
 }
 
 - (IBAction)cancelClicked:(id)sender
 {
+  [[self window] orderOut:nil];
+  [delegate syncPromptDidCancel];
+  [[NSApplication sharedApplication] stopModal];
 }
 
 - (void)rotateArrowToDegrees:(NSInteger)degrees
