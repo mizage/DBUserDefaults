@@ -41,5 +41,6 @@
 #import <Cocoa/Cocoa.h>
 
 
+// This class provides a simple rounded corner view.
 @interface DBRoundedView : NSView{}
 @end

@@ -50,7 +50,6 @@ extern NSString* const DBUserDefaultsDidChangeNotification;
 {
   NSLock* deadbolt_; //Used to lock access to the defaults dictionary
   NSMutableDictionary* defaults_; //Stores the user data
-  DBSyncPrompt* prompt; //prompt the user about how they would like to sync
 }
 
 - (void)enableDropboxSync;

@@ -43,10 +43,10 @@
 #import "DBRoundedView.h"
 
 static NSString* localLabel = @"Pull the preferences from Dropbox and use them"
-                                " for %@ on this Mac.";
+" for %@ on this Mac.";
 static NSString* dropboxLabel = @"Push the preferences on this Mac up to" 
-                                  " Dropbox so all your copies of %@ will"
-                                  " use them.";
+" Dropbox so all your copies of %@ will"
+" use them.";
 
 static inline CGFloat DegreesToRadians(CGFloat degrees)
 {
@@ -91,7 +91,8 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
     
     [dropboxButton setState:NSOnState];
     [dropboxButton setEnabled:NO];
-
+    
+    // Get the name of the application in which we are running
     NSString* appName = [[[NSBundle mainBundle] infoDictionary] 
                          objectForKey:@"CFBundleDisplayName"];
     [detailText setStringValue:[NSString stringWithFormat:dropboxLabel,
@@ -99,6 +100,9 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
     
     NSString* appIconName = [[NSBundle mainBundle] objectForInfoDictionaryKey:
                              @"CFBundleIconFile"];
+    
+    // Attempt to get the icon of the application in which we are running
+    // If this fails, get the generic application icon instead
     NSImage* icon;
     if(appIconName)
       icon = [NSImage imageNamed:appIconName];
@@ -115,16 +119,14 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
   return self;
 }
 
-- (void)dealloc
-{
-  [super dealloc];
-}
-
+// Brings up the SyncPrompt window in modal mode.
 - (void)displayPrompt
 {
   [[NSApplication sharedApplication] runModalForWindow:[self window]];
 }
 
+// Called when the Dropbox button is clicked. Rotates the arrow to point
+//  from local to Dropbox, and sets state accordingly
 - (IBAction)dropboxClicked:(NSButton*)sender
 {
   [self rotateArrowToDegrees:0.0f];
@@ -138,6 +140,8 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
   currentSelection = DBSyncPromptOptionDropbox;
 }
 
+// Called when the Dropbox button is clicked. Rotates the arrow to point
+//  from Dropbox to local, and sets state accordingly
 - (IBAction)localClicked:(NSButton*)sender
 {
   [self rotateArrowToDegrees:-180.0f];
@@ -151,6 +155,8 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
   currentSelection = DBSyncPromptOptionLocal;  
 }
 
+// Accepts the current settings, informing the delegate of these settings and
+//  dismissing the window
 - (IBAction)acceptclicked:(id)sender
 {
   [[self window] orderOut:nil];
@@ -158,13 +164,20 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
   [[NSApplication sharedApplication] stopModal];
 }
 
+// Cancels the request, hiding the window and informing the delegate of the
+//  cancellation
 - (IBAction)cancelClicked:(id)sender
 {
   [[self window] orderOut:nil];
-  [delegate syncPromptDidCancel];
+  
+  if([delegate respondsToSelector:@selector(syncPromptDidCancel)])
+  {  
+    [delegate syncPromptDidCancel];
+  }
   [[NSApplication sharedApplication] stopModal];
 }
 
+// Rotates the arrow to a given degree
 - (void)rotateArrowToDegrees:(CGFloat)degrees
 {
   NSNumber* numDegrees = DegreesToNumber(degrees);

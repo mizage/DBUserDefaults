@@ -40,14 +40,20 @@
 
 #import <Foundation/Foundation.h>
 
-
+// The options available for a sync prompt
 typedef enum DBSyncPromptOption_
 {
   DBSyncPromptOptionLocal = 0,
   DBSyncPromptOptionDropbox
 } DBSyncPromptOption;
 
+
+// Used to inform the delegate of actions taken in the sync prompt window
 @protocol DBSyncPromptDelegate <NSObject>
+
 - (void)syncPromptDidSelectOption:(DBSyncPromptOption)option;
+
+@optional
 - (void)syncPromptDidCancel;
+
 @end

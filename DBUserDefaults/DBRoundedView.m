@@ -43,21 +43,15 @@
 #import "DBRoundedView.h"
 
 
-@interface DBRoundedView ()
-- (void)drawContainerWithRect:(NSRect)rect;
-@end
-
 @implementation DBRoundedView
 
+
+// Override drawRect to always draw the entire contents
 - (void)drawRect:(NSRect)dirtyRect
 {
-  [self drawContainerWithRect:[self bounds]]; 
-}
-- (void)drawContainerWithRect:(NSRect)rect 
-{  
   float radius = 10.0f;
   
-  NSRect fill = rect;
+  NSRect fill = [self bounds];
   
   NSBezierPath* path = [NSBezierPath bezierPathWithRoundedRect:fill 
                                                        xRadius:radius 
@@ -74,6 +68,7 @@
   [background drawInBezierPath:path angle:270.0f];
   
   [path closePath];  
+
 }
 
 @end

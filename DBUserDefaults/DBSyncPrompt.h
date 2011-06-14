@@ -43,6 +43,8 @@
 
 @class DBRoundedView;
 
+// This class provides a window in which you can select the type of sync
+//  operation you would like to perform
 @interface DBSyncPrompt : NSWindowController
 {    
   IBOutlet DBRoundedView* view;

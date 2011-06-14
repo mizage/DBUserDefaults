@@ -69,10 +69,11 @@ NSString* const DBUserDefaultsDidChangeNotification =
 {
   if([FileUtils dropboxPreferencesExist])
   {
-    prompt = [[DBSyncPrompt alloc] init];
+    DBSyncPrompt* prompt = [[DBSyncPrompt alloc] init];
     
     [prompt setDelegate:self];
     [prompt displayPrompt];    
+    [prompt release];
   }
   else
   {
@@ -102,13 +103,8 @@ NSString* const DBUserDefaultsDidChangeNotification =
   {
     [self syncToDropbox];
   }
-  
-  [prompt autorelease], prompt = nil;
 }
-- (void)syncPromptDidCancel
-{
-  [prompt autorelease], prompt = nil;
-}
+
 - (void)syncFromDropbox
 {
   [deadbolt_ lock];
