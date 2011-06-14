@@ -115,8 +115,6 @@ void preferencesFileChanged(
                                    CFRunLoopGetCurrent(), 
                                    kCFRunLoopDefaultMode);
   FSEventStreamStart(DBPreferencesFileMonitor);
-  
-  NSLog(@"blah");
 }
 + (void)disableFileMonitoring
 {
