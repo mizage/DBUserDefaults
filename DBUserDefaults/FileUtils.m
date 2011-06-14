@@ -51,15 +51,15 @@ NSString* const DBDropboxFileDidChangeNotification =
 
 @implementation FileUtils
 
-// This method checks to see if the preferences file exists in Dropbox
+// Checks to see if the preferences file exists in Dropbox
 + (BOOL)dropboxPreferencesExist
 {
   return [[NSFileManager defaultManager] 
           fileExistsAtPath:[FileUtils dropboxPreferencesFilePath]];
 }
 
-// This method is a convenience method to return the directory of the
-//  preferences file based on the current syncing state
+// A convenience method to return the directory of the preferences file based
+//  on the current syncing state
 + (NSString*)preferencesDirectoryPath
 {
   if([[NSUserDefaults standardUserDefaults] 
@@ -69,8 +69,8 @@ NSString* const DBDropboxFileDidChangeNotification =
     return [FileUtils localPreferencesDirectoryPath];
 }
 
-// This method is a convenience method to return the file path of the
-//  preferences file based on the current syncing state
+// A convenience method to return the file path of the preferences file based
+//  on the current syncing state
 + (NSString*)preferencesFilePath
 {
   if([[NSUserDefaults standardUserDefaults] 
@@ -80,7 +80,7 @@ NSString* const DBDropboxFileDidChangeNotification =
     return [FileUtils localPreferencesFilePath];
 }
 
-// This method returns the path to the preferences file on Dropbox
+// Returns the path to the preferences file on Dropbox
 + (NSString*)dropboxPreferencesFilePath
 {
   if(![DBUtils isDropboxAvailable])
@@ -90,7 +90,7 @@ NSString* const DBDropboxFileDidChangeNotification =
           [self dropboxPreferencesDirectoryPath],[[NSBundle mainBundle] bundleIdentifier]];
 }
 
-// This method returns the path to the preferences file on the local system
+// Returns the path to the preferences file on the local system
 + (NSString*)localPreferencesFilePath
 {
   return [NSString stringWithFormat:@"%@/%@.plist",
@@ -98,13 +98,13 @@ NSString* const DBDropboxFileDidChangeNotification =
           [[NSBundle mainBundle] bundleIdentifier]];
 }
 
-// This method returns a tilde expanded local path to the Preferences directory
+// Returns a tilde expanded local path to the Preferences directory
 + (NSString*)localPreferencesDirectoryPath
 {
   return [@"~/Preferences" stringByExpandingTildeInPath];
 }
 
-// This method returns the path to the Preferences directory on Dropbox
+// Returns the path to the Preferences directory on Dropbox
 + (NSString*)dropboxPreferencesDirectoryPath
 {
   if(![DBUtils isDropboxAvailable])

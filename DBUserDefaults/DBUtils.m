@@ -47,14 +47,14 @@
 
 @implementation DBUtils
 
-// This method checks to see if Dropbox is installed and available
+// Checks to see if Dropbox is installed and available
 + (BOOL)isDropboxAvailable
 {
   return [self dropboxPath] != nil ? YES : NO;
 }
 
-// This method will attempt to read the second line of the Dropbox host file
-//  and decode it to get the path to the Dropbox folder on the system
+// Attempts to read the second line of the Dropbox host file and decode it to
+//  get the path to the Dropbox folder on the system
 + (NSString*)dropboxPath
 {
   NSString* hostFileContents = [self getHostFileContents];
@@ -83,8 +83,8 @@
   return nil; 
 }
 
-// This method will attempt to read the contents of the Dropbox host file
-//  located at ~/.dropbox/host.db
+// Attempts to read the contents of the Dropbox host file located at
+//  ~/.dropbox/host.db
 + (NSString*)getHostFileContents
 {
   NSString* dropboxHostFile = 

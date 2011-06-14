@@ -60,11 +60,10 @@ NSString* const DBUserDefaultsDidChangeNotification =
 
 @implementation DBUserDefaults
 
-// This method enables Dropbox sync and overwrites the settings on dropbox with
-//  the local settings. TODO: change this behavior to prompt the user about
-//  overwriting.
+// Enables Dropbox sync and overwrites the settings on dropbox with the local
+//  settings.
 // We store the state of the Dropbox sync in NSUserDefaults to allow us to
-//  not sync if we don't want to.
+//  not sync if we don't want to. TODO: this should probably change.
 - (void)enableDropboxSync
 {
   if([FileUtils dropboxPreferencesExist])
@@ -121,7 +120,6 @@ NSString* const DBUserDefaultsDidChangeNotification =
    object:nil];
 }
 
-// This method disables Dropbox sync
 - (void)disableDropboxSync
 {
   [self synchronizeToPath:[FileUtils localPreferencesFilePath]];
@@ -134,6 +132,7 @@ NSString* const DBUserDefaultsDidChangeNotification =
    object:nil];
 }
 
+// Notification handler for when the preferences file changes
 - (void)preferencesFileDidChange:(NSNotification*)notification
 {
   //TODO: add conflict resolution
