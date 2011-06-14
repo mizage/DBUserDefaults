@@ -1,6 +1,5 @@
 # xcode noise
 
-/Padlock/build/*
 *.pbxuser
 !default.pbxuser
 *.mode1v3
