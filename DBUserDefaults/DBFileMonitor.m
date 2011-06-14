@@ -103,14 +103,16 @@ void preferencesFileChanged(
   NSArray* pathsToWatch = [NSArray arrayWithObject:
                            preferencesFilePath];
   
-  DBPreferencesFileMonitor = FSEventStreamCreate(NULL,
-                                                 preferencesFileChanged,
-                                                 &context,
-                                                 (CFArrayRef)pathsToWatch, 
-                                                 kFSEventStreamEventIdSinceNow,
-                                                 1,
-                                                 kFSEventStreamCreateFlagUseCFTypes | 
-                                                 kFSEventStreamCreateFlagIgnoreSelf);
+  DBPreferencesFileMonitor = 
+  FSEventStreamCreate(NULL,
+                      preferencesFileChanged,
+                      &context,
+                      (CFArrayRef)pathsToWatch, 
+                      kFSEventStreamEventIdSinceNow,
+                      1,
+                      kFSEventStreamCreateFlagUseCFTypes | 
+                      kFSEventStreamCreateFlagIgnoreSelf);
+  
   FSEventStreamScheduleWithRunLoop(DBPreferencesFileMonitor, 
                                    CFRunLoopGetCurrent(), 
                                    kCFRunLoopDefaultMode);

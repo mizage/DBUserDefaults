@@ -64,7 +64,7 @@
 
 - (IBAction)localClicked:(NSButton*)sender;
 - (IBAction)dropboxClicked:(NSButton*)sender;
-- (IBAction)acceptclicked:(id)sender;
+- (IBAction)syncClicked:(id)sender;
 - (IBAction)cancelClicked:(id)sender;
 
 @end

@@ -39,6 +39,8 @@
 
 NSString* const DBUserDefaultsDidChangeNotification = 
 @"DBUserDefaultsDidChangeNotification";
+NSString* const DBUserDefaultsDidSyncNotification =
+@"DBUserDefaultsDidSyncNotification";
 
 #import "DBUserDefaults.h"
 #import "DBUtils.h"
@@ -82,14 +84,6 @@ NSString* const DBUserDefaultsDidChangeNotification =
 - (void)syncToDropbox
 {
   [self synchronizeToPath:[FileUtils dropboxPreferencesFilePath]];
-  [[NSUserDefaults standardUserDefaults] setBool:YES 
-                                          forKey:kDBDropboxSyncEnabledKey];
-  [DBFileMonitor enableFileMonitoring];
-  [[NSNotificationCenter defaultCenter] 
-   addObserver:self 
-   selector:@selector(preferencesFileDidChange:)
-   name:DBDropboxFileDidChangeNotification
-   object:nil];  
 }
 
 - (void)syncPromptDidSelectOption:(DBSyncPromptOption)option
@@ -102,6 +96,18 @@ NSString* const DBUserDefaultsDidChangeNotification =
   {
     [self syncToDropbox];
   }
+  
+  [[NSUserDefaults standardUserDefaults] setBool:YES 
+                                          forKey:kDBDropboxSyncEnabledKey];
+  [DBFileMonitor enableFileMonitoring];
+  [[NSNotificationCenter defaultCenter] 
+   addObserver:self 
+   selector:@selector(preferencesFileDidChange:)
+   name:DBDropboxFileDidChangeNotification
+   object:nil];
+  [[NSNotificationCenter defaultCenter]
+   postNotificationName:DBUserDefaultsDidSyncNotification 
+   object:nil];
 }
 
 - (void)syncFromDropbox
@@ -111,13 +117,6 @@ NSString* const DBUserDefaultsDidChangeNotification =
   defaults_ = [[NSMutableDictionary alloc] 
                initWithContentsOfFile:[FileUtils dropboxPreferencesFilePath]];
   [deadbolt_ unlock];
-  
-  [DBFileMonitor enableFileMonitoring];
-  [[NSNotificationCenter defaultCenter] 
-   addObserver:self 
-   selector:@selector(preferencesFileDidChange:)
-   name:DBDropboxFileDidChangeNotification
-   object:nil];
 }
 
 - (void)disableDropboxSync
@@ -141,8 +140,8 @@ NSString* const DBUserDefaultsDidChangeNotification =
   defaults_ = [[NSMutableDictionary alloc] 
                initWithContentsOfFile:[FileUtils dropboxPreferencesFilePath]];
   [deadbolt_ unlock];
-    [[NSNotificationCenter defaultCenter]
-   postNotificationName:DBUserDefaultsDidChangeNotification 
+  [[NSNotificationCenter defaultCenter]
+   postNotificationName:DBUserDefaultsDidSyncNotification 
    object:nil];
 }
 

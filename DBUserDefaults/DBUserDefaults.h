@@ -44,7 +44,12 @@
 
 @class DBSyncPrompt;
 
+// Fired any time the user defaults change.
 extern NSString* const DBUserDefaultsDidChangeNotification;
+
+// Fired when the preferences are updated from Dropbox. You should use this
+//  notification to reapply all the preferences in your application.
+extern NSString* const DBUserDefaultsDidSyncNotification;
 
 @interface DBUserDefaults : NSObject <DBSyncPromptDelegate>
 {

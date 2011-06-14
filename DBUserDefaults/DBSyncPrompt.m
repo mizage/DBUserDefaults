@@ -157,7 +157,7 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
 
 // Accepts the current settings, informing the delegate of these settings and
 //  dismissing the window
-- (IBAction)acceptclicked:(id)sender
+- (IBAction)syncClicked:(id)sender
 {
   [[self window] orderOut:nil];
   [delegate syncPromptDidSelectOption:currentSelection];  
