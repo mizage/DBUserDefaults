@@ -16,6 +16,8 @@
 		711B50EF13A329F300976509 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 711B50ED13A329F300976509 /* InfoPlist.strings */; };
 		711B50F913A32A2400976509 /* DBUserDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 711B50F713A32A2400976509 /* DBUserDefaults.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		711B50FA13A32A2400976509 /* DBUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 711B50F813A32A2400976509 /* DBUserDefaults.m */; };
+		711BA35D13A7996500FD14B9 /* DBRoundedView.h in Headers */ = {isa = PBXBuildFile; fileRef = 711BA35B13A7996500FD14B9 /* DBRoundedView.h */; };
+		711BA35E13A7996500FD14B9 /* DBRoundedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 711BA35C13A7996500FD14B9 /* DBRoundedView.m */; };
 		71AFEBDE13A573C5004D42D3 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71AFEBDD13A573C5004D42D3 /* CoreServices.framework */; };
 		71AFEBE213A5788B004D42D3 /* FileUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 71AFEBE013A5788B004D42D3 /* FileUtils.h */; };
 		71AFEBE313A5788B004D42D3 /* FileUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 71AFEBE113A5788B004D42D3 /* FileUtils.m */; };
@@ -25,8 +27,6 @@
 		71E6615C13A5C59C00EA1163 /* DBSyncPrompt.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E6615A13A5C59C00EA1163 /* DBSyncPrompt.m */; };
 		71E6616413A5D48500EA1163 /* DBSyncPrompt.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71E6616313A5D48500EA1163 /* DBSyncPrompt.xib */; };
 		71E6616813A5DFBC00EA1163 /* box.icns in Resources */ = {isa = PBXBuildFile; fileRef = 71E6616513A5DFBC00EA1163 /* box.icns */; };
-		71E6616D13A5E23900EA1163 /* accept.png in Resources */ = {isa = PBXBuildFile; fileRef = 71E6616B13A5E23900EA1163 /* accept.png */; };
-		71E6616E13A5E23900EA1163 /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 71E6616C13A5E23900EA1163 /* cancel.png */; };
 		71E6617013A5E4FB00EA1163 /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 71E6616F13A5E4FB00EA1163 /* arrow.png */; };
 		71E6617813A5EB0E00EA1163 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71E6617713A5EB0E00EA1163 /* QuartzCore.framework */; };
 		71F8A0D613A71F9C0041E571 /* DBSyncPromptDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 71F8A0D513A71F9C0041E571 /* DBSyncPromptDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -48,6 +48,8 @@
 		711B50F013A329F300976509 /* DBUserDefaults-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DBUserDefaults-Prefix.pch"; sourceTree = "<group>"; };
 		711B50F713A32A2400976509 /* DBUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBUserDefaults.h; sourceTree = "<group>"; };
 		711B50F813A32A2400976509 /* DBUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBUserDefaults.m; sourceTree = "<group>"; };
+		711BA35B13A7996500FD14B9 /* DBRoundedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBRoundedView.h; sourceTree = "<group>"; };
+		711BA35C13A7996500FD14B9 /* DBRoundedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBRoundedView.m; sourceTree = "<group>"; };
 		71AFEBDD13A573C5004D42D3 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		71AFEBE013A5788B004D42D3 /* FileUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileUtils.h; sourceTree = "<group>"; };
 		71AFEBE113A5788B004D42D3 /* FileUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileUtils.m; sourceTree = "<group>"; };
@@ -57,8 +59,6 @@
 		71E6615A13A5C59C00EA1163 /* DBSyncPrompt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBSyncPrompt.m; sourceTree = "<group>"; };
 		71E6616313A5D48500EA1163 /* DBSyncPrompt.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DBSyncPrompt.xib; sourceTree = "<group>"; };
 		71E6616513A5DFBC00EA1163 /* box.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = box.icns; sourceTree = "<group>"; };
-		71E6616B13A5E23900EA1163 /* accept.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = accept.png; sourceTree = "<group>"; };
-		71E6616C13A5E23900EA1163 /* cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel.png; sourceTree = "<group>"; };
 		71E6616F13A5E4FB00EA1163 /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
 		71E6617713A5EB0E00EA1163 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		71F8A0D513A71F9C0041E571 /* DBSyncPromptDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBSyncPromptDelegate.h; sourceTree = "<group>"; };
@@ -177,8 +177,6 @@
 			children = (
 				71E6616F13A5E4FB00EA1163 /* arrow.png */,
 				71E6616513A5DFBC00EA1163 /* box.icns */,
-				71E6616B13A5E23900EA1163 /* accept.png */,
-				71E6616C13A5E23900EA1163 /* cancel.png */,
 			);
 			name = Resources;
 			path = DBUserDefaults/Resources;
@@ -187,6 +185,8 @@
 		71E6615813A5C54F00EA1163 /* DBSyncPrompt */ = {
 			isa = PBXGroup;
 			children = (
+				711BA35B13A7996500FD14B9 /* DBRoundedView.h */,
+				711BA35C13A7996500FD14B9 /* DBRoundedView.m */,
 				71F8A0D513A71F9C0041E571 /* DBSyncPromptDelegate.h */,
 				71E6615913A5C59C00EA1163 /* DBSyncPrompt.h */,
 				71E6615A13A5C59C00EA1163 /* DBSyncPrompt.m */,
@@ -209,6 +209,7 @@
 				71E6615B13A5C59C00EA1163 /* DBSyncPrompt.h in Headers */,
 				71AFEBE213A5788B004D42D3 /* FileUtils.h in Headers */,
 				71AFEBE613A579D8004D42D3 /* DBFileMonitor.h in Headers */,
+				711BA35D13A7996500FD14B9 /* DBRoundedView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,8 +264,6 @@
 				711B50EF13A329F300976509 /* InfoPlist.strings in Resources */,
 				71E6616413A5D48500EA1163 /* DBSyncPrompt.xib in Resources */,
 				71E6616813A5DFBC00EA1163 /* box.icns in Resources */,
-				71E6616D13A5E23900EA1163 /* accept.png in Resources */,
-				71E6616E13A5E23900EA1163 /* cancel.png in Resources */,
 				71E6617013A5E4FB00EA1163 /* arrow.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -282,6 +281,7 @@
 				71AFEBE313A5788B004D42D3 /* FileUtils.m in Sources */,
 				71AFEBE713A579D8004D42D3 /* DBFileMonitor.m in Sources */,
 				71E6615C13A5C59C00EA1163 /* DBSyncPrompt.m in Sources */,
+				711BA35E13A7996500FD14B9 /* DBRoundedView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

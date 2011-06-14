@@ -37,25 +37,32 @@
 //  OF CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY OR OTHERWISE,
 //  EVEN IF MIZAGE LLC HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#import "DBSyncPrompt.h"
 #import <QuartzCore/QuartzCore.h>
 
-static NSString* localLabel = @"Pull the preferences from Dropbox and use them for %@ on this Mac.";
-static NSString* dropboxLabel = @"Push the preferences on this Mac up to Dropbox so all copies of %@ will use them.";
+#import "DBSyncPrompt.h"
+#import "DBRoundedView.h"
 
-CGFloat DegreesToRadians(CGFloat degrees)
+static NSString* localLabel = @"Pull the preferences from Dropbox and use them"
+                                " for %@ on this Mac.";
+static NSString* dropboxLabel = @"Push the preferences on this Mac up to" 
+                                  " Dropbox so all your copies of %@ will"
+                                  " use them.";
+
+static inline CGFloat DegreesToRadians(CGFloat degrees)
 {
   return degrees * M_PI / 180;
 };
-NSNumber* DegreesToNumber(CGFloat degrees)
+static inline NSNumber* DegreesToNumber(CGFloat degrees)
 {
   return [NSNumber numberWithFloat:
           DegreesToRadians(degrees)];
 }
 
+
 @interface DBSyncPrompt ()
-- (void)rotateArrowToDegrees:(NSInteger)degrees;
+- (void)rotateArrowToDegrees:(CGFloat)degrees;
 @end
+
 
 @implementation DBSyncPrompt
 
@@ -69,6 +76,8 @@ NSNumber* DegreesToNumber(CGFloat degrees)
                        backing:NSBackingStoreBuffered
                        defer:NO] autorelease];
   [window setHasShadow:YES];
+  [window setBackgroundColor:[NSColor clearColor]];
+  [window setOpaque:NO];
   
   if((self = [super initWithWindow:window]))
   {
@@ -100,9 +109,6 @@ NSNumber* DegreesToNumber(CGFloat degrees)
     
     [localButton setImage:icon];
     
-
-
-    
     [window setContentView:view];
   }
   
@@ -121,7 +127,7 @@ NSNumber* DegreesToNumber(CGFloat degrees)
 
 - (IBAction)dropboxClicked:(NSButton*)sender
 {
-  [self rotateArrowToDegrees:0];
+  [self rotateArrowToDegrees:0.0f];
   [dropboxButton setEnabled:NO];
   [localButton setEnabled:YES];  
   NSString* appName = [[[NSBundle mainBundle] infoDictionary] 
@@ -134,7 +140,7 @@ NSNumber* DegreesToNumber(CGFloat degrees)
 
 - (IBAction)localClicked:(NSButton*)sender
 {
-  [self rotateArrowToDegrees:-180];
+  [self rotateArrowToDegrees:-180.0f];
   [dropboxButton setEnabled:YES];
   [localButton setEnabled:NO];
   NSString* appName = [[[NSBundle mainBundle] infoDictionary] 
@@ -159,7 +165,7 @@ NSNumber* DegreesToNumber(CGFloat degrees)
   [[NSApplication sharedApplication] stopModal];
 }
 
-- (void)rotateArrowToDegrees:(NSInteger)degrees
+- (void)rotateArrowToDegrees:(CGFloat)degrees
 {
   NSNumber* numDegrees = DegreesToNumber(degrees);
   CABasicAnimation* rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];

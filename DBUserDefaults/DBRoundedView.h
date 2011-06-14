@@ -37,32 +37,9 @@
 //  OF CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY OR OTHERWISE,
 //  EVEN IF MIZAGE LLC HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+
 #import <Cocoa/Cocoa.h>
 
-#import "DBSyncPromptDelegate.h"
 
-@class DBRoundedView;
-
-@interface DBSyncPrompt : NSWindowController
-{    
-  IBOutlet DBRoundedView* view;
-  IBOutlet NSButton* localButton;
-  IBOutlet NSButton* dropboxButton;
-  IBOutlet NSImageView* arrow;
-  IBOutlet NSTextField *detailText;
-  
-  DBSyncPromptOption currentSelection;
-  
-  id<DBSyncPromptDelegate> delegate;
-}
-
-@property(readwrite,assign,nonatomic) id<DBSyncPromptDelegate> delegate;
-
-- (void)displayPrompt;
-
-- (IBAction)localClicked:(NSButton*)sender;
-- (IBAction)dropboxClicked:(NSButton*)sender;
-- (IBAction)acceptclicked:(id)sender;
-- (IBAction)cancelClicked:(id)sender;
-
+@interface DBRoundedView : NSView{}
 @end

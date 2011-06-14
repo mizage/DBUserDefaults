@@ -37,32 +37,43 @@
 //  OF CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY OR OTHERWISE,
 //  EVEN IF MIZAGE LLC HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#import <Cocoa/Cocoa.h>
 
-#import "DBSyncPromptDelegate.h"
+#import <Quartz/Quartz.h>
 
-@class DBRoundedView;
+#import "DBRoundedView.h"
 
-@interface DBSyncPrompt : NSWindowController
-{    
-  IBOutlet DBRoundedView* view;
-  IBOutlet NSButton* localButton;
-  IBOutlet NSButton* dropboxButton;
-  IBOutlet NSImageView* arrow;
-  IBOutlet NSTextField *detailText;
-  
-  DBSyncPromptOption currentSelection;
-  
-  id<DBSyncPromptDelegate> delegate;
+
+@interface DBRoundedView ()
+- (void)drawContainerWithRect:(NSRect)rect;
+@end
+
+@implementation DBRoundedView
+
+- (void)drawRect:(NSRect)dirtyRect
+{
+  [self drawContainerWithRect:[self bounds]]; 
 }
-
-@property(readwrite,assign,nonatomic) id<DBSyncPromptDelegate> delegate;
-
-- (void)displayPrompt;
-
-- (IBAction)localClicked:(NSButton*)sender;
-- (IBAction)dropboxClicked:(NSButton*)sender;
-- (IBAction)acceptclicked:(id)sender;
-- (IBAction)cancelClicked:(id)sender;
+- (void)drawContainerWithRect:(NSRect)rect 
+{  
+  float radius = 10.0f;
+  
+  NSRect fill = rect;
+  
+  NSBezierPath* path = [NSBezierPath bezierPathWithRoundedRect:fill 
+                                                       xRadius:radius 
+                                                       yRadius:radius];  
+  
+  
+  NSGradient* background = [[NSGradient alloc] initWithStartingColor:
+                            [NSColor colorWithCalibratedWhite:0.80f 
+                                                        alpha:1.0f] 
+                                                         endingColor:
+                            [NSColor colorWithCalibratedWhite:0.85f 
+                                                        alpha:1.0f]];
+  
+  [background drawInBezierPath:path angle:-135.0f];
+  
+  [path closePath];  
+}
 
 @end
