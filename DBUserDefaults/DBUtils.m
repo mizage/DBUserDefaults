@@ -90,6 +90,9 @@
   NSString* dropboxHostFile = 
   [@"~/.dropbox/host.db" stringByExpandingTildeInPath];
   
+  if(![[NSFileManager defaultManager] fileExistsAtPath:dropboxHostFile])
+    return nil;
+  
   return [NSString stringWithContentsOfFile:dropboxHostFile 
                                    encoding:NSUTF8StringEncoding error:nil];
 }
