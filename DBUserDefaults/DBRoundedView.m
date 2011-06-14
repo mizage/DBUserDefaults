@@ -65,13 +65,13 @@
   
   
   NSGradient* background = [[NSGradient alloc] initWithStartingColor:
-                            [NSColor colorWithCalibratedWhite:0.80f 
+                            [NSColor colorWithCalibratedWhite:0.85f 
                                                         alpha:1.0f] 
                                                          endingColor:
-                            [NSColor colorWithCalibratedWhite:0.85f 
+                            [NSColor colorWithCalibratedWhite:0.7f 
                                                         alpha:1.0f]];
   
-  [background drawInBezierPath:path angle:-135.0f];
+  [background drawInBezierPath:path angle:270.0f];
   
   [path closePath];  
 }
