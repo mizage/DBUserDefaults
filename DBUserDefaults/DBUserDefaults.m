@@ -116,6 +116,13 @@ NSString* const DBUserDefaultsDidChangeNotification =
   defaults_ = [[NSMutableDictionary alloc] 
                initWithContentsOfFile:[FileUtils dropboxPreferencesFilePath]];
   [deadbolt_ unlock];
+  
+  [DBFileMonitor enableFileMonitoring];
+  [[NSNotificationCenter defaultCenter] 
+   addObserver:self 
+   selector:@selector(preferencesFileDidChange:)
+   name:DBDropboxFileDidChangeNotification
+   object:nil];
 }
 
 // This method disables Dropbox sync
@@ -139,6 +146,9 @@ NSString* const DBUserDefaultsDidChangeNotification =
   defaults_ = [[NSMutableDictionary alloc] 
                initWithContentsOfFile:[FileUtils dropboxPreferencesFilePath]];
   [deadbolt_ unlock];
+    [[NSNotificationCenter defaultCenter]
+   postNotificationName:DBUserDefaultsDidChangeNotification 
+   object:nil];
 }
 
 @end
