@@ -40,6 +40,7 @@
 
 #import "FileUtils.h"
 #import "DBUtils.h"
+#import "DBStatus.h"
 
 NSString* const DBDropboxFileDidChangeNotification = 
                   @"DBDropboxFileDidChangeNotification";
@@ -50,6 +51,12 @@ NSString* const DBDropboxFileDidChangeNotification =
 @end
 
 @implementation FileUtils
+
++ (BOOL)preferencesExist
+{
+  return [[NSFileManager defaultManager] 
+          fileExistsAtPath:[FileUtils preferencesFilePath]];
+}
 
 // Checks to see if the preferences file exists in Dropbox
 + (BOOL)dropboxPreferencesExist
@@ -62,8 +69,7 @@ NSString* const DBDropboxFileDidChangeNotification =
 //  on the current syncing state
 + (NSString*)preferencesDirectoryPath
 {
-  if([[NSUserDefaults standardUserDefaults] 
-      boolForKey:kDBDropboxSyncEnabledKey])
+  if([DBStatus isDropboxSyncEnabled])
     return [FileUtils dropboxPreferencesDirectoryPath];
   else
     return [FileUtils localPreferencesDirectoryPath];
@@ -73,8 +79,7 @@ NSString* const DBDropboxFileDidChangeNotification =
 //  on the current syncing state
 + (NSString*)preferencesFilePath
 {
-  if([[NSUserDefaults standardUserDefaults] 
-      boolForKey:kDBDropboxSyncEnabledKey])
+  if([DBStatus isDropboxSyncEnabled])
     return [FileUtils dropboxPreferencesFilePath];
   else
     return [FileUtils localPreferencesFilePath];
@@ -87,7 +92,8 @@ NSString* const DBDropboxFileDidChangeNotification =
     return nil;
   
   return [NSString stringWithFormat:@"%@/%@DB.plist",
-          [self dropboxPreferencesDirectoryPath],[[NSBundle mainBundle] bundleIdentifier]];
+          [self dropboxPreferencesDirectoryPath],[[NSBundle mainBundle] 
+                                                  bundleIdentifier]];
 }
 
 // Returns the path to the preferences file on the local system
@@ -101,7 +107,7 @@ NSString* const DBDropboxFileDidChangeNotification =
 // Returns a tilde expanded local path to the Preferences directory
 + (NSString*)localPreferencesDirectoryPath
 {
-  return [@"~/Preferences" stringByExpandingTildeInPath];
+  return [@"~/Library/DBPreferences" stringByExpandingTildeInPath];
 }
 
 // Returns the path to the Preferences directory on Dropbox

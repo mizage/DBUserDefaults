@@ -40,6 +40,7 @@
 
 #import "DBFileMonitor.h"
 #import "FileUtils.h"
+#import "DBStatus.h"
 
 static FSEventStreamRef DBPreferencesFileMonitor;  
 static NSDate* previousModificationDate;
@@ -82,8 +83,7 @@ void preferencesFileChanged(
 
 + (void)enableFileMonitoring
 {
-  if(![[NSUserDefaults standardUserDefaults] 
-       boolForKey:kDBDropboxSyncEnabledKey] || 
+  if([DBStatus isDropboxSyncEnabled] || 
      DBPreferencesFileMonitor)
     return;
   

@@ -18,6 +18,8 @@
 		711B50FA13A32A2400976509 /* DBUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 711B50F813A32A2400976509 /* DBUserDefaults.m */; };
 		711BA35D13A7996500FD14B9 /* DBRoundedView.h in Headers */ = {isa = PBXBuildFile; fileRef = 711BA35B13A7996500FD14B9 /* DBRoundedView.h */; };
 		711BA35E13A7996500FD14B9 /* DBRoundedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 711BA35C13A7996500FD14B9 /* DBRoundedView.m */; };
+		716529AB13A947350000F91E /* DBStatus.h in Headers */ = {isa = PBXBuildFile; fileRef = 716529A913A947350000F91E /* DBStatus.h */; };
+		716529AC13A947350000F91E /* DBStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 716529AA13A947350000F91E /* DBStatus.m */; };
 		71AFEBDE13A573C5004D42D3 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71AFEBDD13A573C5004D42D3 /* CoreServices.framework */; };
 		71AFEBE213A5788B004D42D3 /* FileUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 71AFEBE013A5788B004D42D3 /* FileUtils.h */; };
 		71AFEBE313A5788B004D42D3 /* FileUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 71AFEBE113A5788B004D42D3 /* FileUtils.m */; };
@@ -50,6 +52,8 @@
 		711B50F813A32A2400976509 /* DBUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBUserDefaults.m; sourceTree = "<group>"; };
 		711BA35B13A7996500FD14B9 /* DBRoundedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBRoundedView.h; sourceTree = "<group>"; };
 		711BA35C13A7996500FD14B9 /* DBRoundedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBRoundedView.m; sourceTree = "<group>"; };
+		716529A913A947350000F91E /* DBStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBStatus.h; sourceTree = "<group>"; };
+		716529AA13A947350000F91E /* DBStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBStatus.m; sourceTree = "<group>"; };
 		71AFEBDD13A573C5004D42D3 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		71AFEBE013A5788B004D42D3 /* FileUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileUtils.h; sourceTree = "<group>"; };
 		71AFEBE113A5788B004D42D3 /* FileUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileUtils.m; sourceTree = "<group>"; };
@@ -157,6 +161,8 @@
 				711B50F813A32A2400976509 /* DBUserDefaults.m */,
 				71AFEBE413A579D8004D42D3 /* DBFileMonitor.h */,
 				71AFEBE513A579D8004D42D3 /* DBFileMonitor.m */,
+				716529A913A947350000F91E /* DBStatus.h */,
+				716529AA13A947350000F91E /* DBStatus.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -210,6 +216,7 @@
 				71AFEBE213A5788B004D42D3 /* FileUtils.h in Headers */,
 				71AFEBE613A579D8004D42D3 /* DBFileMonitor.h in Headers */,
 				711BA35D13A7996500FD14B9 /* DBRoundedView.h in Headers */,
+				716529AB13A947350000F91E /* DBStatus.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,6 +289,7 @@
 				71AFEBE713A579D8004D42D3 /* DBFileMonitor.m in Sources */,
 				71E6615C13A5C59C00EA1163 /* DBSyncPrompt.m in Sources */,
 				711BA35E13A7996500FD14B9 /* DBRoundedView.m in Sources */,
+				716529AC13A947350000F91E /* DBStatus.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

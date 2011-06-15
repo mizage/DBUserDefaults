@@ -40,15 +40,12 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString* const DBDropboxFileDidChangeNotification;
 
-@interface FileUtils : NSObject {}
+extern NSString* const DBDropboxSyncEnabled;
 
-+ (BOOL)preferencesExist;
-+ (BOOL)dropboxPreferencesExist;
-+ (NSString*)preferencesFilePath;
-+ (NSString*)preferencesDirectoryPath;
-+ (NSString*)dropboxPreferencesFilePath;
-+ (NSString*)localPreferencesFilePath;
+@interface DBStatus : NSObject {}
+
++ (BOOL)isDropboxSyncEnabled;
++ (void)setDropboxSyncEnabled:(BOOL)enabled;
 
 @end

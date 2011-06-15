@@ -47,6 +47,7 @@ NSString* const DBUserDefaultsDidSyncNotification =
 #import "FileUtils.h"
 #import "DBFileMonitor.h"
 #import "DBSyncPrompt.h"
+#import "DBStatus.h"
 
 @interface DBUserDefaults (NSUserDefaultsPartialReplacementPrivate)
 - (BOOL)synchronizeToPath:(NSString*)directory;
@@ -62,10 +63,14 @@ NSString* const DBUserDefaultsDidSyncNotification =
 
 @implementation DBUserDefaults
 
+
+- (BOOL)isDropboxSyncEnabled
+{
+  return [DBStatus isDropboxSyncEnabled];
+}
+
 // Enables Dropbox sync and overwrites the settings on dropbox with the local
 //  settings.
-// We store the state of the Dropbox sync in NSUserDefaults to allow us to
-//  not sync if we don't want to. TODO: this should probably change.
 - (void)enableDropboxSync
 {
   if([FileUtils dropboxPreferencesExist])
@@ -95,10 +100,9 @@ NSString* const DBUserDefaultsDidSyncNotification =
   else
   {
     [self syncToDropbox];
-  }
+  }  
   
-  [[NSUserDefaults standardUserDefaults] setBool:YES 
-                                          forKey:kDBDropboxSyncEnabledKey];
+  [DBStatus setDropboxSyncEnabled:YES];
   [DBFileMonitor enableFileMonitoring];
   [[NSNotificationCenter defaultCenter] 
    addObserver:self 
@@ -122,8 +126,7 @@ NSString* const DBUserDefaultsDidSyncNotification =
 - (void)disableDropboxSync
 {
   [self synchronizeToPath:[FileUtils localPreferencesFilePath]];
-  [[NSUserDefaults standardUserDefaults] setBool:NO 
-                                          forKey:kDBDropboxSyncEnabledKey];
+  [DBStatus setDropboxSyncEnabled:NO];
   [DBFileMonitor disableFileMonitoring];
   [[NSNotificationCenter defaultCenter] 
    removeObserver:self 
@@ -177,7 +180,17 @@ static DBUserDefaults* sharedInstance;
   if((self = [super init]))
   {
     deadbolt_ = [[NSLock alloc] init];
-    defaults_ = [[NSMutableDictionary alloc] init];
+    
+    if([FileUtils preferencesExist])
+    {
+      
+      defaults_ = [NSMutableDictionary dictionaryWithContentsOfFile:
+                   [FileUtils preferencesFilePath]];
+    }
+    else
+    { 
+      defaults_ = [[NSMutableDictionary alloc] init];
+    }
   }
   return self;
 }
@@ -313,11 +326,13 @@ static DBUserDefaults* sharedInstance;
 {  
   if(![[NSFileManager defaultManager] 
        fileExistsAtPath:[FileUtils preferencesDirectoryPath]])
+  {
     [[NSFileManager defaultManager] 
      createDirectoryAtPath:[FileUtils preferencesDirectoryPath] 
      withIntermediateDirectories:YES 
      attributes:nil 
      error:nil];
+  }
   
   return [self synchronizeToPath:[FileUtils preferencesFilePath]];
 }

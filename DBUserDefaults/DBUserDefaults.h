@@ -57,6 +57,7 @@ extern NSString* const DBUserDefaultsDidSyncNotification;
   NSMutableDictionary* defaults_; //Stores the user data
 }
 
+- (BOOL)isDropboxSyncEnabled;
 - (void)enableDropboxSync;
 - (void)disableDropboxSync;
 

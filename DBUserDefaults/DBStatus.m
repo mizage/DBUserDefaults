@@ -38,17 +38,66 @@
 //  EVEN IF MIZAGE LLC HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-#import <Foundation/Foundation.h>
+#import "DBStatus.h"
 
-extern NSString* const DBDropboxFileDidChangeNotification;
+NSString* const DBDropboxSyncEnabledKey = @"DropboxSyncEnabled";
 
-@interface FileUtils : NSObject {}
+@interface DBStatus ()
++ (NSDictionary*)stateDictionary;
+@end
 
-+ (BOOL)preferencesExist;
-+ (BOOL)dropboxPreferencesExist;
-+ (NSString*)preferencesFilePath;
-+ (NSString*)preferencesDirectoryPath;
-+ (NSString*)dropboxPreferencesFilePath;
-+ (NSString*)localPreferencesFilePath;
+NSString* DBSettingsDirectoryPath;
+NSString* DBSettingsPath;
+
+@implementation DBStatus
+
++ (void)initialize
+{
+  DBSettingsDirectoryPath = 
+  [[@"~/.DBUserDefaults" stringByExpandingTildeInPath] retain];                  
+  DBSettingsPath = 
+  [[@"~/.DBUserDefaults/SyncStatus.db" stringByExpandingTildeInPath] retain];  
+}
+
++ (BOOL)isDropboxSyncEnabled
+{  
+  NSNumber* state = [[DBStatus stateDictionary] objectForKey:
+                     [[NSBundle mainBundle] bundleIdentifier]];
+  return state ? [state boolValue] : NO;
+}
+
++ (void)setDropboxSyncEnabled:(BOOL)enabled
+{
+  if(![[NSFileManager defaultManager] 
+       fileExistsAtPath:DBSettingsDirectoryPath])
+  {
+    [[NSFileManager defaultManager] 
+     createDirectoryAtPath:DBSettingsDirectoryPath 
+     withIntermediateDirectories:YES 
+     attributes:nil 
+     error:nil];
+  }
+  
+  NSMutableDictionary* stateDictionary = 
+  [[DBStatus stateDictionary] mutableCopy];
+  
+  [stateDictionary setObject:[NSNumber numberWithBool:enabled]
+                      forKey:[[NSBundle mainBundle] bundleIdentifier]];
+  
+  BOOL result = [stateDictionary writeToFile:DBSettingsPath atomically:YES];
+  
+  NSLog(@"retuls = %d",result);
+}
+
++ (NSDictionary *)stateDictionary
+{
+  NSDictionary* stateDictionary = [NSDictionary dictionaryWithContentsOfFile:
+                                   DBSettingsPath];
+  
+  if(!stateDictionary)
+    stateDictionary = [NSDictionary dictionary];
+  
+  return stateDictionary;
+}
 
 @end
