@@ -89,14 +89,16 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
     [arrow setWantsLayer:YES];
     [[arrow layer] setAnchorPoint:CGPointMake(0.5, 0.5)];
     
-    [dropboxButton setState:NSOnState];
-    [dropboxButton setEnabled:NO];
-    
-    // Get the name of the application in which we are running
+
+    [[arrow layer] setValue:DegreesToNumber(-180) forKeyPath:@"transform.rotation.z"];    
+    [dropboxButton setEnabled:YES];
+    [localButton setEnabled:NO];
     NSString* appName = [[[NSBundle mainBundle] infoDictionary] 
                          objectForKey:@"CFBundleDisplayName"];
-    [detailText setStringValue:[NSString stringWithFormat:dropboxLabel,
+    [detailText setStringValue:[NSString stringWithFormat:localLabel,
                                 appName != nil ? appName : @""]];
+    
+    currentSelection = DBSyncPromptOptionLocal; 
     
     NSString* appIconName = [[NSBundle mainBundle] objectForInfoDictionaryKey:
                              @"CFBundleIconFile"];
@@ -131,7 +133,8 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
 {
   [self rotateArrowToDegrees:0.0f];
   [dropboxButton setEnabled:NO];
-  [localButton setEnabled:YES];  
+  [localButton setEnabled:YES]; 
+  [localButton setState:NSOffState];
   NSString* appName = [[[NSBundle mainBundle] infoDictionary] 
                        objectForKey:@"CFBundleDisplayName"];
   [detailText setStringValue:[NSString stringWithFormat:dropboxLabel,
@@ -146,6 +149,7 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
 {
   [self rotateArrowToDegrees:-180.0f];
   [dropboxButton setEnabled:YES];
+  [dropboxButton setState:NSOffState];
   [localButton setEnabled:NO];
   NSString* appName = [[[NSBundle mainBundle] infoDictionary] 
                        objectForKey:@"CFBundleDisplayName"];
