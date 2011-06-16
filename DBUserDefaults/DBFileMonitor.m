@@ -80,29 +80,36 @@ void preferencesFileChanged(
   }  
 }
 
-
+// Sets up an FSEventStream to monitor changes to the directory in which the
+//  Dropbox preferences are stored
 + (void)enableFileMonitoring
 {
   if([DBStatus isDropboxSyncEnabled] || 
      DBPreferencesFileMonitor)
     return;
   
+  // Get a dictionary containing the file attributes of the preferences file
   NSDictionary* attributes = [[NSFileManager defaultManager] 
                               attributesOfItemAtPath:
                               [FileUtils preferencesFilePath] 
                               error:nil];
   
+  // Gets the last modification date of the preferences file
   previousModificationDate = [[attributes objectForKey:NSFileModificationDate] 
                               retain];
   
   FSEventStreamContext context = {0};
   context.info = self;
   
+  // Get the path to the directory in which the preferences file is stored
   NSString* preferencesFilePath = [FileUtils preferencesDirectoryPath];
   
   NSArray* pathsToWatch = [NSArray arrayWithObject:
                            preferencesFilePath];
   
+  // Create the FSEventStream, telling it to pass us CF types and to ignore any
+  //  changes made to the directory by our application (we don't want to reload
+  //  when we save out the preferences)
   DBPreferencesFileMonitor = 
   FSEventStreamCreate(NULL,
                       preferencesFileChanged,
@@ -113,16 +120,22 @@ void preferencesFileChanged(
                       kFSEventStreamCreateFlagUseCFTypes | 
                       kFSEventStreamCreateFlagIgnoreSelf);
   
+  // Add our watcher to the event loop
   FSEventStreamScheduleWithRunLoop(DBPreferencesFileMonitor, 
                                    CFRunLoopGetCurrent(), 
                                    kCFRunLoopDefaultMode);
+
+  // Start watching!
   FSEventStreamStart(DBPreferencesFileMonitor);
 }
+// Tears down the FSEventStream
 + (void)disableFileMonitoring
 {
+  // Make sure we're actually monitoring
   if(!DBPreferencesFileMonitor)
     return;
   
+  // Stop the event stream, remove from run loop, invalidate and release.
   FSEventStreamStop(DBPreferencesFileMonitor);
   FSEventStreamUnscheduleFromRunLoop(DBPreferencesFileMonitor, 
                                      CFRunLoopGetCurrent(), 

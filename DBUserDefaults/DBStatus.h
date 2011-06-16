@@ -43,6 +43,8 @@
 
 extern NSString* const DBDropboxSyncEnabled;
 
+// DBStatus manages interaction with a hidden file to determine the status of 
+//  Dropbox syncing.
 @interface DBStatus : NSObject {}
 
 + (BOOL)isDropboxSyncEnabled;

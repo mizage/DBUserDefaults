@@ -52,6 +52,8 @@ NSString* const DBDropboxFileDidChangeNotification =
 
 @implementation FileUtils
 
+// A convenience function to check if the preferences file exists base on
+//  the current syncing state
 + (BOOL)preferencesExist
 {
   return [[NSFileManager defaultManager] 
@@ -63,6 +65,13 @@ NSString* const DBDropboxFileDidChangeNotification =
 {
   return [[NSFileManager defaultManager] 
           fileExistsAtPath:[FileUtils dropboxPreferencesFilePath]];
+}
+
+// Checks to see if the preferences file exists on the local filesystem
++ (BOOL)localPreferencesExist
+{
+  return [[NSFileManager defaultManager]
+          fileExistsAtPath:[FileUtils localPreferencesFilePath]];
 }
 
 // A convenience method to return the directory of the preferences file based

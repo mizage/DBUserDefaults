@@ -51,6 +51,8 @@ NSString* DBSettingsPath;
 
 @implementation DBStatus
 
+
+// Populate some strings to make file access easier
 + (void)initialize
 {
   DBSettingsDirectoryPath = 
@@ -59,6 +61,7 @@ NSString* DBSettingsPath;
   [[@"~/.DBUserDefaults/SyncStatus.db" stringByExpandingTildeInPath] retain];  
 }
 
+// Loads the sync state file and returns the state for the host application
 + (BOOL)isDropboxSyncEnabled
 {  
   NSNumber* state = [[DBStatus stateDictionary] objectForKey:
@@ -66,6 +69,8 @@ NSString* DBSettingsPath;
   return state ? [state boolValue] : NO;
 }
 
+// If the directory does not exist, creates it, then sets the enabled flag in
+//  our dictionary and writes it out to the file
 + (void)setDropboxSyncEnabled:(BOOL)enabled
 {
   if(![[NSFileManager defaultManager] 
@@ -84,11 +89,11 @@ NSString* DBSettingsPath;
   [stateDictionary setObject:[NSNumber numberWithBool:enabled]
                       forKey:[[NSBundle mainBundle] bundleIdentifier]];
   
-  BOOL result = [stateDictionary writeToFile:DBSettingsPath atomically:YES];
-  
-  NSLog(@"retuls = %d",result);
+  [stateDictionary writeToFile:DBSettingsPath atomically:YES];
 }
 
+// Loads the sync state file from the filesystem, or creates a new dictionary
+//  if the state sync file does not exist
 + (NSDictionary *)stateDictionary
 {
   NSDictionary* stateDictionary = [NSDictionary dictionaryWithContentsOfFile:

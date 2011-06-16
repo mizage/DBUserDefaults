@@ -46,6 +46,7 @@ extern NSString* const DBDropboxFileDidChangeNotification;
 
 + (BOOL)preferencesExist;
 + (BOOL)dropboxPreferencesExist;
++ (BOOL)localPreferencesExist;
 + (NSString*)preferencesFilePath;
 + (NSString*)preferencesDirectoryPath;
 + (NSString*)dropboxPreferencesFilePath;
