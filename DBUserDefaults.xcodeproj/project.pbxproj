@@ -21,8 +21,8 @@
 		716529AB13A947350000F91E /* DBStatus.h in Headers */ = {isa = PBXBuildFile; fileRef = 716529A913A947350000F91E /* DBStatus.h */; };
 		716529AC13A947350000F91E /* DBStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 716529AA13A947350000F91E /* DBStatus.m */; };
 		71AFEBDE13A573C5004D42D3 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71AFEBDD13A573C5004D42D3 /* CoreServices.framework */; };
-		71AFEBE213A5788B004D42D3 /* FileUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 71AFEBE013A5788B004D42D3 /* FileUtils.h */; };
-		71AFEBE313A5788B004D42D3 /* FileUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 71AFEBE113A5788B004D42D3 /* FileUtils.m */; };
+		71AFEBE213A5788B004D42D3 /* DBFileUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 71AFEBE013A5788B004D42D3 /* DBFileUtils.h */; };
+		71AFEBE313A5788B004D42D3 /* DBFileUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 71AFEBE113A5788B004D42D3 /* DBFileUtils.m */; };
 		71AFEBE613A579D8004D42D3 /* DBFileMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 71AFEBE413A579D8004D42D3 /* DBFileMonitor.h */; };
 		71AFEBE713A579D8004D42D3 /* DBFileMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 71AFEBE513A579D8004D42D3 /* DBFileMonitor.m */; };
 		71E6615B13A5C59C00EA1163 /* DBSyncPrompt.h in Headers */ = {isa = PBXBuildFile; fileRef = 71E6615913A5C59C00EA1163 /* DBSyncPrompt.h */; settings = {ATTRIBUTES = (); }; };
@@ -55,8 +55,8 @@
 		716529A913A947350000F91E /* DBStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBStatus.h; sourceTree = "<group>"; };
 		716529AA13A947350000F91E /* DBStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBStatus.m; sourceTree = "<group>"; };
 		71AFEBDD13A573C5004D42D3 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
-		71AFEBE013A5788B004D42D3 /* FileUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileUtils.h; sourceTree = "<group>"; };
-		71AFEBE113A5788B004D42D3 /* FileUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileUtils.m; sourceTree = "<group>"; };
+		71AFEBE013A5788B004D42D3 /* DBFileUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBFileUtils.h; sourceTree = "<group>"; };
+		71AFEBE113A5788B004D42D3 /* DBFileUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBFileUtils.m; sourceTree = "<group>"; };
 		71AFEBE413A579D8004D42D3 /* DBFileMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBFileMonitor.h; sourceTree = "<group>"; };
 		71AFEBE513A579D8004D42D3 /* DBFileMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBFileMonitor.m; sourceTree = "<group>"; };
 		71E6615913A5C59C00EA1163 /* DBSyncPrompt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBSyncPrompt.h; sourceTree = "<group>"; };
@@ -172,8 +172,8 @@
 			children = (
 				7105257A13A461AF00203EAB /* DBUtils.h */,
 				7105257B13A461AF00203EAB /* DBUtils.m */,
-				71AFEBE013A5788B004D42D3 /* FileUtils.h */,
-				71AFEBE113A5788B004D42D3 /* FileUtils.m */,
+				71AFEBE013A5788B004D42D3 /* DBFileUtils.h */,
+				71AFEBE113A5788B004D42D3 /* DBFileUtils.m */,
 			);
 			name = DBManagement;
 			sourceTree = "<group>";
@@ -213,7 +213,7 @@
 				7105257C13A461AF00203EAB /* DBUtils.h in Headers */,
 				7105258813A46E1500203EAB /* DBNSString+Extensions.h in Headers */,
 				71E6615B13A5C59C00EA1163 /* DBSyncPrompt.h in Headers */,
-				71AFEBE213A5788B004D42D3 /* FileUtils.h in Headers */,
+				71AFEBE213A5788B004D42D3 /* DBFileUtils.h in Headers */,
 				71AFEBE613A579D8004D42D3 /* DBFileMonitor.h in Headers */,
 				711BA35D13A7996500FD14B9 /* DBRoundedView.h in Headers */,
 				716529AB13A947350000F91E /* DBStatus.h in Headers */,
@@ -285,7 +285,7 @@
 				711B50FA13A32A2400976509 /* DBUserDefaults.m in Sources */,
 				7105257D13A461AF00203EAB /* DBUtils.m in Sources */,
 				7105258913A46E1500203EAB /* DBNSString+Extensions.m in Sources */,
-				71AFEBE313A5788B004D42D3 /* FileUtils.m in Sources */,
+				71AFEBE313A5788B004D42D3 /* DBFileUtils.m in Sources */,
 				71AFEBE713A579D8004D42D3 /* DBFileMonitor.m in Sources */,
 				71E6615C13A5C59C00EA1163 /* DBSyncPrompt.m in Sources */,
 				711BA35E13A7996500FD14B9 /* DBRoundedView.m in Sources */,

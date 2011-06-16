@@ -38,40 +38,40 @@
 //  EVEN IF MIZAGE LLC HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-#import "FileUtils.h"
+#import "DBFileUtils.h"
 #import "DBUtils.h"
 #import "DBStatus.h"
 
 NSString* const DBDropboxFileDidChangeNotification = 
                   @"DBDropboxFileDidChangeNotification";
 
-@interface FileUtils ()
+@interface DBFileUtils ()
 + (NSString*)localPreferencesDirectoryPath;
 + (NSString*)dropboxPreferencesDirectoryPath;
 @end
 
-@implementation FileUtils
+@implementation DBFileUtils
 
 // A convenience function to check if the preferences file exists base on
 //  the current syncing state
 + (BOOL)preferencesExist
 {
   return [[NSFileManager defaultManager] 
-          fileExistsAtPath:[FileUtils preferencesFilePath]];
+          fileExistsAtPath:[DBFileUtils preferencesFilePath]];
 }
 
 // Checks to see if the preferences file exists in Dropbox
 + (BOOL)dropboxPreferencesExist
 {
   return [[NSFileManager defaultManager] 
-          fileExistsAtPath:[FileUtils dropboxPreferencesFilePath]];
+          fileExistsAtPath:[DBFileUtils dropboxPreferencesFilePath]];
 }
 
 // Checks to see if the preferences file exists on the local filesystem
 + (BOOL)localPreferencesExist
 {
   return [[NSFileManager defaultManager]
-          fileExistsAtPath:[FileUtils localPreferencesFilePath]];
+          fileExistsAtPath:[DBFileUtils localPreferencesFilePath]];
 }
 
 // A convenience method to return the directory of the preferences file based
@@ -79,9 +79,9 @@ NSString* const DBDropboxFileDidChangeNotification =
 + (NSString*)preferencesDirectoryPath
 {
   if([DBStatus isDropboxSyncEnabled])
-    return [FileUtils dropboxPreferencesDirectoryPath];
+    return [DBFileUtils dropboxPreferencesDirectoryPath];
   else
-    return [FileUtils localPreferencesDirectoryPath];
+    return [DBFileUtils localPreferencesDirectoryPath];
 }
 
 // A convenience method to return the file path of the preferences file based
@@ -89,9 +89,9 @@ NSString* const DBDropboxFileDidChangeNotification =
 + (NSString*)preferencesFilePath
 {
   if([DBStatus isDropboxSyncEnabled])
-    return [FileUtils dropboxPreferencesFilePath];
+    return [DBFileUtils dropboxPreferencesFilePath];
   else
-    return [FileUtils localPreferencesFilePath];
+    return [DBFileUtils localPreferencesFilePath];
 }
 
 // Returns the path to the preferences file on Dropbox
@@ -100,7 +100,7 @@ NSString* const DBDropboxFileDidChangeNotification =
   if(![DBUtils isDropboxAvailable])
     return nil;
   
-  return [NSString stringWithFormat:@"%@/%@DB.plist",
+  return [NSString stringWithFormat:@"%@/%@.plist",
           [self dropboxPreferencesDirectoryPath],[[NSBundle mainBundle] 
                                                   bundleIdentifier]];
 }
@@ -108,15 +108,15 @@ NSString* const DBDropboxFileDidChangeNotification =
 // Returns the path to the preferences file on the local system
 + (NSString*)localPreferencesFilePath
 {
-  return [NSString stringWithFormat:@"%@/%@.plist",
-          [FileUtils localPreferencesDirectoryPath],
+  return [NSString stringWithFormat:@"%@%/%@.plist",
+          [DBFileUtils localPreferencesDirectoryPath],
           [[NSBundle mainBundle] bundleIdentifier]];
 }
 
 // Returns a tilde expanded local path to the Preferences directory
 + (NSString*)localPreferencesDirectoryPath
 {
-  return [@"~/Library/DBPreferences" stringByExpandingTildeInPath];
+  return [@"~/Library/DBPreferences/" stringByExpandingTildeInPath];
 }
 
 // Returns the path to the Preferences directory on Dropbox

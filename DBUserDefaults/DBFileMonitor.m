@@ -39,7 +39,7 @@
 
 
 #import "DBFileMonitor.h"
-#import "FileUtils.h"
+#import "DBFileUtils.h"
 #import "DBStatus.h"
 
 static FSEventStreamRef DBPreferencesFileMonitor;  
@@ -64,7 +64,7 @@ void preferencesFileChanged(
   
   NSDictionary* attributes = [[NSFileManager defaultManager] 
                               attributesOfItemAtPath:
-                              [FileUtils preferencesFilePath] 
+                              [DBFileUtils preferencesFilePath] 
                               error:nil];
   
   // Get the modification date of our preferences file
@@ -84,14 +84,14 @@ void preferencesFileChanged(
 //  Dropbox preferences are stored
 + (void)enableFileMonitoring
 {
-  if([DBStatus isDropboxSyncEnabled] || 
+  if(![DBStatus isDropboxSyncEnabled] || 
      DBPreferencesFileMonitor)
     return;
   
   // Get a dictionary containing the file attributes of the preferences file
   NSDictionary* attributes = [[NSFileManager defaultManager] 
                               attributesOfItemAtPath:
-                              [FileUtils preferencesFilePath] 
+                              [DBFileUtils preferencesFilePath] 
                               error:nil];
   
   // Gets the last modification date of the preferences file
@@ -102,7 +102,7 @@ void preferencesFileChanged(
   context.info = self;
   
   // Get the path to the directory in which the preferences file is stored
-  NSString* preferencesFilePath = [FileUtils preferencesDirectoryPath];
+  NSString* preferencesFilePath = [DBFileUtils preferencesDirectoryPath];
   
   NSArray* pathsToWatch = [NSArray arrayWithObject:
                            preferencesFilePath];

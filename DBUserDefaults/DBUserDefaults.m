@@ -44,19 +44,14 @@ NSString* const DBUserDefaultsDidSyncNotification =
 
 #import "DBUserDefaults.h"
 #import "DBUtils.h"
-#import "FileUtils.h"
+#import "DBFileUtils.h"
 #import "DBFileMonitor.h"
 #import "DBSyncPrompt.h"
 #import "DBStatus.h"
 
-@interface DBUserDefaults (NSUserDefaultsPartialReplacementPrivate)
-- (BOOL)synchronizeToPath:(NSString*)directory;
-@end
-
 @interface DBUserDefaults ()
 - (void)enableDropboxSync;
 - (void)disableDropboxSync;
-- (void)syncToDropbox;
 - (void)syncFromDropbox;
 - (void)preferencesFileDidChange:(NSNotification*)notification;
 @end
@@ -85,7 +80,7 @@ NSString* const DBUserDefaultsDidSyncNotification =
   if([DBStatus isDropboxSyncEnabled])
     return;
   
-  if([FileUtils dropboxPreferencesExist])
+  if([DBFileUtils dropboxPreferencesExist])
   {
     DBSyncPrompt* prompt = [[DBSyncPrompt alloc] init];
     
@@ -95,14 +90,21 @@ NSString* const DBUserDefaultsDidSyncNotification =
   }
   else
   {
-    [self syncToDropbox];
+    [DBStatus setDropboxSyncEnabled:YES];
+    
+    [self synchronize];
+    
+    [DBFileMonitor enableFileMonitoring];
+    [[NSNotificationCenter defaultCenter] 
+     addObserver:self 
+     selector:@selector(preferencesFileDidChange:)
+     name:DBDropboxFileDidChangeNotification
+     object:nil];
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:DBUserDefaultsDidSyncNotification 
+     object:nil];
   }
 }
-- (void)syncToDropbox
-{
-  [self synchronizeToPath:[FileUtils dropboxPreferencesFilePath]];
-}
-
 
 // Delegate callback from the DBSyncPrompt window. Either overwites the local
 //  data with the data from dropbox, or overwrites the data in Dropbox with
@@ -115,13 +117,12 @@ NSString* const DBUserDefaultsDidSyncNotification =
   if (option == DBSyncPromptOptionLocal)
   {
     [self syncFromDropbox];
-  }
-  else
-  {
-    [self syncToDropbox];
   }  
   
   [DBStatus setDropboxSyncEnabled:YES];
+  
+  [self synchronize];
+  
   [DBFileMonitor enableFileMonitoring];
   [[NSNotificationCenter defaultCenter] 
    addObserver:self 
@@ -140,7 +141,7 @@ NSString* const DBUserDefaultsDidSyncNotification =
   [deadbolt_ lock];
   [defaults_ release];
   defaults_ = [[NSMutableDictionary alloc] 
-               initWithContentsOfFile:[FileUtils dropboxPreferencesFilePath]];
+               initWithContentsOfFile:[DBFileUtils dropboxPreferencesFilePath]];
   [deadbolt_ unlock];
 }
 
@@ -151,8 +152,9 @@ NSString* const DBUserDefaultsDidSyncNotification =
   if(![DBStatus isDropboxSyncEnabled])
     return;
   
-  [self synchronizeToPath:[FileUtils localPreferencesFilePath]];
   [DBStatus setDropboxSyncEnabled:NO];
+  [self synchronize];
+  
   [DBFileMonitor disableFileMonitoring];
   [[NSNotificationCenter defaultCenter] 
    removeObserver:self 
@@ -204,11 +206,13 @@ static DBUserDefaults* sharedInstance;
   {
     deadbolt_ = [[NSLock alloc] init];
     
-    if([FileUtils preferencesExist])
+    if([DBFileUtils preferencesExist])
     {
       
-      defaults_ = [NSMutableDictionary dictionaryWithContentsOfFile:
-                   [FileUtils preferencesFilePath]];
+      defaults_ = [[NSMutableDictionary dictionaryWithContentsOfFile:
+                    [DBFileUtils preferencesFilePath]] retain];
+      if([DBStatus isDropboxSyncEnabled])
+        [DBFileMonitor enableFileMonitoring];
     }
     else
     { 
@@ -348,29 +352,16 @@ static DBUserDefaults* sharedInstance;
 - (BOOL)synchronize
 {  
   if(![[NSFileManager defaultManager] 
-       fileExistsAtPath:[FileUtils preferencesDirectoryPath]])
+       fileExistsAtPath:[DBFileUtils preferencesDirectoryPath]])
   {
     [[NSFileManager defaultManager] 
-     createDirectoryAtPath:[FileUtils preferencesDirectoryPath] 
+     createDirectoryAtPath:[DBFileUtils preferencesDirectoryPath] 
      withIntermediateDirectories:YES 
      attributes:nil 
      error:nil];
   }
   
-  return [self synchronizeToPath:[FileUtils preferencesFilePath]];
-}
-
-@end
-
-
-#pragma mark - NSUserDefaults (Partial) Replacement Private Methods
-
-
-@implementation DBUserDefaults (NSUserDefaultsPartialReplacementPrivate)
-
-- (BOOL)synchronizeToPath:(NSString*)directory
-{  
-  return [defaults_ writeToFile:directory atomically:YES];  
+  return [defaults_ writeToFile:[DBFileUtils preferencesFilePath] atomically:YES];
 }
 
 @end

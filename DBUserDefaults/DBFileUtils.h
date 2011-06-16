@@ -42,7 +42,7 @@
 
 extern NSString* const DBDropboxFileDidChangeNotification;
 
-@interface FileUtils : NSObject {}
+@interface DBFileUtils : NSObject {}
 
 + (BOOL)preferencesExist;
 + (BOOL)dropboxPreferencesExist;
