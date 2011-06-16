@@ -51,15 +51,23 @@ extern NSString* const DBUserDefaultsDidChangeNotification;
 //  notification to reapply all the preferences in your application.
 extern NSString* const DBUserDefaultsDidSyncNotification;
 
+
+// DBUserDefaults is a class that gives you a partial replacement for 
+//  NSUserDefaults that synchronizes data to a folder on Dropbox. This allows
+//  a user to have consistent settings for their application across all their
+//  Macs.
+
 @interface DBUserDefaults : NSObject <DBSyncPromptDelegate>
 {
   NSLock* deadbolt_; //Used to lock access to the defaults dictionary
   NSMutableDictionary* defaults_; //Stores the user data
 }
 
+// Determies if Dropbox sync is enabled
 - (BOOL)isDropboxSyncEnabled;
-- (void)enableDropboxSync;
-- (void)disableDropboxSync;
+
+// Sets the status of the Dropbox sync
+- (void)setDropboxSyncEnabled:(BOOL)enabled;
 
 @end
 
@@ -69,8 +77,6 @@ extern NSString* const DBUserDefaultsDidSyncNotification;
 
 + (NSUserDefaults*)standardUserDefaults;
 + (void)resetStandardUserDefaults;
-
-- (id)init;
 
 - (id)objectForKey:(NSString*)defaultName;
 - (void)setObject:(id)value forKey:(NSString*)defaultName;

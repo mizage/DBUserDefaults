@@ -54,6 +54,8 @@ NSString* const DBUserDefaultsDidSyncNotification =
 @end
 
 @interface DBUserDefaults ()
+- (void)enableDropboxSync;
+- (void)disableDropboxSync;
 - (void)syncToDropbox;
 - (void)syncFromDropbox;
 - (void)preferencesFileDidChange:(NSNotification*)notification;
@@ -63,16 +65,26 @@ NSString* const DBUserDefaultsDidSyncNotification =
 
 @implementation DBUserDefaults
 
-
 - (BOOL)isDropboxSyncEnabled
 {
   return [DBStatus isDropboxSyncEnabled];
+}
+
+- (void)setDropboxSyncEnabled:(BOOL)enabled
+{
+  if(enabled)
+    [self enableDropboxSync];
+  else
+    [self disableDropboxSync];
 }
 
 // Enables Dropbox sync and overwrites the settings on dropbox with the local
 //  settings.
 - (void)enableDropboxSync
 {
+  if([DBStatus isDropboxSyncEnabled])
+    return;
+  
   if([FileUtils dropboxPreferencesExist])
   {
     DBSyncPrompt* prompt = [[DBSyncPrompt alloc] init];
@@ -91,6 +103,13 @@ NSString* const DBUserDefaultsDidSyncNotification =
   [self synchronizeToPath:[FileUtils dropboxPreferencesFilePath]];
 }
 
+
+// Delegate callback from the DBSyncPrompt window. Either overwites the local
+//  data with the data from dropbox, or overwrites the data in Dropbox with
+//  the local data. Also enables file monitoring to listen for changes to the
+//  preferences file.
+// Posts a DBUserDefaultsDidSyncNotification to inform the host application to
+//  reload all preferences.
 - (void)syncPromptDidSelectOption:(DBSyncPromptOption)option
 {
   if (option == DBSyncPromptOptionLocal)
@@ -114,6 +133,8 @@ NSString* const DBUserDefaultsDidSyncNotification =
    object:nil];
 }
 
+// Replaces the in-memory defaults dictionary with the contents of the Dropbox
+//  file.
 - (void)syncFromDropbox
 {
   [deadbolt_ lock];
@@ -123,8 +144,13 @@ NSString* const DBUserDefaultsDidSyncNotification =
   [deadbolt_ unlock];
 }
 
+// Disables Dropbox sync. Writes the in-memory dictionary to the local file path
+//  and disables file monitoring of the Dropbox preferences file.
 - (void)disableDropboxSync
 {
+  if(![DBStatus isDropboxSyncEnabled])
+    return;
+  
   [self synchronizeToPath:[FileUtils localPreferencesFilePath]];
   [DBStatus setDropboxSyncEnabled:NO];
   [DBFileMonitor disableFileMonitoring];
@@ -134,15 +160,12 @@ NSString* const DBUserDefaultsDidSyncNotification =
    object:nil];
 }
 
-// Notification handler for when the preferences file changes
+// Notification handler for when the preferences file changes. Reloads 
+//  in-memory dictionary from Dropbox and posts a
+//  DBUserDefaultsDidSyncNotification.
 - (void)preferencesFileDidChange:(NSNotification*)notification
 {
-  //TODO: add conflict resolution
-  [deadbolt_ lock];
-  [defaults_ release];
-  defaults_ = [[NSMutableDictionary alloc] 
-               initWithContentsOfFile:[FileUtils dropboxPreferencesFilePath]];
-  [deadbolt_ unlock];
+  [self syncFromDropbox];
   [[NSNotificationCenter defaultCenter]
    postNotificationName:DBUserDefaultsDidSyncNotification 
    object:nil];
