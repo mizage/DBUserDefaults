@@ -5,7 +5,7 @@ DBUserDefaults Readme
 About DBUserDefaults
 --------------------
 
-DBUserDefaults is an NSUserDefaults inspired preferences system that synchronizes preferences between Macs by using [Dropbox](https://www.dropbox.com/). All the plist files are placed in <Dropbox Path>/Preferences. In addition, DBUserDefaults will monitor the directory for changes to the plist file. If a change is detected, the preferences will be reloaded and a notification will be posted so you can update your application accordingly.
+DBUserDefaults is an NSUserDefaults inspired preferences system that synchronizes preferences between Macs by using [Dropbox](https://www.dropbox.com/). All the plist files are placed in "Dropbox Path"/Preferences. In addition, DBUserDefaults will monitor the directory for changes to the plist file. If a change is detected, the preferences will be reloaded and a notification will be posted so you can update your application accordingly.
 
 DBUserDefaults does not currently offer any kind of conflict resolution. [Dropbox](https://www.dropbox.com/) itself simply makes two copies of a file and appends one with some information about the conflict. At some point in the future, conflict resolution and preference merging may be added, but for now, DBUserDefaults simply uses whichever file ["wins"](https://www.dropbox.com/help/36).
 
