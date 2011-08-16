@@ -64,10 +64,10 @@ extern NSString* const DBUserDefaultsDidSyncNotification;
 }
 
 // Determies if Dropbox sync is enabled
-+ (BOOL)isDropboxSyncEnabled;
+- (BOOL)isDropboxSyncEnabled;
 
 // Determines if Dropbox sync is possible
-- (BOOL)isDropboxAvailable;
++ (BOOL)isDropboxAvailable;
 
 // Sets the status of the Dropbox sync
 - (void)setDropboxSyncEnabled:(BOOL)enabled;
