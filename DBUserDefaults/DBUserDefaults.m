@@ -65,8 +65,7 @@ NSString* const DBUserDefaultsDidSyncNotification =
   return [DBUtils isDropboxAvailable];
 }
 
-
-- (BOOL)isDropboxSyncEnabled
++ (BOOL)isDropboxSyncEnabled
 {
   return [DBStatus isDropboxSyncEnabled];
 }

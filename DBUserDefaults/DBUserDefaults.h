@@ -63,11 +63,11 @@ extern NSString* const DBUserDefaultsDidSyncNotification;
   NSMutableDictionary* defaults_; //Stores the user data
 }
 
-// Determies if Dropbox sync is enabled
-- (BOOL)isDropboxSyncEnabled;
-
 // Determines if Dropbox sync is possible
 + (BOOL)isDropboxAvailable;
+
+// Determies if Dropbox sync is enabled
++ (BOOL)isDropboxSyncEnabled;
 
 // Sets the status of the Dropbox sync
 - (void)setDropboxSyncEnabled:(BOOL)enabled;
