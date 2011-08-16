@@ -60,6 +60,7 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
 
 
 @interface DBSyncPrompt ()
+- (NSString*)getAppName;
 - (void)rotateArrowToDegrees:(CGFloat)degrees;
 @end
 
@@ -93,8 +94,7 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
     [[arrow layer] setValue:DegreesToNumber(-180) forKeyPath:@"transform.rotation.z"];    
     [dropboxButton setEnabled:YES];
     [localButton setEnabled:NO];
-    NSString* appName = [[[NSBundle mainBundle] infoDictionary] 
-                         objectForKey:@"CFBundleDisplayName"];
+    NSString* appName = [self getAppName];
     [detailText setStringValue:[NSString stringWithFormat:localLabel,
                                 appName != nil ? appName : @""]];
     
@@ -121,6 +121,18 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
   return self;
 }
 
+- (NSString*)getAppName
+{
+  NSString* appName = [[[NSBundle mainBundle] infoDictionary] 
+                       objectForKey:@"CFBundleDisplayName"];
+  if(!appName)
+  {
+    appName = [[[NSBundle mainBundle] infoDictionary] 
+               objectForKey:@"CFBundleName"];
+  }
+  return appName; 
+}
+
 // Brings up the SyncPrompt window in modal mode.
 - (void)displayPrompt
 {
@@ -135,8 +147,8 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
   [dropboxButton setEnabled:NO];
   [localButton setEnabled:YES]; 
   [localButton setState:NSOffState];
-  NSString* appName = [[[NSBundle mainBundle] infoDictionary] 
-                       objectForKey:@"CFBundleDisplayName"];
+
+  NSString* appName = [self getAppName];
   [detailText setStringValue:[NSString stringWithFormat:dropboxLabel,
                               appName != nil ? appName : @""]];
   
@@ -151,8 +163,8 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
   [dropboxButton setEnabled:YES];
   [dropboxButton setState:NSOffState];
   [localButton setEnabled:NO];
-  NSString* appName = [[[NSBundle mainBundle] infoDictionary] 
-                       objectForKey:@"CFBundleDisplayName"];
+  
+  NSString* appName = [self getAppName];
   [detailText setStringValue:[NSString stringWithFormat:localLabel,
                               appName != nil ? appName : @""]];
   
