@@ -78,7 +78,7 @@ extern NSString* const DBUserDefaultsDidSyncNotification;
 
 #pragma mark - NSUserDefaults (Partial) Replacement
 
-+ (NSUserDefaults*)standardUserDefaults;
++ (DBUserDefaults*)standardUserDefaults;
 + (void)resetStandardUserDefaults;
 
 - (id)objectForKey:(NSString*)defaultName;
