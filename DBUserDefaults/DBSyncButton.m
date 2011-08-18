@@ -108,7 +108,7 @@
 
   [image drawAtPoint:NSMakePoint(0, 0) fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];  
   
-  [[self cell] drawWithFrame:CGRectInset([self bounds], 15, 15) inView:self];
+  [[self cell] drawWithFrame:NSInsetRect([self bounds], 15, 15) inView:self];
   
 }
 
