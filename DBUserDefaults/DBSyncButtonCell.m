@@ -37,48 +37,51 @@
 //  OF CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY OR OTHERWISE,
 //  EVEN IF MIZAGE LLC HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#import <Cocoa/Cocoa.h>
+#import "DBSyncButtonCell.h"
 
-#import "DBSyncPromptDelegate.h"
 
-@class DBSyncButton;
+@implementation DBSyncButtonCell
 
-// This class provides a window in which you can select the type of sync
-//  operation you would like to perform
-@interface DBSyncPrompt : NSWindowController
+@synthesize delegate;
+
+- (id)init
 {    
-  IBOutlet NSView* view;
-  IBOutlet DBSyncButton* localButton;
-  IBOutlet DBSyncButton* dropboxButton;
-  IBOutlet NSImageView* transmitter;
-  IBOutlet NSTextView *detailText;  
-  IBOutlet NSButton *syncButton;
-  IBOutlet NSImageView *localPrefIcon;
-  IBOutlet NSImageView *dropboxPrefIcon;
+  if ((self = [super init]))
+  {
+    // Initialization code here.
+  }
   
-  DBSyncPromptOption currentSelection;
-  NSTimer* animationTimer;
-  NSUInteger currentFrame;
-  NSUInteger frameDelay;
-  
-  NSMutableAttributedString* localLabel;
-  NSMutableAttributedString* dropboxLabel;
-  NSMutableAttributedString* noDropboxLabel;
-  NSColor* linkColor;
-  NSFont* linkFont;
-  NSColor* normalColor;
-  NSFont* normalFont;
-  
-  id<DBSyncPromptDelegate> delegate;
+  return self;
 }
 
-@property(readwrite,assign,nonatomic) id<DBSyncPromptDelegate> delegate;
+- (BOOL)prefersTrackingUntilMouseUp
+{
+  return YES;
+}
 
-- (void)displayPrompt;
+- (void)highlight:(BOOL)flag withFrame:(NSRect)cellFrame inView:(NSView *)controlView
+{
+  if(flag)
+    [delegate DBSyncButtonCellDidBeginHighlight];
+  else
+    [delegate DBSyncButtonCellDidEndHighlight];
+}
 
-- (IBAction)localClicked:(NSButton*)sender;
-- (IBAction)dropboxClicked:(NSButton*)sender;
-- (IBAction)syncClicked:(id)sender;
-- (IBAction)cancelClicked:(id)sender;
+- (BOOL)startTrackingAt:(NSPoint)startPoint inView:(NSView *)controlView
+{
+  [delegate DBSyncButtonCellDidBeginHighlight];
+  return YES;
+}
+
+- (void)stopTracking:(NSPoint)lastPoint at:(NSPoint)stopPoint inView:(NSView *)controlView mouseIsUp:(BOOL)flag
+{
+  [delegate DBSyncButtonCellDidEndHighlight];
+  [super stopTracking:lastPoint at:stopPoint inView:controlView mouseIsUp:flag];
+}
+
+- (void)dealloc
+{
+  [super dealloc];
+}
 
 @end

@@ -37,10 +37,17 @@
 //  OF CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY OR OTHERWISE,
 //  EVEN IF MIZAGE LLC HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#import "NSImage+BundleLoading.h"
 
-#import <Cocoa/Cocoa.h>
 
+@implementation NSImage (BundleLoading)
 
-// This class provides a simple rounded corner view.
-@interface DBRoundedView : NSView{}
++ (NSImage*)imageNamed:(NSString*)imageName ofType:(NSString*)type inBundle:(NSString*)bundleName
+{
+  NSBundle* frameworkBundle = [NSBundle bundleWithIdentifier:bundleName];  
+  NSString* imagePath = [frameworkBundle pathForResource:imageName ofType:type];
+  
+  return [[[NSImage alloc] initWithContentsOfFile:imagePath] autorelease];
+}
+
 @end

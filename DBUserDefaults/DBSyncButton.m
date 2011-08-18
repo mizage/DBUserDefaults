@@ -37,48 +37,86 @@
 //  OF CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY OR OTHERWISE,
 //  EVEN IF MIZAGE LLC HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#import <Cocoa/Cocoa.h>
+#import "DBSyncButton.h"
 
-#import "DBSyncPromptDelegate.h"
+#import "NSImage+BundleLoading.h"
 
-@class DBSyncButton;
+@implementation DBSyncButton
 
-// This class provides a window in which you can select the type of sync
-//  operation you would like to perform
-@interface DBSyncPrompt : NSWindowController
-{    
-  IBOutlet NSView* view;
-  IBOutlet DBSyncButton* localButton;
-  IBOutlet DBSyncButton* dropboxButton;
-  IBOutlet NSImageView* transmitter;
-  IBOutlet NSTextView *detailText;  
-  IBOutlet NSButton *syncButton;
-  IBOutlet NSImageView *localPrefIcon;
-  IBOutlet NSImageView *dropboxPrefIcon;
+- (void)awakeFromNib
+{
+  [(DBSyncButtonCell*)[self cell] setDelegate:self]; 
+  [(DBSyncButtonCell*)[self cell] setImageDimsWhenDisabled:NO];
   
-  DBSyncPromptOption currentSelection;
-  NSTimer* animationTimer;
-  NSUInteger currentFrame;
-  NSUInteger frameDelay;
-  
-  NSMutableAttributedString* localLabel;
-  NSMutableAttributedString* dropboxLabel;
-  NSMutableAttributedString* noDropboxLabel;
-  NSColor* linkColor;
-  NSFont* linkFont;
-  NSColor* normalColor;
-  NSFont* normalFont;
-  
-  id<DBSyncPromptDelegate> delegate;
+  enabled_ = YES;
 }
 
-@property(readwrite,assign,nonatomic) id<DBSyncPromptDelegate> delegate;
+// Override setEnabled so we can keep our own flag for custom drawing
+- (void)setEnabled:(BOOL)flag
+{
+  [super setEnabled:flag];
+  enabled_ = flag;
+}
 
-- (void)displayPrompt;
+// Delegate method from our cell. Informs us when to enable highlighting
+- (void)DBSyncButtonCellDidBeginHighlight
+{
+  if(!enabled_)
+    return;
 
-- (IBAction)localClicked:(NSButton*)sender;
-- (IBAction)dropboxClicked:(NSButton*)sender;
-- (IBAction)syncClicked:(id)sender;
-- (IBAction)cancelClicked:(id)sender;
+  highlighted_ = YES;
+  [self setNeedsDisplay];
+}
+
+// Delegate method from our cell. Informs us when to disable highlighting
+- (void)DBSyncButtonCellDidEndHighlight
+{
+  if(!enabled_)
+    return;
+  
+  highlighted_ = NO;
+  [self setNeedsDisplay];
+}
+
+// Override drawRect to get our own custom background and image on top
+- (void)drawRect:(NSRect)dirtyRect
+{  
+  NSString* imageName;
+  
+  // The button is active, set the active state
+  if(active_)
+  {
+    imageName = @"iconbox-active";
+  }
+  // The button is inactive, set the inactive state
+  else
+  {
+    // The button is being pressed
+    if(highlighted_)
+    {
+      imageName = @"iconbox-inactive-click";
+    }
+    // The button is not being pressed
+    else
+    {
+      imageName = @"iconbox-inactive";  
+    }
+  }
+  NSImage* image = [NSImage imageNamed:imageName
+                                ofType:@"png"
+                              inBundle:@"com.mizage.DBUserDefaults"];
+
+  [image drawAtPoint:NSMakePoint(0, 0) fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];  
+  
+  [[self cell] drawWithFrame:CGRectInset([self bounds], 15, 15) inView:self];
+  
+}
+
+// Used to set the active state of our button. Draws a different image.
+- (void)setActive:(BOOL)active
+{
+  active_ = active;
+  [self setNeedsDisplay];
+}
 
 @end

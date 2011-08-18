@@ -37,48 +37,21 @@
 //  OF CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY OR OTHERWISE,
 //  EVEN IF MIZAGE LLC HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
-#import "DBSyncPromptDelegate.h"
+@protocol DBSyncButtonCellDelegate <NSObject>
 
-@class DBSyncButton;
+- (void)DBSyncButtonCellDidBeginHighlight;
+- (void)DBSyncButtonCellDidEndHighlight;
 
-// This class provides a window in which you can select the type of sync
-//  operation you would like to perform
-@interface DBSyncPrompt : NSWindowController
-{    
-  IBOutlet NSView* view;
-  IBOutlet DBSyncButton* localButton;
-  IBOutlet DBSyncButton* dropboxButton;
-  IBOutlet NSImageView* transmitter;
-  IBOutlet NSTextView *detailText;  
-  IBOutlet NSButton *syncButton;
-  IBOutlet NSImageView *localPrefIcon;
-  IBOutlet NSImageView *dropboxPrefIcon;
-  
-  DBSyncPromptOption currentSelection;
-  NSTimer* animationTimer;
-  NSUInteger currentFrame;
-  NSUInteger frameDelay;
-  
-  NSMutableAttributedString* localLabel;
-  NSMutableAttributedString* dropboxLabel;
-  NSMutableAttributedString* noDropboxLabel;
-  NSColor* linkColor;
-  NSFont* linkFont;
-  NSColor* normalColor;
-  NSFont* normalFont;
-  
-  id<DBSyncPromptDelegate> delegate;
+@end
+
+// A very simple cell that informs the delegate of mouse down, exit, enter, up
+@interface DBSyncButtonCell : NSButtonCell
+{
+  id<DBSyncButtonCellDelegate> delegate;
 }
 
-@property(readwrite,assign,nonatomic) id<DBSyncPromptDelegate> delegate;
-
-- (void)displayPrompt;
-
-- (IBAction)localClicked:(NSButton*)sender;
-- (IBAction)dropboxClicked:(NSButton*)sender;
-- (IBAction)syncClicked:(id)sender;
-- (IBAction)cancelClicked:(id)sender;
+@property (readwrite,assign,nonatomic)id<DBSyncButtonCellDelegate> delegate;
 
 @end
