@@ -53,6 +53,8 @@
   IBOutlet NSImageView* transmitter;
   IBOutlet NSTextView *detailText;  
   IBOutlet NSButton *syncButton;
+  IBOutlet NSImageView *localPrefIcon;
+  IBOutlet NSImageView *dropboxPrefIcon;
   
   DBSyncPromptOption currentSelection;
   NSTimer* animationTimer;

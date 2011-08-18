@@ -86,6 +86,8 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
             NSFileTypeForHFSTypeCode(kGenericApplicationIcon)];
   
   [localButton setImage:icon];
+  [localPrefIcon setHidden:NO];
+  [dropboxPrefIcon setHidden:YES];
   
   [transmitter setWantsLayer:YES];
   [[transmitter layer] setAnchorPoint:CGPointMake(0.5, 0.5)];
@@ -265,6 +267,8 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
   [localButton setEnabled:NO];
   [dropboxButton setActive:NO];
   [dropboxButton setEnabled:YES];
+  [localPrefIcon setHidden:NO];
+  [dropboxPrefIcon setHidden:YES];
   
   currentSelection = DBSyncPromptOptionLocal;  
 }
@@ -279,7 +283,9 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
   [localButton setEnabled:YES];
   [dropboxButton setActive:YES];
   [dropboxButton setEnabled:NO];
-  
+  [localPrefIcon setHidden:YES];
+  [dropboxPrefIcon setHidden:NO];
+
   currentSelection = DBSyncPromptOptionDropbox;
 }
 
