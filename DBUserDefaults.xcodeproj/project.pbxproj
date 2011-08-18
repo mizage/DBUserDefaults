@@ -16,10 +16,9 @@
 		711B50EF13A329F300976509 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 711B50ED13A329F300976509 /* InfoPlist.strings */; };
 		711B50F913A32A2400976509 /* DBUserDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 711B50F713A32A2400976509 /* DBUserDefaults.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		711B50FA13A32A2400976509 /* DBUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 711B50F813A32A2400976509 /* DBUserDefaults.m */; };
-		712BD63F13FD660700FE69F0 /* NSAttributedString+Hyperlink.h in Headers */ = {isa = PBXBuildFile; fileRef = 712BD63D13FD660700FE69F0 /* NSAttributedString+Hyperlink.h */; };
-		712BD64013FD660700FE69F0 /* NSAttributedString+Hyperlink.m in Sources */ = {isa = PBXBuildFile; fileRef = 712BD63E13FD660700FE69F0 /* NSAttributedString+Hyperlink.m */; };
+		715D59FE13FDB1BC00946A13 /* NSImage+BundleLoading.h in Headers */ = {isa = PBXBuildFile; fileRef = 715D59FC13FDB1BB00946A13 /* NSImage+BundleLoading.h */; };
+		715D59FF13FDB1BC00946A13 /* NSImage+BundleLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 715D59FD13FDB1BB00946A13 /* NSImage+BundleLoading.m */; };
 		7164F40A13FC480600F7A1CE /* docicon-pref.png in Resources */ = {isa = PBXBuildFile; fileRef = 7164F3FE13FC480600F7A1CE /* docicon-pref.png */; };
-		7164F40B13FC480600F7A1CE /* iconbox-active-click.png in Resources */ = {isa = PBXBuildFile; fileRef = 7164F3FF13FC480600F7A1CE /* iconbox-active-click.png */; };
 		7164F40C13FC480600F7A1CE /* iconbox-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 7164F40013FC480600F7A1CE /* iconbox-active.png */; };
 		7164F40D13FC480600F7A1CE /* iconbox-inactive-click.png in Resources */ = {isa = PBXBuildFile; fileRef = 7164F40113FC480600F7A1CE /* iconbox-inactive-click.png */; };
 		7164F40E13FC480600F7A1CE /* iconbox-inactive.png in Resources */ = {isa = PBXBuildFile; fileRef = 7164F40213FC480600F7A1CE /* iconbox-inactive.png */; };
@@ -65,10 +64,9 @@
 		711B50F013A329F300976509 /* DBUserDefaults-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DBUserDefaults-Prefix.pch"; sourceTree = "<group>"; };
 		711B50F713A32A2400976509 /* DBUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBUserDefaults.h; sourceTree = "<group>"; };
 		711B50F813A32A2400976509 /* DBUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBUserDefaults.m; sourceTree = "<group>"; };
-		712BD63D13FD660700FE69F0 /* NSAttributedString+Hyperlink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Hyperlink.h"; sourceTree = "<group>"; };
-		712BD63E13FD660700FE69F0 /* NSAttributedString+Hyperlink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Hyperlink.m"; sourceTree = "<group>"; };
+		715D59FC13FDB1BB00946A13 /* NSImage+BundleLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+BundleLoading.h"; sourceTree = "<group>"; };
+		715D59FD13FDB1BB00946A13 /* NSImage+BundleLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+BundleLoading.m"; sourceTree = "<group>"; };
 		7164F3FE13FC480600F7A1CE /* docicon-pref.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "docicon-pref.png"; sourceTree = "<group>"; };
-		7164F3FF13FC480600F7A1CE /* iconbox-active-click.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconbox-active-click.png"; sourceTree = "<group>"; };
 		7164F40013FC480600F7A1CE /* iconbox-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconbox-active.png"; sourceTree = "<group>"; };
 		7164F40113FC480600F7A1CE /* iconbox-inactive-click.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconbox-inactive-click.png"; sourceTree = "<group>"; };
 		7164F40213FC480600F7A1CE /* iconbox-inactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconbox-inactive.png"; sourceTree = "<group>"; };
@@ -212,8 +210,8 @@
 		712BD63C13FD65E300FE69F0 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				712BD63D13FD660700FE69F0 /* NSAttributedString+Hyperlink.h */,
-				712BD63E13FD660700FE69F0 /* NSAttributedString+Hyperlink.m */,
+				715D59FC13FDB1BB00946A13 /* NSImage+BundleLoading.h */,
+				715D59FD13FDB1BB00946A13 /* NSImage+BundleLoading.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -223,7 +221,6 @@
 			children = (
 				7164F47D13FC688500F7A1CE /* bgspotlight.png */,
 				7164F3FE13FC480600F7A1CE /* docicon-pref.png */,
-				7164F3FF13FC480600F7A1CE /* iconbox-active-click.png */,
 				7164F40013FC480600F7A1CE /* iconbox-active.png */,
 				7164F40113FC480600F7A1CE /* iconbox-inactive-click.png */,
 				7164F40213FC480600F7A1CE /* iconbox-inactive.png */,
@@ -271,7 +268,7 @@
 				716529AB13A947350000F91E /* DBStatus.h in Headers */,
 				7164F47B13FC656E00F7A1CE /* DBSyncButton.h in Headers */,
 				71B15E0713FCB85900725A45 /* DBSyncButtonCell.h in Headers */,
-				712BD63F13FD660700FE69F0 /* NSAttributedString+Hyperlink.h in Headers */,
+				715D59FE13FDB1BC00946A13 /* NSImage+BundleLoading.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -327,7 +324,6 @@
 				71E6616413A5D48500EA1163 /* DBSyncPrompt.xib in Resources */,
 				71E6616813A5DFBC00EA1163 /* box.icns in Resources */,
 				7164F40A13FC480600F7A1CE /* docicon-pref.png in Resources */,
-				7164F40B13FC480600F7A1CE /* iconbox-active-click.png in Resources */,
 				7164F40C13FC480600F7A1CE /* iconbox-active.png in Resources */,
 				7164F40D13FC480600F7A1CE /* iconbox-inactive-click.png in Resources */,
 				7164F40E13FC480600F7A1CE /* iconbox-inactive.png in Resources */,
@@ -357,7 +353,7 @@
 				716529AC13A947350000F91E /* DBStatus.m in Sources */,
 				7164F47C13FC656E00F7A1CE /* DBSyncButton.m in Sources */,
 				71B15E0813FCB85900725A45 /* DBSyncButtonCell.m in Sources */,
-				712BD64013FD660700FE69F0 /* NSAttributedString+Hyperlink.m in Sources */,
+				715D59FF13FDB1BC00946A13 /* NSImage+BundleLoading.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

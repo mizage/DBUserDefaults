@@ -42,7 +42,7 @@
 #import "DBSyncPrompt.h"
 #import "DBSyncButton.h"
 #import "DBUtils.h"
-#import "NSAttributedString+Hyperlink.h"
+#import "NSImage+BundleLoading.h"
 
 static inline CGFloat DegreesToRadians(CGFloat degrees)
 {
@@ -72,10 +72,6 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
   [[self window] setLevel:NSFloatingWindowLevel];
   [[self window] setContentBorderThickness:55 forEdge:NSMinYEdge];
   
-  [self rotateArrowToDegrees:-180.0f];
-  
-  currentSelection = DBSyncPromptOptionLocal; 
-  
   NSString* appIconName = [[NSBundle mainBundle] objectForInfoDictionaryKey:
                            @"CFBundleIconFile"];
   
@@ -94,6 +90,10 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
   [transmitter setWantsLayer:YES];
   [[transmitter layer] setAnchorPoint:CGPointMake(0.5, 0.5)];
   
+  [self rotateArrowToDegrees:-180.0f];
+  currentSelection = DBSyncPromptOptionLocal; 
+  
+  
   currentFrame = 1;
   frameDelay = 0;
   
@@ -101,9 +101,44 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
                                      green:152.0/255.0 
                                       blue:221.0/255.0 
                                      alpha:1.0] retain];
-  linkFont = [[NSFont fontWithName:@"HelveticaNeue-Bold" size:13.0] retain];
+  normalColor = [[NSColor colorWithDeviceRed:164.0/255.0
+                                       green:164.0/255.0 
+                                        blue:164.0/255.0 
+                                       alpha:1.0] retain];
   
-  if(YES)//![DBUtils isDropboxAvailable])
+  
+  linkFont = [[NSFont fontWithName:@"HelveticaNeue-Bold" size:13.0] retain];
+  normalFont = [[NSFont fontWithName:@"LucidiaGrande" size:13.0] retain];
+  
+  // Set up all the attributes for link appearance except font, because font
+  //  appears to be ignored in this call.
+  [detailText setLinkTextAttributes:
+   [NSDictionary dictionaryWithObjectsAndKeys:
+    [NSCursor pointingHandCursor], NSCursorAttributeName, 
+    linkColor, NSForegroundColorAttributeName,
+    [NSNumber numberWithInt:NSNoUnderlineStyle], NSUnderlineStyleAttributeName,
+    nil]];
+  
+  // Create a dictionary to hold all the attributes for normal text
+  NSDictionary* normalAttributeDictionary = 
+  [NSDictionary 
+   dictionaryWithObjectsAndKeys: normalColor, NSForegroundColorAttributeName,
+   normalFont, NSFontAttributeName, 
+   nil];
+  
+  // Create a dictionary to hold all the attributes for link text
+  NSDictionary* linkAttributeDictionary = 
+  [NSDictionary dictionaryWithObjectsAndKeys:
+   [NSURL URLWithString:@"http://www.dropbox.com"], NSLinkAttributeName,
+   linkFont,NSFontAttributeName,
+   nil];
+  
+  // Create a paragraph sytle to center the text
+  NSMutableParagraphStyle* paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+  [paragraphStyle setAlignment:NSCenterTextAlignment]; 
+  
+  // If Dropbox is not installed, show a message and disable controls
+  if(![DBUtils isDropboxAvailable])
   {
     [localButton setActive:NO];
     [localButton setEnabled:NO];
@@ -114,43 +149,23 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
     [transmitter setAlphaValue:0.25];
     [syncButton setEnabled:NO];
     
-    
-    /*
-     static NSString* localLabel = @"Pull the preferences from Dropbox and use them"
-     " for %@ on this Mac.";
-     static NSString* dropboxLabel = @"Push the preferences on this Mac up to" 
-     " Dropbox so all your copies of %@ will"
-     " use them.";
-     static NSString* noDropboxLabel = @"Dropbox was not detected on your Mac.\n"
-     "Please visit the Dropbox Website to install it.\n"
-     "Don't worry, it's free!";
-     
-     for color, default text: RGB: 164, 164, 164
-     2:18 PM
-     Adam B.	
-     link color: RGB 91, 152, 221
-     Helvetica Neue, 13pt for link
-     */
     noDropboxLabel = [[[NSMutableAttributedString alloc] 
                        initWithString:@"Dropbox was not detected on your Mac.\n"
-                       "Please visit the "] autorelease];
-    [noDropboxLabel appendAttributedString:
-     [NSAttributedString hyperlinkFromString:@"Dropbox Website"
-                                     withURL:[NSURL URLWithString:@"http://www.dropbox.com"]
-                                   withColor:linkColor 
-                                    withFont:linkFont
-                                  underlined:NO]];
-    [noDropboxLabel appendAttributedString:
-     [[NSAttributedString alloc] initWithString:@" to install it.\n"
-      "Don't worry, it's free!"]];
+                       "Please visit the "
+                       attributes:normalAttributeDictionary] autorelease];
     
-    NSMutableParagraphStyle* paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
-    [paragraphStyle setAlignment:NSCenterTextAlignment]; 
+    [noDropboxLabel appendAttributedString:
+     [[[NSAttributedString alloc] initWithString:@"Dropbox Website"
+                                      attributes:linkAttributeDictionary] autorelease]];
+    [noDropboxLabel appendAttributedString:
+     [[[NSAttributedString alloc] initWithString:@" to install it.\n"
+       "Don't worry, it's free!"
+                                      attributes:normalAttributeDictionary] autorelease]];
     
     [noDropboxLabel addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0,[noDropboxLabel length])];
     
-    [detailText setAttributedStringValue:noDropboxLabel];
-    [detailText setAllowsEditingTextAttributes:NO];
+    [[detailText textStorage] setAttributedString:noDropboxLabel];
+    
   }
   else
   {    
@@ -160,9 +175,37 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
     [localButton setActive:YES];  
     
     NSString* appName = [self getAppName];
-    [detailText setStringValue:[NSString stringWithFormat:dropboxLabel,
-                                appName != nil ? appName : @""]];
     
+    dropboxLabel = [[[NSMutableAttributedString alloc] 
+                     initWithString:@"Push the preferences on this Mac up to "
+                     attributes:normalAttributeDictionary] autorelease];
+    
+    [dropboxLabel appendAttributedString:
+     [[[NSAttributedString alloc] initWithString:@"Dropbox"
+                                      attributes:linkAttributeDictionary] autorelease]];
+    
+    [dropboxLabel appendAttributedString:
+     [[[NSAttributedString alloc] initWithString:
+       [NSString stringWithFormat:@" so all your copies of %@ will use your current settings.",appName]
+                                      attributes:normalAttributeDictionary] autorelease]];
+    
+    [dropboxLabel addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0,[dropboxLabel length])];
+    
+    localLabel = [[[NSMutableAttributedString alloc] 
+                   initWithString:@"Pull the preferences from "
+                   attributes:normalAttributeDictionary] autorelease];
+    
+    [localLabel appendAttributedString:
+     [[[NSAttributedString alloc] initWithString:@"Dropbox"
+                                      attributes:linkAttributeDictionary] autorelease]];
+    
+    [localLabel appendAttributedString:
+     [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" and use them as the settings for %@ on this Mac.",appName]
+                                      attributes:normalAttributeDictionary] autorelease]];
+    
+    [localLabel addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0,[localLabel length])];
+    
+    [[detailText textStorage] setAttributedString:dropboxLabel];
   }
   
   return self;
@@ -182,11 +225,9 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
 
 - (void)nextFrame
 {
-  NSBundle* frameworkBundle = [NSBundle bundleWithIdentifier:@"com.mizage.DBUserDefaults"];
-  NSString* imageName = [NSString stringWithFormat:@"transmitting-%d",currentFrame];
-  NSString* imagePath = [frameworkBundle pathForResource:imageName ofType:@"png"];
-  
-  NSImage *image = [[NSImage alloc] initWithContentsOfFile:imagePath];
+  NSImage* image = [NSImage imageNamed:[NSString stringWithFormat:@"transmitting-%d",currentFrame]
+                                ofType:@"png"
+                              inBundle:@"com.mizage.DBUserDefaults"];
   
   [transmitter setImage:image];
   
@@ -219,10 +260,7 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
 - (IBAction)localClicked:(NSButton*)sender
 {
   [self rotateArrowToDegrees:-180.0f];
-  NSString* appName = [self getAppName];
-  [detailText setStringValue:[NSString stringWithFormat:dropboxLabel,
-                              appName != nil ? appName : @""]];
-  
+  [[detailText textStorage] setAttributedString:dropboxLabel];
   [localButton setActive:YES];
   [localButton setEnabled:NO];
   [dropboxButton setActive:NO];
@@ -236,10 +274,7 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
 - (IBAction)dropboxClicked:(NSButton*)sender
 {
   [self rotateArrowToDegrees:0.0f];
-  NSString* appName = [self getAppName];
-  [detailText setStringValue:[NSString stringWithFormat:localLabel,
-                              appName != nil ? appName : @""]];
-  
+  [[detailText textStorage] setAttributedString:localLabel]; 
   [localButton setActive:NO];
   [localButton setEnabled:YES];
   [dropboxButton setActive:YES];

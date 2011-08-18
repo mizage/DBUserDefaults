@@ -51,7 +51,7 @@
   IBOutlet DBSyncButton* localButton;
   IBOutlet DBSyncButton* dropboxButton;
   IBOutlet NSImageView* transmitter;
-  IBOutlet NSTextField *detailText;  
+  IBOutlet NSTextView *detailText;  
   IBOutlet NSButton *syncButton;
   
   DBSyncPromptOption currentSelection;
@@ -64,6 +64,8 @@
   NSMutableAttributedString* noDropboxLabel;
   NSColor* linkColor;
   NSFont* linkFont;
+  NSColor* normalColor;
+  NSFont* normalFont;
   
   id<DBSyncPromptDelegate> delegate;
 }
