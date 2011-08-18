@@ -40,7 +40,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "DBSyncPrompt.h"
-#import "DBRoundedView.h"
+#import "DBSyncButton.h"
 
 static NSString* localLabel = @"Pull the preferences from Dropbox and use them"
 " for %@ on this Mac.";
@@ -60,6 +60,7 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
 
 
 @interface DBSyncPrompt ()
+- (NSString*)getAppName;
 - (void)rotateArrowToDegrees:(CGFloat)degrees;
 @end
 
@@ -69,57 +70,88 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
 @synthesize delegate;
 
 - (id)init
-{
-  NSWindow* window = [[[NSWindow alloc] 
-                       initWithContentRect:NSMakeRect(0, 0, 411, 322)
-                       styleMask:NSBorderlessWindowMask
-                       backing:NSBackingStoreBuffered
-                       defer:NO] autorelease];
-  [window setHasShadow:YES];
-  [window setBackgroundColor:[NSColor clearColor]];
-  [window setOpaque:NO];
+{    
+  [NSBundle loadNibNamed:@"DBSyncPrompt" owner:self];
+  [[self window] center];
+  [[self window] setLevel:NSFloatingWindowLevel];
+  [[self window] setContentBorderThickness:55 forEdge:NSMinYEdge];
   
-  if((self = [super initWithWindow:window]))
-  {
-    [window center];
-    [window setLevel:NSFloatingWindowLevel];
-    
-    [NSBundle loadNibNamed:@"DBSyncPrompt" owner:self];
-    
-    [arrow setWantsLayer:YES];
-    [[arrow layer] setAnchorPoint:CGPointMake(0.5, 0.5)];
-    
-
-    [[arrow layer] setValue:DegreesToNumber(-180) forKeyPath:@"transform.rotation.z"];    
-    [dropboxButton setEnabled:YES];
-    [localButton setEnabled:NO];
-    NSString* appName = [[[NSBundle mainBundle] infoDictionary] 
-                         objectForKey:@"CFBundleDisplayName"];
-    [detailText setStringValue:[NSString stringWithFormat:localLabel,
-                                appName != nil ? appName : @""]];
-    
-    currentSelection = DBSyncPromptOptionLocal; 
-    
-    NSString* appIconName = [[NSBundle mainBundle] objectForInfoDictionaryKey:
-                             @"CFBundleIconFile"];
-    
-    // Attempt to get the icon of the application in which we are running
-    // If this fails, get the generic application icon instead
-    NSImage* icon;
-    if(appIconName)
-      icon = [NSImage imageNamed:appIconName];
-    else
-      icon = [[NSWorkspace sharedWorkspace] 
-              iconForFileType:
-              NSFileTypeForHFSTypeCode(kGenericApplicationIcon)];
-    
-    [localButton setImage:icon];
-    
-    [window setContentView:view];
-  }
+  
+  [transmitter setWantsLayer:YES];
+  [[transmitter layer] setAnchorPoint:CGPointMake(0.5, 0.5)];
+  [transmitter setTag:1];
+  
+  currentFrame = 1;
+  frameDelay = 0;
+  
+  animationTimer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(nextFrame) userInfo:nil repeats:YES];
+  [[NSRunLoop currentRunLoop] addTimer:animationTimer forMode:NSRunLoopCommonModes];
+  
+  
+  [self rotateArrowToDegrees:-180.0f];
+  NSString* appName = [self getAppName];
+  [detailText setStringValue:[NSString stringWithFormat:dropboxLabel,
+                              appName != nil ? appName : @""]];
+  
+  currentSelection = DBSyncPromptOptionLocal; 
+  
+  NSString* appIconName = [[NSBundle mainBundle] objectForInfoDictionaryKey:
+                           @"CFBundleIconFile"];
+  
+  // Attempt to get the icon of the application in which we are running
+  // If this fails, get the generic application icon instead
+  NSImage* icon;
+  if(appIconName)
+    icon = [NSImage imageNamed:appIconName];
+  else
+    icon = [[NSWorkspace sharedWorkspace] 
+            iconForFileType:
+            NSFileTypeForHFSTypeCode(kGenericApplicationIcon)];
+  
+  [localButton setImage:icon];
+  [localButton setActive:YES];
   
   return self;
 }
+
+- (NSString*)getAppName
+{
+  NSString* appName = [[[NSBundle mainBundle] infoDictionary] 
+                       objectForKey:@"CFBundleDisplayName"];
+  if(!appName)
+  {
+    appName = [[[NSBundle mainBundle] infoDictionary] 
+               objectForKey:@"CFBundleName"];
+  }
+  return appName; 
+}
+
+- (void)nextFrame
+{
+  NSBundle* frameworkBundle = [NSBundle bundleWithIdentifier:@"com.mizage.DBUserDefaults"];
+  NSString* imageName = [NSString stringWithFormat:@"transmitting-%d",currentFrame];
+  NSString* imagePath = [frameworkBundle pathForResource:imageName ofType:@"png"];
+  
+  NSImage *image = [[NSImage alloc] initWithContentsOfFile:imagePath];
+  
+  [transmitter setImage:image];
+  
+  
+  if(currentFrame == 6 && frameDelay == 5)
+  {
+    currentFrame = 1;
+    frameDelay = 0;
+  }
+  else if(currentFrame == 6)
+  {
+    frameDelay++;
+  }
+  else
+  {
+    currentFrame++;
+  }  
+}
+
 
 // Brings up the SyncPrompt window in modal mode.
 - (void)displayPrompt
@@ -127,42 +159,48 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
   [[NSApplication sharedApplication] runModalForWindow:[self window]];
 }
 
-// Called when the Dropbox button is clicked. Rotates the arrow to point
-//  from local to Dropbox, and sets state accordingly
-- (IBAction)dropboxClicked:(NSButton*)sender
-{
-  [self rotateArrowToDegrees:0.0f];
-  [dropboxButton setEnabled:NO];
-  [localButton setEnabled:YES]; 
-  [localButton setState:NSOffState];
-  NSString* appName = [[[NSBundle mainBundle] infoDictionary] 
-                       objectForKey:@"CFBundleDisplayName"];
-  [detailText setStringValue:[NSString stringWithFormat:dropboxLabel,
-                              appName != nil ? appName : @""]];
-  
-  currentSelection = DBSyncPromptOptionDropbox;
-}
 
 // Called when the Dropbox button is clicked. Rotates the arrow to point
 //  from Dropbox to local, and sets state accordingly
 - (IBAction)localClicked:(NSButton*)sender
 {
   [self rotateArrowToDegrees:-180.0f];
-  [dropboxButton setEnabled:YES];
-  [dropboxButton setState:NSOffState];
-  [localButton setEnabled:NO];
-  NSString* appName = [[[NSBundle mainBundle] infoDictionary] 
-                       objectForKey:@"CFBundleDisplayName"];
-  [detailText setStringValue:[NSString stringWithFormat:localLabel,
+  NSString* appName = [self getAppName];
+  [detailText setStringValue:[NSString stringWithFormat:dropboxLabel,
                               appName != nil ? appName : @""]];
+  
+  [localButton setActive:YES];
+  [localButton setEnabled:NO];
+  [dropboxButton setActive:NO];
+  [dropboxButton setEnabled:YES];
   
   currentSelection = DBSyncPromptOptionLocal;  
 }
+
+// Called when the Dropbox button is clicked. Rotates the arrow to point
+//  from local to Dropbox, and sets state accordingly
+- (IBAction)dropboxClicked:(NSButton*)sender
+{
+  [self rotateArrowToDegrees:0.0f];
+  NSString* appName = [self getAppName];
+  [detailText setStringValue:[NSString stringWithFormat:localLabel,
+                              appName != nil ? appName : @""]];
+  
+  [localButton setActive:NO];
+  [localButton setEnabled:YES];
+  [dropboxButton setActive:YES];
+  [dropboxButton setEnabled:NO];
+  
+  currentSelection = DBSyncPromptOptionDropbox;
+}
+
 
 // Accepts the current settings, informing the delegate of these settings and
 //  dismissing the window
 - (IBAction)syncClicked:(id)sender
 {
+  [animationTimer invalidate];
+  animationTimer = nil;
   [[self window] orderOut:nil];
   [delegate syncPromptDidSelectOption:currentSelection];  
   [[NSApplication sharedApplication] stopModal];
@@ -172,6 +210,9 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
 //  cancellation
 - (IBAction)cancelClicked:(id)sender
 {
+  [animationTimer invalidate];
+  animationTimer = nil;
+  
   [[self window] orderOut:nil];
   
   if([delegate respondsToSelector:@selector(syncPromptDidCancel)])
@@ -185,11 +226,11 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
 - (void)rotateArrowToDegrees:(CGFloat)degrees
 {
   NSNumber* numDegrees = DegreesToNumber(degrees);
-  CABasicAnimation* rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
-  rotationAnimation.toValue = numDegrees;
-  rotationAnimation.duration = 0.25;
-  [[arrow layer] addAnimation:rotationAnimation forKey:@"rotationAnimation"];
-  [[arrow layer] setValue:numDegrees forKeyPath:@"transform.rotation.z"];
+  [CATransaction begin];
+  [CATransaction setValue:(id)kCFBooleanTrue
+                   forKey:kCATransactionDisableActions];
+  [[transmitter layer] setValue:numDegrees forKeyPath:@"transform.rotation.z"];
+  [CATransaction commit];  
 }
 
 @end

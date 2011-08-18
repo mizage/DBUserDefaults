@@ -37,38 +37,19 @@
 //  OF CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY OR OTHERWISE,
 //  EVEN IF MIZAGE LLC HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#import <Foundation/Foundation.h>
+#import "DBSyncButtonCell.h"
 
-#import <Quartz/Quartz.h>
+// A custom button class used to provide custom drawing, namely a background image
+//  with a foreground image on top, as well as three states for the background image
 
-#import "DBRoundedView.h"
-
-
-@implementation DBRoundedView
-
-
-// Override drawRect to always draw the entire contents
-- (void)drawRect:(NSRect)dirtyRect
+@interface DBSyncButton : NSButton <DBSyncButtonCellDelegate>
 {
-  float radius = 10.0f;
-  
-  NSRect fill = [self bounds];
-  
-  NSBezierPath* path = [NSBezierPath bezierPathWithRoundedRect:fill 
-                                                       xRadius:radius 
-                                                       yRadius:radius];  
-  
-  
-  NSGradient* background = [[NSGradient alloc] initWithStartingColor:
-                            [NSColor colorWithCalibratedWhite:0.85f 
-                                                        alpha:1.0f] 
-                                                         endingColor:
-                            [NSColor colorWithCalibratedWhite:0.7f 
-                                                        alpha:1.0f]];
-  
-  [background drawInBezierPath:path angle:270.0f];
-  
-  [path closePath];  
-
+  BOOL highlighted_;
+  BOOL active_;
+  BOOL enabled_;
 }
+
+- (void)setActive:(BOOL)active;
 
 @end
