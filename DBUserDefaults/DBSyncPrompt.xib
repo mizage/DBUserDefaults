@@ -192,14 +192,14 @@
 						<object class="NSTextField" id="244655893">
 							<reference key="NSNextResponder" ref="476350686"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{30, 77}, {377, 42}}</string>
+							<string key="NSFrame">{{30, 61}, {377, 58}}</string>
 							<reference key="NSSuperview" ref="476350686"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="492873902"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="650045149">
-								<int key="NSCellFlags">67239424</int>
-								<int key="NSCellFlags2">138412032</int>
+								<int key="NSCellFlags">69336577</int>
+								<int key="NSCellFlags2">138416128</int>
 								<string key="NSContents">Push the preferences on this Mac up to Dropbox so all your copies of %@ will use them.</string>
 								<object class="NSFont" key="NSSupport">
 									<string key="NSName">LucidaGrande</string>
@@ -217,8 +217,8 @@
 									</object>
 								</object>
 								<object class="NSColor" key="NSTextColor">
-									<int key="NSColorSpace">2</int>
-									<bytes key="NSRGB">MC41MTc2NDcwODc2IDAuNTE3NjQ3MDg3NiAwLjUxNzY0NzA4NzYAA</bytes>
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MC42NTIzNzAyMDMyIDAuNjUyMzcwMjAzMiAwLjY1MjM3MDIwMzIAA</bytes>
 								</object>
 							</object>
 						</object>
@@ -341,6 +341,14 @@
 						<reference key="destination" ref="299481233"/>
 					</object>
 					<int key="connectionID">71</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">syncButton</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="1011067666"/>
+					</object>
+					<int key="connectionID">78</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -578,7 +586,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">77</int>
+			<int key="maxID">82</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -655,6 +663,7 @@
 							<string>detailText</string>
 							<string>dropboxButton</string>
 							<string>localButton</string>
+							<string>syncButton</string>
 							<string>transmitter</string>
 							<string>view</string>
 						</object>
@@ -663,6 +672,7 @@
 							<string>NSTextField</string>
 							<string>DBSyncButton</string>
 							<string>DBSyncButton</string>
+							<string>NSButton</string>
 							<string>NSImageView</string>
 							<string>NSView</string>
 						</object>
@@ -674,6 +684,7 @@
 							<string>detailText</string>
 							<string>dropboxButton</string>
 							<string>localButton</string>
+							<string>syncButton</string>
 							<string>transmitter</string>
 							<string>view</string>
 						</object>
@@ -690,6 +701,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">localButton</string>
 								<string key="candidateClassName">DBSyncButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">syncButton</string>
+								<string key="candidateClassName">NSButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">transmitter</string>

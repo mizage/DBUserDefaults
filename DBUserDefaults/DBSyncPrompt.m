@@ -41,12 +41,8 @@
 
 #import "DBSyncPrompt.h"
 #import "DBSyncButton.h"
-
-static NSString* localLabel = @"Pull the preferences from Dropbox and use them"
-" for %@ on this Mac.";
-static NSString* dropboxLabel = @"Push the preferences on this Mac up to" 
-" Dropbox so all your copies of %@ will"
-" use them.";
+#import "DBUtils.h"
+#import "NSAttributedString+Hyperlink.h"
 
 static inline CGFloat DegreesToRadians(CGFloat degrees)
 {
@@ -76,22 +72,7 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
   [[self window] setLevel:NSFloatingWindowLevel];
   [[self window] setContentBorderThickness:55 forEdge:NSMinYEdge];
   
-  
-  [transmitter setWantsLayer:YES];
-  [[transmitter layer] setAnchorPoint:CGPointMake(0.5, 0.5)];
-  [transmitter setTag:1];
-  
-  currentFrame = 1;
-  frameDelay = 0;
-  
-  animationTimer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(nextFrame) userInfo:nil repeats:YES];
-  [[NSRunLoop currentRunLoop] addTimer:animationTimer forMode:NSRunLoopCommonModes];
-  
-  
   [self rotateArrowToDegrees:-180.0f];
-  NSString* appName = [self getAppName];
-  [detailText setStringValue:[NSString stringWithFormat:dropboxLabel,
-                              appName != nil ? appName : @""]];
   
   currentSelection = DBSyncPromptOptionLocal; 
   
@@ -109,7 +90,80 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
             NSFileTypeForHFSTypeCode(kGenericApplicationIcon)];
   
   [localButton setImage:icon];
-  [localButton setActive:YES];
+  
+  [transmitter setWantsLayer:YES];
+  [[transmitter layer] setAnchorPoint:CGPointMake(0.5, 0.5)];
+  
+  currentFrame = 1;
+  frameDelay = 0;
+  
+  linkColor = [[NSColor colorWithDeviceRed:91.0/255.0
+                                     green:152.0/255.0 
+                                      blue:221.0/255.0 
+                                     alpha:1.0] retain];
+  linkFont = [[NSFont fontWithName:@"HelveticaNeue-Bold" size:13.0] retain];
+  
+  if(YES)//![DBUtils isDropboxAvailable])
+  {
+    [localButton setActive:NO];
+    [localButton setEnabled:NO];
+    [dropboxButton setActive:NO];
+    [dropboxButton setEnabled:NO];
+    [localButton setAlphaValue:0.25];
+    [dropboxButton setAlphaValue:0.25];
+    [transmitter setAlphaValue:0.25];
+    [syncButton setEnabled:NO];
+    
+    
+    /*
+     static NSString* localLabel = @"Pull the preferences from Dropbox and use them"
+     " for %@ on this Mac.";
+     static NSString* dropboxLabel = @"Push the preferences on this Mac up to" 
+     " Dropbox so all your copies of %@ will"
+     " use them.";
+     static NSString* noDropboxLabel = @"Dropbox was not detected on your Mac.\n"
+     "Please visit the Dropbox Website to install it.\n"
+     "Don't worry, it's free!";
+     
+     for color, default text: RGB: 164, 164, 164
+     2:18 PM
+     Adam B.	
+     link color: RGB 91, 152, 221
+     Helvetica Neue, 13pt for link
+     */
+    noDropboxLabel = [[[NSMutableAttributedString alloc] 
+                       initWithString:@"Dropbox was not detected on your Mac.\n"
+                       "Please visit the "] autorelease];
+    [noDropboxLabel appendAttributedString:
+     [NSAttributedString hyperlinkFromString:@"Dropbox Website"
+                                     withURL:[NSURL URLWithString:@"http://www.dropbox.com"]
+                                   withColor:linkColor 
+                                    withFont:linkFont
+                                  underlined:NO]];
+    [noDropboxLabel appendAttributedString:
+     [[NSAttributedString alloc] initWithString:@" to install it.\n"
+      "Don't worry, it's free!"]];
+    
+    NSMutableParagraphStyle* paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+    [paragraphStyle setAlignment:NSCenterTextAlignment]; 
+    
+    [noDropboxLabel addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0,[noDropboxLabel length])];
+    
+    [detailText setAttributedStringValue:noDropboxLabel];
+    [detailText setAllowsEditingTextAttributes:NO];
+  }
+  else
+  {    
+    animationTimer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(nextFrame) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:animationTimer forMode:NSRunLoopCommonModes];
+    
+    [localButton setActive:YES];  
+    
+    NSString* appName = [self getAppName];
+    [detailText setStringValue:[NSString stringWithFormat:dropboxLabel,
+                                appName != nil ? appName : @""]];
+    
+  }
   
   return self;
 }

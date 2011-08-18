@@ -42,6 +42,7 @@
 #import "DBSyncPromptDelegate.h"
 
 @class DBSyncButton;
+
 // This class provides a window in which you can select the type of sync
 //  operation you would like to perform
 @interface DBSyncPrompt : NSWindowController
@@ -51,11 +52,18 @@
   IBOutlet DBSyncButton* dropboxButton;
   IBOutlet NSImageView* transmitter;
   IBOutlet NSTextField *detailText;  
+  IBOutlet NSButton *syncButton;
   
   DBSyncPromptOption currentSelection;
   NSTimer* animationTimer;
   NSUInteger currentFrame;
   NSUInteger frameDelay;
+  
+  NSMutableAttributedString* localLabel;
+  NSMutableAttributedString* dropboxLabel;
+  NSMutableAttributedString* noDropboxLabel;
+  NSColor* linkColor;
+  NSFont* linkFont;
   
   id<DBSyncPromptDelegate> delegate;
 }
