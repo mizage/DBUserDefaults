@@ -119,7 +119,7 @@ NSString* const DBUserDefaultsDidSyncNotification =
 //  reload all preferences.
 - (void)syncPromptDidSelectOption:(DBSyncPromptOption)option
 {
-  if (option == DBSyncPromptOptionLocal)
+  if (option == DBSyncPromptOptionDropbox)
   {
     [self syncFromDropbox];
   }  

@@ -61,8 +61,8 @@
   NSUInteger currentFrame;
   NSUInteger frameDelay;
   
-  NSMutableAttributedString* localLabel;
   NSMutableAttributedString* dropboxLabel;
+  NSMutableAttributedString* localLabel;
   NSMutableAttributedString* noDropboxLabel;
   NSColor* linkColor;
   NSFont* linkFont;

@@ -178,36 +178,36 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
     
     NSString* appName = [self getAppName];
     
-    dropboxLabel = [[[NSMutableAttributedString alloc] 
+    localLabel = [[[NSMutableAttributedString alloc] 
                      initWithString:@"Push the preferences on this Mac up to "
                      attributes:normalAttributeDictionary] autorelease];
     
-    [dropboxLabel appendAttributedString:
+    [localLabel appendAttributedString:
      [[[NSAttributedString alloc] initWithString:@"Dropbox"
                                       attributes:linkAttributeDictionary] autorelease]];
     
-    [dropboxLabel appendAttributedString:
+    [localLabel appendAttributedString:
      [[[NSAttributedString alloc] initWithString:
        [NSString stringWithFormat:@" so all your copies of %@ will use your current settings.",appName]
                                       attributes:normalAttributeDictionary] autorelease]];
     
-    [dropboxLabel addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0,[dropboxLabel length])];
+    [localLabel addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0,[localLabel length])];
     
-    localLabel = [[[NSMutableAttributedString alloc] 
+    dropboxLabel = [[[NSMutableAttributedString alloc] 
                    initWithString:@"Pull the preferences from "
                    attributes:normalAttributeDictionary] autorelease];
     
-    [localLabel appendAttributedString:
+    [dropboxLabel appendAttributedString:
      [[[NSAttributedString alloc] initWithString:@"Dropbox"
                                       attributes:linkAttributeDictionary] autorelease]];
     
-    [localLabel appendAttributedString:
+    [dropboxLabel appendAttributedString:
      [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" and use them as the settings for %@ on this Mac.",appName]
                                       attributes:normalAttributeDictionary] autorelease]];
     
-    [localLabel addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0,[localLabel length])];
+    [dropboxLabel addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0,[dropboxLabel length])];
     
-    [[detailText textStorage] setAttributedString:dropboxLabel];
+    [[detailText textStorage] setAttributedString:localLabel];
   }
   
   return self;
@@ -257,12 +257,12 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
 }
 
 
-// Called when the Dropbox button is clicked. Rotates the arrow to point
-//  from Dropbox to local, and sets state accordingly
+// Called when the local button is clicked. Rotate the arrow to point
+//  at Dropbox, and set state to sync up to dropbox.
 - (IBAction)localClicked:(NSButton*)sender
 {
   [self rotateArrowToDegrees:-180.0f];
-  [[detailText textStorage] setAttributedString:dropboxLabel];
+  [[detailText textStorage] setAttributedString:localLabel];
   [localButton setActive:YES];
   [localButton setEnabled:NO];
   [dropboxButton setActive:NO];
@@ -273,12 +273,12 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
   currentSelection = DBSyncPromptOptionLocal;  
 }
 
-// Called when the Dropbox button is clicked. Rotates the arrow to point
-//  from local to Dropbox, and sets state accordingly
+// Called when the Dropbox button is clicked. Rotate the arrow to point
+//  at local, and set state to sync down from Dropbox.
 - (IBAction)dropboxClicked:(NSButton*)sender
 {
   [self rotateArrowToDegrees:0.0f];
-  [[detailText textStorage] setAttributedString:localLabel]; 
+  [[detailText textStorage] setAttributedString:dropboxLabel]; 
   [localButton setActive:NO];
   [localButton setEnabled:YES];
   [dropboxButton setActive:YES];
@@ -321,11 +321,7 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
 - (void)rotateArrowToDegrees:(CGFloat)degrees
 {
   NSNumber* numDegrees = DegreesToNumber(degrees);
-  [CATransaction begin];
-  [CATransaction setValue:(id)kCFBooleanTrue
-                   forKey:kCATransactionDisableActions];
   [[transmitter layer] setValue:numDegrees forKeyPath:@"transform.rotation.z"];
-  [CATransaction commit];  
 }
 
 @end
