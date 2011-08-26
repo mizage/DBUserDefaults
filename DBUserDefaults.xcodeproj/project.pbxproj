@@ -40,6 +40,7 @@
 		71AFEBE713A579D8004D42D3 /* DBFileMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 71AFEBE513A579D8004D42D3 /* DBFileMonitor.m */; };
 		71B15E0713FCB85900725A45 /* DBSyncButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 71B15E0513FCB85900725A45 /* DBSyncButtonCell.h */; };
 		71B15E0813FCB85900725A45 /* DBSyncButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B15E0613FCB85900725A45 /* DBSyncButtonCell.m */; };
+		71E2030E14072287004C6871 /* License.txt in Resources */ = {isa = PBXBuildFile; fileRef = 71E2030D14072287004C6871 /* License.txt */; };
 		71E6615B13A5C59C00EA1163 /* DBSyncPrompt.h in Headers */ = {isa = PBXBuildFile; fileRef = 71E6615913A5C59C00EA1163 /* DBSyncPrompt.h */; settings = {ATTRIBUTES = (); }; };
 		71E6615C13A5C59C00EA1163 /* DBSyncPrompt.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E6615A13A5C59C00EA1163 /* DBSyncPrompt.m */; };
 		71E6616413A5D48500EA1163 /* DBSyncPrompt.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71E6616313A5D48500EA1163 /* DBSyncPrompt.xib */; };
@@ -88,6 +89,7 @@
 		71AFEBE513A579D8004D42D3 /* DBFileMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBFileMonitor.m; sourceTree = "<group>"; };
 		71B15E0513FCB85900725A45 /* DBSyncButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBSyncButtonCell.h; sourceTree = "<group>"; };
 		71B15E0613FCB85900725A45 /* DBSyncButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBSyncButtonCell.m; sourceTree = "<group>"; };
+		71E2030D14072287004C6871 /* License.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = License.txt; sourceTree = "<group>"; };
 		71E6615913A5C59C00EA1163 /* DBSyncPrompt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBSyncPrompt.h; sourceTree = "<group>"; };
 		71E6615A13A5C59C00EA1163 /* DBSyncPrompt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBSyncPrompt.m; sourceTree = "<group>"; };
 		71E6616313A5D48500EA1163 /* DBSyncPrompt.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DBSyncPrompt.xib; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 			children = (
 				711B50F613A32A0500976509 /* Classes */,
 				711B50EB13A329F300976509 /* Supporting Files */,
+				71E2030D14072287004C6871 /* License.txt */,
 			);
 			path = DBUserDefaults;
 			sourceTree = "<group>";
@@ -334,6 +337,7 @@
 				7164F41313FC480600F7A1CE /* transmitting-5.png in Resources */,
 				7164F41413FC480600F7A1CE /* transmitting-6.png in Resources */,
 				7164F47E13FC688500F7A1CE /* bgspotlight.png in Resources */,
+				71E2030E14072287004C6871 /* License.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
