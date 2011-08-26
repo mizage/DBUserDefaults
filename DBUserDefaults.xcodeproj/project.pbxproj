@@ -324,6 +324,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				711B50EF13A329F300976509 /* InfoPlist.strings in Resources */,
+				71E2030E14072287004C6871 /* License.txt in Resources */,
 				71E6616413A5D48500EA1163 /* DBSyncPrompt.xib in Resources */,
 				71E6616813A5DFBC00EA1163 /* box.icns in Resources */,
 				7164F40A13FC480600F7A1CE /* docicon-pref.png in Resources */,
@@ -337,7 +338,6 @@
 				7164F41313FC480600F7A1CE /* transmitting-5.png in Resources */,
 				7164F41413FC480600F7A1CE /* transmitting-6.png in Resources */,
 				7164F47E13FC688500F7A1CE /* bgspotlight.png in Resources */,
-				71E2030E14072287004C6871 /* License.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
