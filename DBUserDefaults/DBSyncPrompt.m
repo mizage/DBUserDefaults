@@ -70,7 +70,7 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
   [NSBundle loadNibNamed:@"DBSyncPrompt" owner:self];
   [[self window] center];
   [[self window] setLevel:NSFloatingWindowLevel];
-  [[self window] setContentBorderThickness:55 forEdge:NSMinYEdge];
+  [[self window] setContentBorderThickness:34 forEdge:NSMinYEdge];
   
   NSString* appIconName = [[NSBundle mainBundle] objectForInfoDictionaryKey:
                            @"CFBundleIconFile"];
