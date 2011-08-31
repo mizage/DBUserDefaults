@@ -54,6 +54,8 @@ NSString* const DBUserDefaultsDidSyncNotification =
 - (void)disableDropboxSync;
 - (void)syncFromDropbox;
 - (void)preferencesFileDidChange:(NSNotification*)notification;
+- (void)enableMonitoring;
+- (void)disableMonitoring;
 @end
 
 #pragma mark - DBUserDefaults Methods
@@ -97,18 +99,22 @@ NSString* const DBUserDefaultsDidSyncNotification =
   {
     [DBStatus setDropboxSyncEnabled:YES];
     
-    [self synchronize];
-    
-    [DBFileMonitor enableFileMonitoring];
-    [[NSNotificationCenter defaultCenter] 
-     addObserver:self 
-     selector:@selector(preferencesFileDidChange:)
-     name:DBDropboxFileDidChangeNotification
-     object:nil];
-    [[NSNotificationCenter defaultCenter]
-     postNotificationName:DBUserDefaultsDidSyncNotification 
-     object:nil];
+    [self synchronize];    
+    [self enableMonitoring];
   }
+}
+
+- (void)enableMonitoring
+{
+  [DBFileMonitor enableFileMonitoring];
+  [[NSNotificationCenter defaultCenter] 
+   addObserver:self 
+   selector:@selector(preferencesFileDidChange:)
+   name:DBDropboxFileDidChangeNotification
+   object:nil];
+  [[NSNotificationCenter defaultCenter]
+   postNotificationName:DBUserDefaultsDidSyncNotification 
+   object:nil];
 }
 
 // Delegate callback from the DBSyncPrompt window. Either overwites the local
@@ -126,17 +132,8 @@ NSString* const DBUserDefaultsDidSyncNotification =
   
   [DBStatus setDropboxSyncEnabled:YES];
   
-  [self synchronize];
-  
-  [DBFileMonitor enableFileMonitoring];
-  [[NSNotificationCenter defaultCenter] 
-   addObserver:self 
-   selector:@selector(preferencesFileDidChange:)
-   name:DBDropboxFileDidChangeNotification
-   object:nil];
-  [[NSNotificationCenter defaultCenter]
-   postNotificationName:DBUserDefaultsDidSyncNotification 
-   object:nil];
+  [self synchronize];  
+  [self enableMonitoring];
 }
 
 // Replaces the in-memory defaults dictionary with the contents of the Dropbox
@@ -159,7 +156,10 @@ NSString* const DBUserDefaultsDidSyncNotification =
   
   [DBStatus setDropboxSyncEnabled:NO];
   [self synchronize];
-  
+}
+
+- (void)disableMonitoring
+{
   [DBFileMonitor disableFileMonitoring];
   [[NSNotificationCenter defaultCenter] 
    removeObserver:self 
@@ -217,7 +217,9 @@ static DBUserDefaults* sharedInstance;
       defaults_ = [[NSMutableDictionary dictionaryWithContentsOfFile:
                     [DBFileUtils preferencesFilePath]] retain];
       if([DBStatus isDropboxSyncEnabled])
-        [DBFileMonitor enableFileMonitoring];
+      {
+        [self enableMonitoring];
+      }
     }
     else
     { 
