@@ -53,8 +53,8 @@
 				<string key="NSWindowTitle">Synchronize Preferences</string>
 				<string key="NSWindowClass">NSWindow</string>
 				<nil key="NSViewClass"/>
-				<string key="NSWindowContentMaxSize">{436, 322}</string>
-				<string key="NSWindowContentMinSize">{436, 322}</string>
+				<string key="NSWindowContentMaxSize">{436, 285}</string>
+				<string key="NSWindowContentMinSize">{436, 285}</string>
 				<object class="NSView" key="NSWindowView" id="476350686">
 					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">301</int>
@@ -174,6 +174,7 @@
 							<string key="NSFrame">{{326, 4}, {90, 25}}</string>
 							<reference key="NSSuperview" ref="476350686"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="25234342">
 								<int key="NSCellFlags">67239424</int>
@@ -445,11 +446,11 @@
 					<string key="NSFrame">{{7, 11}, {436, 285}}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
-					<reference key="NSNextKeyView"/>
+					<reference key="NSNextKeyView" ref="938100195"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
-				<string key="NSMinSize">{436, 344}</string>
-				<string key="NSMaxSize">{436, 344}</string>
+				<string key="NSMinSize">{436, 307}</string>
+				<string key="NSMaxSize">{436, 307}</string>
 			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -802,7 +803,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<boolean value="YES"/>
+					<boolean value="NO"/>
 					<object class="NSMutableDictionary">
 						<string key="NS.key.0">AccessibilityDescription</string>
 						<object class="IBAccessibilityAttribute" key="NS.object.0">

@@ -210,6 +210,8 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
     [[detailText textStorage] setAttributedString:localLabel];
   }
   
+  [[self window] makeKeyAndOrderFront:nil];
+  
   return self;
 }
 
