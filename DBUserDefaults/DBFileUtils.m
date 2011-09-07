@@ -116,7 +116,9 @@ NSString* const DBDropboxFileDidChangeNotification =
 // Returns a tilde expanded local path to the Preferences directory
 + (NSString*)localPreferencesDirectoryPath
 {
-  return [@"~/Library/DBPreferences/" stringByExpandingTildeInPath];
+  return [[NSString stringWithFormat:@"~/Library/Application Support/%@/",
+           [[NSBundle mainBundle] bundleIdentifier]] 
+          stringByExpandingTildeInPath];
 }
 
 // Returns the path to the Preferences directory on Dropbox
