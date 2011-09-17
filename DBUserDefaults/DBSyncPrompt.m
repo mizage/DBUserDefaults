@@ -152,6 +152,8 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
     [dropboxButton setAlphaValue:0.25];
     [transmitter setAlphaValue:0.25];
     [syncButton setEnabled:NO];
+    [localPrefIcon setHidden:YES];
+    [dropboxPrefIcon setHidden:YES];
     
     noDropboxLabel = [[[NSMutableAttributedString alloc] 
                        initWithString:@"Dropbox was not detected on your Mac.\n"

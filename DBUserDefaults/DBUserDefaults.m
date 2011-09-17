@@ -72,6 +72,15 @@ NSString* const DBUserDefaultsDidSyncNotification =
   return [DBStatus isDropboxSyncEnabled];
 }
 
+- (void)promptDropboxUnavailable
+{
+  DBSyncPrompt* prompt = [[DBSyncPrompt alloc] init];
+  
+  [prompt setDelegate:self];
+  [prompt displayPrompt];    
+  [prompt release];
+}
+
 - (void)setDropboxSyncEnabled:(BOOL)enabled
 {
   if(enabled)
