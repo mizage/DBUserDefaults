@@ -58,6 +58,8 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
 @interface DBSyncPrompt ()
 - (NSString*)getAppName;
 - (void)rotateArrowToDegrees:(CGFloat)degrees;
+- (void)closeWindowWithCompletion:(void (^)(void))completionBlock;
+- (void)finishClose:(void(^)(void))completionBlock;
 @end
 
 
@@ -179,8 +181,8 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
     NSString* appName = [self getAppName];
     
     localLabel = [[[NSMutableAttributedString alloc] 
-                     initWithString:@"Push the preferences on this Mac up to "
-                     attributes:normalAttributeDictionary] autorelease];
+                   initWithString:@"Push the preferences on this Mac up to "
+                   attributes:normalAttributeDictionary] autorelease];
     
     [localLabel appendAttributedString:
      [[[NSAttributedString alloc] initWithString:@"Dropbox"
@@ -194,8 +196,8 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
     [localLabel addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0,[localLabel length])];
     
     dropboxLabel = [[[NSMutableAttributedString alloc] 
-                   initWithString:@"Pull the preferences from "
-                   attributes:normalAttributeDictionary] autorelease];
+                     initWithString:@"Pull the preferences from "
+                     attributes:normalAttributeDictionary] autorelease];
     
     [dropboxLabel appendAttributedString:
      [[[NSAttributedString alloc] initWithString:@"Dropbox"
@@ -209,10 +211,33 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
     
     [[detailText textStorage] setAttributedString:localLabel];
   }
-  
-  [[self window] makeKeyAndOrderFront:nil];
+  [[self window] setAlphaValue:0.0];
+  [self showWindow:nil]; 
   
   return self;
+}
+
+// Animate the window being shown
+- (void)showWindow:(id)sender
+{
+	[super showWindow:sender];
+  [[[self window] animator] setAlphaValue:1.0];
+}
+
+// Animated the window closing
+- (void)closeWindowWithCompletion:(void (^)(void))completionBlock
+{
+  [[[self window] animator] setAlphaValue:0.0];  
+  [self performSelector:@selector(finishClose:) 
+             withObject:[[completionBlock copy] autorelease] 
+             afterDelay:0.25
+                inModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
+}
+
+- (void)finishClose:(void(^)(void))completionBlock
+{
+  [[self window] orderOut:self];
+  completionBlock();  
 }
 
 - (NSString*)getAppName
@@ -287,7 +312,7 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
   [dropboxButton setEnabled:NO];
   [localPrefIcon setHidden:YES];
   [dropboxPrefIcon setHidden:NO];
-
+  
   currentSelection = DBSyncPromptOptionDropbox;
 }
 
@@ -298,9 +323,11 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
 {
   [animationTimer invalidate];
   animationTimer = nil;
-  [[self window] orderOut:nil];
-  [delegate syncPromptDidSelectOption:currentSelection];  
-  [[NSApplication sharedApplication] stopModal];
+  [self closeWindowWithCompletion:^
+   {
+     [delegate syncPromptDidSelectOption:currentSelection];  
+     [[NSApplication sharedApplication] stopModal];
+   }];  
 }
 
 // Cancels the request, hiding the window and informing the delegate of the
@@ -310,13 +337,14 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
   [animationTimer invalidate];
   animationTimer = nil;
   
-  [[self window] orderOut:nil];
-  
-  if([delegate respondsToSelector:@selector(syncPromptDidCancel)])
-  {  
-    [delegate syncPromptDidCancel];
-  }
-  [[NSApplication sharedApplication] stopModal];
+  [self closeWindowWithCompletion:^
+   {
+     if([delegate respondsToSelector:@selector(syncPromptDidCancel)])
+     {  
+       [delegate syncPromptDidCancel];
+     }
+     [[NSApplication sharedApplication] stopModal];   
+   }];
 }
 
 // Rotates the arrow to a given degree
