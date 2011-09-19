@@ -14,7 +14,7 @@ If a preferences file already exists on [Dropbox](https://www.dropbox.com/), DBU
 Considerations
 --------------
 
-DBUserDefaults is thread safe. DBUserDefaults also does not collide with NSUserDefaults. If there are settings you would prefer to keep locally only, you can simply use NSUserDefaults. In addition, if a user disables [Dropbox](https://www.dropbox.com/) syncing, their preferences will be saved to ~/Library/DBPreferences
+DBUserDefaults is thread safe. DBUserDefaults also does not collide with NSUserDefaults. If there are settings you would prefer to keep locally only, you can simply use NSUserDefaults. In addition, if a user disables [Dropbox](https://www.dropbox.com/) syncing, their preferences will be saved to ~/Library/Application Support/<app name>
 
 DBUserDefaults maintains a list of bundle IDs and their associated sync status in ~/.DBUserDefaults/SyncStatus.db
 
