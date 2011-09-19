@@ -24,8 +24,18 @@ Example Usage
 
     - (void)enableDropboxButtonClicked:(NSButton*)sender
     {
-      // This line enables Dropbox syncing of preferences
-      [[DBUserDefaults standardUserDefaults] setDropboxSyncEnabled:YES];
+      // First, let's check to make sure Dropbox is available on this machine
+      if(![DBUserDefaults isDropboxAvailable])
+      {
+        // Bring up the sync panel with a message stating that Dropbox is not
+        //  installed.
+        [defaults promptDropboxUnavailable];        
+      }
+      else
+      {
+        // This line enables Dropbox syncing of preferences
+        [[DBUserDefaults standardUserDefaults] setDropboxSyncEnabled:YES];
+      }
     }
 
     // Now that syncing is enabled, we can stuff some stuff in there
