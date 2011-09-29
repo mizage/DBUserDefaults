@@ -72,6 +72,10 @@ Example Usage
     }];
     ...
 
+DBUserDefaultsController
+------------
+Add NSUserDefaultsController to the nib, then change it's class to "DBUserDefaultsController. Now you can bind values to "User Defaults Controller".
+
 Contributing
 ------------
 

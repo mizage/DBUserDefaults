@@ -57,7 +57,7 @@ extern NSString* const DBUserDefaultsDidSyncNotification;
 //  a user to have consistent settings for their application across all their
 //  Macs.
 
-@interface DBUserDefaults : NSObject <DBSyncPromptDelegate>
+@interface DBUserDefaults : NSUserDefaults <DBSyncPromptDelegate>
 {
   NSLock* deadbolt_; //Used to lock access to the defaults dictionary
   NSMutableDictionary* defaults_; //Stores the user data
