@@ -44,6 +44,9 @@
 #import "DBUtils.h"
 #import "NSImage+BundleLoading.h"
 
+NSString* const DBSyncPromptUserDidCancelNotification = 
+@"DBSyncPromptUserDidCancelNotification";
+
 static inline CGFloat DegreesToRadians(CGFloat degrees)
 {
   return degrees * M_PI / 180;

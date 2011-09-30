@@ -145,6 +145,15 @@ NSString* const DBUserDefaultsDidSyncNotification =
   [self enableMonitoring];
 }
 
+// If the user cancels the dropbox sync window, we fire a notification.
+- (void)syncPromptDidCancel
+{
+  [[NSNotificationCenter defaultCenter] 
+   postNotificationName:DBSyncPromptUserDidCancelNotification
+   object:nil
+   userInfo:nil];
+}
+
 // Replaces the in-memory defaults dictionary with the contents of the Dropbox
 //  file.
 - (void)syncFromDropbox

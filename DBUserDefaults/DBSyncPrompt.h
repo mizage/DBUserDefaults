@@ -41,6 +41,8 @@
 
 #import "DBSyncPromptDelegate.h"
 
+extern NSString* const DBSyncPromptUserDidCancelNotification;
+
 @class DBSyncButton;
 
 // This class provides a window in which you can select the type of sync
