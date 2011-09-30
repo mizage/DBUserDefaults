@@ -47,6 +47,8 @@
 		71E6616813A5DFBC00EA1163 /* box.icns in Resources */ = {isa = PBXBuildFile; fileRef = 71E6616513A5DFBC00EA1163 /* box.icns */; };
 		71E6617813A5EB0E00EA1163 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71E6617713A5EB0E00EA1163 /* QuartzCore.framework */; };
 		71F8A0D613A71F9C0041E571 /* DBSyncPromptDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 71F8A0D513A71F9C0041E571 /* DBSyncPromptDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DB78C64E143422A200D42941 /* DBUserDefaultsController.h in Headers */ = {isa = PBXBuildFile; fileRef = DB78C64C143422A200D42941 /* DBUserDefaultsController.h */; };
+		DB78C64F143422A200D42941 /* DBUserDefaultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB78C64D143422A200D42941 /* DBUserDefaultsController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -96,6 +98,8 @@
 		71E6616513A5DFBC00EA1163 /* box.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = box.icns; sourceTree = "<group>"; };
 		71E6617713A5EB0E00EA1163 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		71F8A0D513A71F9C0041E571 /* DBSyncPromptDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBSyncPromptDelegate.h; sourceTree = "<group>"; };
+		DB78C64C143422A200D42941 /* DBUserDefaultsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBUserDefaultsController.h; sourceTree = "<group>"; };
+		DB78C64D143422A200D42941 /* DBUserDefaultsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBUserDefaultsController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,6 +199,8 @@
 				71AFEBE513A579D8004D42D3 /* DBFileMonitor.m */,
 				716529A913A947350000F91E /* DBStatus.h */,
 				716529AA13A947350000F91E /* DBStatus.m */,
+				DB78C64C143422A200D42941 /* DBUserDefaultsController.h */,
+				DB78C64D143422A200D42941 /* DBUserDefaultsController.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -272,6 +278,7 @@
 				7164F47B13FC656E00F7A1CE /* DBSyncButton.h in Headers */,
 				71B15E0713FCB85900725A45 /* DBSyncButtonCell.h in Headers */,
 				715D59FE13FDB1BC00946A13 /* NSImage+BundleLoading.h in Headers */,
+				DB78C64E143422A200D42941 /* DBUserDefaultsController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,6 +365,7 @@
 				7164F47C13FC656E00F7A1CE /* DBSyncButton.m in Sources */,
 				71B15E0813FCB85900725A45 /* DBSyncButtonCell.m in Sources */,
 				715D59FF13FDB1BC00946A13 /* NSImage+BundleLoading.m in Sources */,
+				DB78C64F143422A200D42941 /* DBUserDefaultsController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

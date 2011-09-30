@@ -37,78 +37,31 @@
 //  OF CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY OR OTHERWISE,
 //  EVEN IF MIZAGE LLC HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+// Created by Gennadiy Potapov
 
-#import <Foundation/Foundation.h>
+#import "DBUserDefaultsController.h"
+#import "DBUserDefaults.h"
 
-#import "DBSyncPromptDelegate.h"
-
-@class DBSyncPrompt;
-
-// Fired any time the user defaults change.
-extern NSString* const DBUserDefaultsDidChangeNotification;
-
-// Fired when the preferences are updated from Dropbox. You should use this
-//  notification to reapply all the preferences in your application.
-extern NSString* const DBUserDefaultsDidSyncNotification;
+@implementation DBUserDefaultsController
 
 
-// DBUserDefaults is a class that gives you a partial replacement for 
-//  NSUserDefaults that synchronizes data to a folder on Dropbox. This allows
-//  a user to have consistent settings for their application across all their
-//  Macs.
-
-@interface DBUserDefaults : NSUserDefaults <DBSyncPromptDelegate>
+- (id)init
 {
-  NSLock* deadbolt_; //Used to lock access to the defaults dictionary
-  NSMutableDictionary* defaults_; //Stores the user data
+    self = [super init];
+    if (self) {
+        
+    }
+    return self;
 }
 
-// Determines if Dropbox sync is possible
-+ (BOOL)isDropboxAvailable;
 
-// Determies if Dropbox sync is enabled
-+ (BOOL)isDropboxSyncEnabled;
+- (NSUserDefaults *)defaults {
+    return [DBUserDefaults standardUserDefaults];
+}
 
-// Informs the user that Dropbox is not installed
-- (void)promptDropboxUnavailable;
-
-// Sets the status of the Dropbox sync
-- (void)setDropboxSyncEnabled:(BOOL)enabled;
-
-@end
-
-@interface DBUserDefaults (NSUserDefaultsPartialReplacement)
-
-#pragma mark - NSUserDefaults (Partial) Replacement
-
-+ (DBUserDefaults*)standardUserDefaults;
-+ (void)resetStandardUserDefaults;
-
-- (id)objectForKey:(NSString*)defaultName;
-- (void)setObject:(id)value forKey:(NSString*)defaultName;
-- (void)removeObjectForKey:(NSString*)defaultName;
-
-- (NSString*)stringForKey:(NSString*)defaultName;
-- (NSArray*)arrayForKey:(NSString*)defaultName;
-- (NSDictionary*)dictionaryForKey:(NSString*)defaultName;
-- (NSData*)dataForKey:(NSString*)defaultName;
-- (NSArray*)stringArrayForKey:(NSString*)defaultName;
-- (NSInteger)integerForKey:(NSString*)defaultName;
-- (float)floatForKey:(NSString*)defaultName;
-- (double)doubleForKey:(NSString*)defaultName;
-- (BOOL)boolForKey:(NSString*)defaultName;
-- (NSURL*)URLForKey:(NSString*)defaultName AVAILABLE_MAC_OS_X_VERSION_10_6_AND_LATER;
-
-- (void)setInteger:(NSInteger)value forKey:(NSString*)defaultName;
-- (void)setFloat:(float)value forKey:(NSString*)defaultName;
-- (void)setDouble:(double)value forKey:(NSString*)defaultName;
-- (void)setBool:(BOOL)value forKey:(NSString*)defaultName;
-- (void)setURL:(NSURL*)url forKey:(NSString*)defaultName AVAILABLE_MAC_OS_X_VERSION_10_6_AND_LATER;
-
-- (void)registerDefaults:(NSDictionary*)registrationDictionary;
-
-- (NSDictionary*)dictionaryRepresentation;
-
-- (BOOL)synchronize;
+- (void)dealloc
+{
+    [super dealloc];
+}
 
 @end
