@@ -301,6 +301,9 @@
 /* Begin PBXProject section */
 		711B50D713A329F300976509 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 711B50DA13A329F300976509 /* Build configuration list for PBXProject "DBUserDefaults" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;

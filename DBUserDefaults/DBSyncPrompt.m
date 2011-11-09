@@ -72,152 +72,155 @@ static inline NSNumber* DegreesToNumber(CGFloat degrees)
 
 - (id)init
 {    
-  [NSBundle loadNibNamed:@"DBSyncPrompt" owner:self];
-  [[self window] center];
-  [[self window] setLevel:NSFloatingWindowLevel];
-  [[self window] setContentBorderThickness:34 forEdge:NSMinYEdge];
-  
-  NSString* appIconName = [[NSBundle mainBundle] objectForInfoDictionaryKey:
-                           @"CFBundleIconFile"];
-  
-  // Attempt to get the icon of the application in which we are running
-  // If this fails, get the generic application icon instead
-  NSImage* icon;
-  if(appIconName)
-    icon = [NSImage imageNamed:appIconName];
-  else
-    icon = [[NSWorkspace sharedWorkspace] 
-            iconForFileType:
-            NSFileTypeForHFSTypeCode(kGenericApplicationIcon)];
-  
-  [localButton setImage:icon];
-  [localPrefIcon setHidden:NO];
-  [dropboxPrefIcon setHidden:YES];
-  
-  [transmitter setWantsLayer:YES];
-  [[transmitter layer] setAnchorPoint:CGPointMake(0.5, 0.5)];
-  
-  [self rotateArrowToDegrees:-180.0f];
-  currentSelection = DBSyncPromptOptionLocal; 
-  
-  
-  currentFrame = 1;
-  frameDelay = 0;
-  
-  linkColor = [[NSColor colorWithDeviceRed:91.0/255.0
-                                     green:152.0/255.0 
-                                      blue:221.0/255.0 
-                                     alpha:1.0] retain];
-  normalColor = [[NSColor colorWithDeviceRed:164.0/255.0
-                                       green:164.0/255.0 
-                                        blue:164.0/255.0 
-                                       alpha:1.0] retain];
-  
-  
-  linkFont = [[NSFont fontWithName:@"HelveticaNeue-Bold" size:13.0] retain];
-  normalFont = [[NSFont fontWithName:@"LucidiaGrande" size:13.0] retain];
-  
-  // Set up all the attributes for link appearance except font, because font
-  //  appears to be ignored in this call.
-  [detailText setLinkTextAttributes:
-   [NSDictionary dictionaryWithObjectsAndKeys:
-    [NSCursor pointingHandCursor], NSCursorAttributeName, 
-    linkColor, NSForegroundColorAttributeName,
-    [NSNumber numberWithInt:NSNoUnderlineStyle], NSUnderlineStyleAttributeName,
-    nil]];
-  
-  // Create a dictionary to hold all the attributes for normal text
-  NSDictionary* normalAttributeDictionary = 
-  [NSDictionary 
-   dictionaryWithObjectsAndKeys: normalColor, NSForegroundColorAttributeName,
-   normalFont, NSFontAttributeName, 
-   nil];
-  
-  // Create a dictionary to hold all the attributes for link text
-  NSDictionary* linkAttributeDictionary = 
-  [NSDictionary dictionaryWithObjectsAndKeys:
-   [NSURL URLWithString:@"http://www.dropbox.com"], NSLinkAttributeName,
-   linkFont,NSFontAttributeName,
-   nil];
-  
-  // Create a paragraph sytle to center the text
-  NSMutableParagraphStyle* paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
-  [paragraphStyle setAlignment:NSCenterTextAlignment]; 
-  
-  // If Dropbox is not installed, show a message and disable controls
-  if(![DBUtils isDropboxAvailable])
+  if((self = [super init]))
   {
-    [localButton setActive:NO];
-    [localButton setEnabled:NO];
-    [dropboxButton setActive:NO];
-    [dropboxButton setEnabled:NO];
-    [localButton setAlphaValue:0.25];
-    [dropboxButton setAlphaValue:0.25];
-    [transmitter setAlphaValue:0.25];
-    [syncButton setEnabled:NO];
-    [localPrefIcon setHidden:YES];
+    [NSBundle loadNibNamed:@"DBSyncPrompt" owner:self];
+    [[self window] center];
+    [[self window] setLevel:NSFloatingWindowLevel];
+    [[self window] setContentBorderThickness:34 forEdge:NSMinYEdge];
+    
+    NSString* appIconName = [[NSBundle mainBundle] objectForInfoDictionaryKey:
+                             @"CFBundleIconFile"];
+    
+    // Attempt to get the icon of the application in which we are running
+    // If this fails, get the generic application icon instead
+    NSImage* icon;
+    if(appIconName)
+      icon = [NSImage imageNamed:appIconName];
+    else
+      icon = [[NSWorkspace sharedWorkspace] 
+              iconForFileType:
+              NSFileTypeForHFSTypeCode(kGenericApplicationIcon)];
+    
+    [localButton setImage:icon];
+    [localPrefIcon setHidden:NO];
     [dropboxPrefIcon setHidden:YES];
     
-    noDropboxLabel = [[[NSMutableAttributedString alloc] 
-                       initWithString:@"Dropbox was not detected on your Mac.\n"
-                       "Please visit the "
-                       attributes:normalAttributeDictionary] autorelease];
+    [transmitter setWantsLayer:YES];
+    [[transmitter layer] setAnchorPoint:CGPointMake(0.5, 0.5)];
     
-    [noDropboxLabel appendAttributedString:
-     [[[NSAttributedString alloc] initWithString:@"Dropbox Website"
-                                      attributes:linkAttributeDictionary] autorelease]];
-    [noDropboxLabel appendAttributedString:
-     [[[NSAttributedString alloc] initWithString:@" to install it.\n"
-       "Don't worry, it's free!"
-                                      attributes:normalAttributeDictionary] autorelease]];
+    [self rotateArrowToDegrees:-180.0f];
+    currentSelection = DBSyncPromptOptionLocal; 
     
-    [noDropboxLabel addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0,[noDropboxLabel length])];
     
-    [[detailText textStorage] setAttributedString:noDropboxLabel];
+    currentFrame = 1;
+    frameDelay = 0;
     
-  }
-  else
-  {    
-    animationTimer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(nextFrame) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:animationTimer forMode:NSRunLoopCommonModes];
+    linkColor = [[NSColor colorWithDeviceRed:91.0/255.0
+                                       green:152.0/255.0 
+                                        blue:221.0/255.0 
+                                       alpha:1.0] retain];
+    normalColor = [[NSColor colorWithDeviceRed:164.0/255.0
+                                         green:164.0/255.0 
+                                          blue:164.0/255.0 
+                                         alpha:1.0] retain];
     
-    [localButton setActive:YES];  
     
-    NSString* appName = [self getAppName];
+    linkFont = [[NSFont fontWithName:@"HelveticaNeue-Bold" size:13.0] retain];
+    normalFont = [[NSFont fontWithName:@"LucidiaGrande" size:13.0] retain];
     
-    localLabel = [[[NSMutableAttributedString alloc] 
-                   initWithString:@"Push the preferences on this Mac up to "
-                   attributes:normalAttributeDictionary] autorelease];
+    // Set up all the attributes for link appearance except font, because font
+    //  appears to be ignored in this call.
+    [detailText setLinkTextAttributes:
+     [NSDictionary dictionaryWithObjectsAndKeys:
+      [NSCursor pointingHandCursor], NSCursorAttributeName, 
+      linkColor, NSForegroundColorAttributeName,
+      [NSNumber numberWithInt:NSNoUnderlineStyle], NSUnderlineStyleAttributeName,
+      nil]];
     
-    [localLabel appendAttributedString:
-     [[[NSAttributedString alloc] initWithString:@"Dropbox"
-                                      attributes:linkAttributeDictionary] autorelease]];
+    // Create a dictionary to hold all the attributes for normal text
+    NSDictionary* normalAttributeDictionary = 
+    [NSDictionary 
+     dictionaryWithObjectsAndKeys: normalColor, NSForegroundColorAttributeName,
+     normalFont, NSFontAttributeName, 
+     nil];
     
-    [localLabel appendAttributedString:
-     [[[NSAttributedString alloc] initWithString:
-       [NSString stringWithFormat:@" so all your copies of %@ will use your current settings.",appName]
-                                      attributes:normalAttributeDictionary] autorelease]];
+    // Create a dictionary to hold all the attributes for link text
+    NSDictionary* linkAttributeDictionary = 
+    [NSDictionary dictionaryWithObjectsAndKeys:
+     [NSURL URLWithString:@"http://www.dropbox.com"], NSLinkAttributeName,
+     linkFont,NSFontAttributeName,
+     nil];
     
-    [localLabel addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0,[localLabel length])];
+    // Create a paragraph sytle to center the text
+    NSMutableParagraphStyle* paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+    [paragraphStyle setAlignment:NSCenterTextAlignment]; 
     
-    dropboxLabel = [[[NSMutableAttributedString alloc] 
-                     initWithString:@"Pull the preferences from "
+    // If Dropbox is not installed, show a message and disable controls
+    if(![DBUtils isDropboxAvailable])
+    {
+      [localButton setActive:NO];
+      [localButton setEnabled:NO];
+      [dropboxButton setActive:NO];
+      [dropboxButton setEnabled:NO];
+      [localButton setAlphaValue:0.25];
+      [dropboxButton setAlphaValue:0.25];
+      [transmitter setAlphaValue:0.25];
+      [syncButton setEnabled:NO];
+      [localPrefIcon setHidden:YES];
+      [dropboxPrefIcon setHidden:YES];
+      
+      noDropboxLabel = [[[NSMutableAttributedString alloc] 
+                         initWithString:@"Dropbox was not detected on your Mac.\n"
+                         "Please visit the "
+                         attributes:normalAttributeDictionary] autorelease];
+      
+      [noDropboxLabel appendAttributedString:
+       [[[NSAttributedString alloc] initWithString:@"Dropbox Website"
+                                        attributes:linkAttributeDictionary] autorelease]];
+      [noDropboxLabel appendAttributedString:
+       [[[NSAttributedString alloc] initWithString:@" to install it.\n"
+         "Don't worry, it's free!"
+                                        attributes:normalAttributeDictionary] autorelease]];
+      
+      [noDropboxLabel addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0,[noDropboxLabel length])];
+      
+      [[detailText textStorage] setAttributedString:noDropboxLabel];
+      
+    }
+    else
+    {    
+      animationTimer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(nextFrame) userInfo:nil repeats:YES];
+      [[NSRunLoop currentRunLoop] addTimer:animationTimer forMode:NSRunLoopCommonModes];
+      
+      [localButton setActive:YES];  
+      
+      NSString* appName = [self getAppName];
+      
+      localLabel = [[[NSMutableAttributedString alloc] 
+                     initWithString:@"Push the preferences on this Mac up to "
                      attributes:normalAttributeDictionary] autorelease];
-    
-    [dropboxLabel appendAttributedString:
-     [[[NSAttributedString alloc] initWithString:@"Dropbox"
-                                      attributes:linkAttributeDictionary] autorelease]];
-    
-    [dropboxLabel appendAttributedString:
-     [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" and use them as the settings for %@ on this Mac.",appName]
-                                      attributes:normalAttributeDictionary] autorelease]];
-    
-    [dropboxLabel addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0,[dropboxLabel length])];
-    
-    [[detailText textStorage] setAttributedString:localLabel];
+      
+      [localLabel appendAttributedString:
+       [[[NSAttributedString alloc] initWithString:@"Dropbox"
+                                        attributes:linkAttributeDictionary] autorelease]];
+      
+      [localLabel appendAttributedString:
+       [[[NSAttributedString alloc] initWithString:
+         [NSString stringWithFormat:@" so all your copies of %@ will use your current settings.",appName]
+                                        attributes:normalAttributeDictionary] autorelease]];
+      
+      [localLabel addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0,[localLabel length])];
+      
+      dropboxLabel = [[[NSMutableAttributedString alloc] 
+                       initWithString:@"Pull the preferences from "
+                       attributes:normalAttributeDictionary] autorelease];
+      
+      [dropboxLabel appendAttributedString:
+       [[[NSAttributedString alloc] initWithString:@"Dropbox"
+                                        attributes:linkAttributeDictionary] autorelease]];
+      
+      [dropboxLabel appendAttributedString:
+       [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" and use them as the settings for %@ on this Mac.",appName]
+                                        attributes:normalAttributeDictionary] autorelease]];
+      
+      [dropboxLabel addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0,[dropboxLabel length])];
+      
+      [[detailText textStorage] setAttributedString:localLabel];
+    }
+    [[self window] setAlphaValue:0.0];
+    [self showWindow:nil]; 
   }
-  [[self window] setAlphaValue:0.0];
-  [self showWindow:nil]; 
   
   return self;
 }
