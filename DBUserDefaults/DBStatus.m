@@ -84,7 +84,7 @@ NSString* DBSettingsPath;
   }
   
   NSMutableDictionary* stateDictionary = 
-  [[DBStatus stateDictionary] mutableCopy];
+  [[[DBStatus stateDictionary] mutableCopy] autorelease];
   
   [stateDictionary setObject:[NSNumber numberWithBool:enabled]
                       forKey:[[NSBundle mainBundle] bundleIdentifier]];
